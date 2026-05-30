@@ -496,9 +496,10 @@
   injectExplainButton('result', {
     calc: 'Mortgage Calculator',
     inputs: {
-      'Home Price': document.getElementById('home-price')?.value,
-      'Interest Rate': document.getElementById('interest-rate')?.value + '%',
-      'Loan Term': document.getElementById('loan-term')?.value
+      'Home Price': '$' + document.getElementById('m_price')?.value,
+      'Down Payment': '$' + document.getElementById('m_down')?.value,
+      'Interest Rate': document.getElementById('m_rate')?.value + '%',
+      'Loan Term': document.getElementById('m_term')?.value + ' years'
     },
     outputs: {
       'Total Monthly Payment': document.getElementById('r-total')?.textContent,
