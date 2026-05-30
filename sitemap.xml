@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://calchub.io/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <!-- Finance -->
+  <url><loc>https://calchub.io/calculators/mortgage.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://calchub.io/calculators/loan.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://calchub.io/calculators/compound-interest.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/retirement.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/tax.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://calchub.io/calculators/roi.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calchub.io/calculators/savings.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/amortization.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/auto-loan.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/salary.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://calchub.io/calculators/inflation.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <!-- Health -->
+  <url><loc>https://calchub.io/calculators/bmi.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://calchub.io/calculators/calorie.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://calchub.io/calculators/body-fat.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/pregnancy.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/bmr.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/ideal-weight.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/sleep.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/ovulation.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <!-- Math -->
+  <url><loc>https://calchub.io/calculators/standard.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/scientific.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/percentage.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://calchub.io/calculators/random-number.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <!-- Everyday -->
+  <url><loc>https://calchub.io/calculators/tip.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/unit-converter.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/age.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/gpa.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/discount.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/date-difference.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/grade.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calchub.io/calculators/password-generator.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calchub.io/calculators/word-counter.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://calchub.io/calculators/time-zone.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <!-- Pages -->
+  <url><loc>https://calchub.io/about.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://calchub.io/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calchub.io/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://calchub.io/contact.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>

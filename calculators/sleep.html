@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Sleep Calculator — Best Wake Up & Bedtime Calculator (2025)</title>
+<meta name="description" content="Calculate the best time to wake up or go to bed based on 90-minute sleep cycles. Wake up refreshed, not groggy. Free."/>
+<link rel="canonical" href="https://calchub.io/calculators/sleep.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.mode-tabs { display:flex; gap:4px; margin-bottom:1.25rem; }
+.mode-tab { padding:8px 16px; border-radius:20px; border:1px solid var(--gray-300); background:var(--white); color:var(--gray-600); font-size:0.82rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.mode-tab.active { background:var(--purple); border-color:var(--purple); color:#fff; }
+.sleep-times { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:1rem; }
+@media(max-width:500px){ .sleep-times { grid-template-columns:1fr 1fr; } }
+.sleep-time-card { background:var(--white); border:2px solid var(--gray-200); border-radius:var(--radius-lg); padding:1rem; text-align:center; cursor:pointer; transition:all 0.15s; }
+.sleep-time-card:hover { border-color:var(--purple); }
+.sleep-time-card.best { border-color:var(--green); background:var(--green-light); }
+.stc-time { font-size:1.3rem; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--gray-900); }
+.stc-cycles { font-size:0.72rem; color:var(--gray-500); margin-top:4px; }
+.stc-label { font-size:0.68rem; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.06em; margin-top:6px; }
+.stc-duration { font-size:0.75rem; color:var(--blue); margin-top:2px; font-weight:600; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#health" class="active">Health</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#health">Health</a><span class="breadcrumb-sep">›</span><span>Sleep Calculator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="bmr.html"><span class="sidebar-icon">🔥</span>BMR</a>
+    <a class="sidebar-link active" href="sleep.html"><span class="sidebar-icon">😴</span>Sleep</a>
+    <a class="sidebar-link" href="ideal-weight.html"><span class="sidebar-icon">⚖️</span>Ideal Weight</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#f3e8fd;">😴</div>
+      <div><h1 class="calc-card-title">Sleep Calculator</h1><p class="calc-card-desc">Find the best time to wake up or go to sleep based on 90-minute sleep cycles. Wake up refreshed instead of groggy.</p></div>
+    </div>
+
+    <div class="mode-tabs">
+      <button class="mode-tab active" id="tab-wake" onclick="setMode('wake',this)">⏰ I want to wake up at…</button>
+      <button class="mode-tab" id="tab-sleep" onclick="setMode('sleep',this)">🛏️ I'm going to sleep now</button>
+      <button class="mode-tab" id="tab-bedtime" onclick="setMode('bedtime',this)">🌙 What time should I sleep?</button>
+    </div>
+
+    <div id="inputs-wake">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Wake up time</label>
+          <input type="time" id="sl_wake" value="07:00"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Time to fall asleep</label>
+          <div class="input-wrap"><input type="number" id="sl_latency" class="has-suffix" value="14" min="0" max="60"/><span class="input-suffix">min</span></div>
+          <span class="form-hint">Average: 10–20 minutes</span>
+        </div>
+      </div>
+    </div>
+    <div id="inputs-sleep" style="display:none;">
+      <p style="color:var(--gray-600);font-size:0.9rem;margin-bottom:1rem;">Based on the current time, here are the best times to wake up:</p>
+    </div>
+    <div id="inputs-bedtime" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Wake up time</label>
+          <input type="time" id="sl_wake2" value="07:00"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcSleep()">Calculate ›</button>
+    </div>
+
+    <div class="result-box" id="result">
+      <div class="result-primary">
+        <span class="result-primary-label" id="r-label">Best Bedtimes</span>
+        <span class="result-primary-value" id="r-primary" style="font-size:1.1rem;">—</span>
+      </div>
+      <p style="font-size:0.82rem;color:var(--gray-500);margin:0.5rem 0 1rem;" id="r-subtitle"></p>
+      <div class="sleep-times" id="sleep-times"></div>
+
+      <div style="background:var(--blue-light);border:1px solid #c5d8fb;border-radius:var(--radius-lg);padding:1rem;margin-top:1.25rem;">
+        <div style="font-size:0.82rem;font-weight:700;color:var(--blue);margin-bottom:0.5rem;">💡 Sleep Science</div>
+        <div style="font-size:0.8rem;color:var(--gray-700);line-height:1.7;">Each sleep cycle lasts approximately <strong>90 minutes</strong> and includes light sleep, deep sleep, and REM sleep. Waking up at the end of a cycle (light sleep phase) feels natural and refreshed. Waking mid-cycle causes <em>sleep inertia</em> — the groggy, disoriented feeling even after enough total sleep.</div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">How the Sleep Calculator Works</h2>
+      <p style="color:var(--gray-700);line-height:1.8;">Sleep happens in 90-minute cycles. Waking up at the end of a complete cycle, during the lightest sleep phase, minimizes sleep inertia. This calculator suggests bedtimes (or wake times) aligned to complete 4, 5, or 6 full cycles — corresponding to 6, 7.5, or 9 hours of sleep.</p>
+      <div class="faq" style="margin-top:1rem;">
+        <div class="faq-item">
+          <div class="faq-q">How many hours of sleep do adults need? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">The National Sleep Foundation recommends 7–9 hours for adults (18–64), 7–8 hours for older adults (65+), and 8–10 hours for teenagers. Less than 6 hours consistently is associated with increased risk of obesity, diabetes, cardiovascular disease, and cognitive impairment. Quality matters as much as quantity — uninterrupted sleep through complete cycles is more restorative than fragmented longer sleep.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Why do I feel worse after 8 hours than 7.5? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">You likely woke up mid-cycle. 8 hours doesn't divide evenly into 90-minute cycles (8h = 5.33 cycles). 7.5 hours = exactly 5 cycles, so you wake up at the natural end of a cycle in light sleep. This is why 7.5 hours often feels more refreshing than 8 or 8.5 hours.</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="age.html" style="padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🎂 Age Calculator</a>
+        <a href="bmi.html" style="padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">⚖️ BMI Calculator</a>
+        <a href="calorie.html" style="padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🍎 Calorie Calculator</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="age.html">🎂 Age Calculator</a>
+    <a class="related-link" href="bmi.html">⚖️ BMI Calculator</a>
+    <a class="related-link" href="calorie.html">🍎 Calorie Calculator</a>
+    <a class="related-link" href="bmr.html">🔥 BMR Calculator</a>
+  </div>
+  <div class="rail-card"><h3>😴 Sleep Needs</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>Adults (18–64):</strong> 7–9 hrs<br>
+      <strong>Older adults:</strong> 7–8 hrs<br>
+      <strong>Teens (14–17):</strong> 8–10 hrs<br>
+      <strong>School kids:</strong> 9–11 hrs<br>
+      <strong>1 cycle:</strong> ~90 minutes
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('sleep'); });</script>
+<script>
+var _mode='wake';
+var CYCLE=90, LABELS=['4 cycles (6h)','5 cycles (7.5h)','6 cycles (9h)'];
+function setMode(m,btn){ _mode=m; document.querySelectorAll('.mode-tab').forEach(function(b){b.classList.remove('active');}); btn.classList.add('active'); document.getElementById('inputs-wake').style.display=m==='wake'?'':'none'; document.getElementById('inputs-sleep').style.display=m==='sleep'?'':'none'; document.getElementById('inputs-bedtime').style.display=m==='bedtime'?'':'none'; document.getElementById('result').classList.remove('show'); }
+function fmtTime(date){ var h=date.getHours(),m=date.getMinutes(),ampm=h>=12?'PM':'AM'; h=h%12||12; return h+':'+(m<10?'0'+m:m)+' '+ampm; }
+function calcSleep(){
+  var times=[];
+  if(_mode==='wake'){
+    var [hh,mm]=document.getElementById('sl_wake').value.split(':').map(Number);
+    var latency=+document.getElementById('sl_latency').value||14;
+    var wakeMs=new Date(); wakeMs.setHours(hh,mm,0,0);
+    setText('r-label','Best times to go to sleep');
+    setText('r-primary','To wake at '+fmtTime(wakeMs));
+    document.getElementById('r-subtitle').textContent='Go to sleep at one of these times to complete full sleep cycles:';
+    [6,5,4,3].forEach(function(cycles){
+      var bed=new Date(wakeMs-cycles*CYCLE*60000-latency*60000);
+      times.push({time:fmtTime(bed),cycles:cycles,duration:(cycles*1.5)+'h',best:cycles===5||cycles===6});
+    });
+  } else if(_mode==='sleep'){
+    var now=new Date();
+    var latency=14;
+    setText('r-label','Best times to wake up');
+    setText('r-primary','If you fall asleep now (~'+fmtTime(new Date(now.getTime()+latency*60000))+')');
+    document.getElementById('r-subtitle').textContent='Wake up at one of these times for complete sleep cycles:';
+    [4,5,6,7].forEach(function(cycles){
+      var wake=new Date(now.getTime()+(cycles*CYCLE+latency)*60000);
+      times.push({time:fmtTime(wake),cycles:cycles,duration:(cycles*1.5)+'h',best:cycles===5||cycles===6});
+    });
+  } else {
+    var [hh,mm]=document.getElementById('sl_wake2').value.split(':').map(Number);
+    var wakeMs=new Date(); wakeMs.setHours(hh,mm,0,0);
+    var latency=14;
+    setText('r-label','Best bedtimes');
+    setText('r-primary','To wake refreshed at '+fmtTime(wakeMs));
+    document.getElementById('r-subtitle').textContent='Go to bed at one of these times:';
+    [6,5,4].forEach(function(cycles){
+      var bed=new Date(wakeMs-cycles*CYCLE*60000-latency*60000);
+      times.push({time:fmtTime(bed),cycles:cycles,duration:(cycles*1.5)+'h',best:cycles===5||cycles===6});
+    });
+  }
+  document.getElementById('sleep-times').innerHTML=times.map(function(t){
+    return '<div class="sleep-time-card'+(t.best?' best':'')+'"><div class="stc-time">'+t.time+'</div><div class="stc-cycles">'+t.cycles+' sleep cycles</div><div class="stc-duration">'+t.duration+' of sleep</div><div class="stc-label">'+(t.best?'✓ Recommended':'')+'</div></div>';
+  }).join('');
+  showResult('result');
+}
+</script>
+</body></html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Auto Loan Calculator — Car Payment & Total Cost (2025)</title>
+<meta name="description" content="Calculate your monthly car payment, total interest, and true cost of an auto loan. Supports trade-in and down payment. Free."/>
+<link rel="canonical" href="https://calchub.io/calculators/auto-loan.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.term-btns { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1rem; }
+.term-btn { padding:8px 16px; border-radius:20px; border:1px solid var(--gray-200); background:var(--white); color:var(--gray-600); font-size:0.82rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.term-btn.active { background:var(--blue); border-color:var(--blue); color:#fff; }
+.compare-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:1rem; }
+@media(max-width:500px){ .compare-grid { grid-template-columns:1fr 1fr; } }
+.compare-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:10px; text-align:center; }
+.compare-card.best { border-color:var(--green); background:var(--green-light); }
+.cc-val { font-size:1rem; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--blue); }
+.cc-label { font-size:0.68rem; color:var(--gray-500); margin-top:3px; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance" class="active">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#finance">Finance</a><span class="breadcrumb-sep">›</span><span>Auto Loan Calculator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="amortization.html"><span class="sidebar-icon">📋</span>Amortization</a>
+    <a class="sidebar-link active" href="auto-loan.html"><span class="sidebar-icon">🚗</span>Auto Loan</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e6f4ea;">🚗</div>
+      <div><h1 class="calc-card-title">Auto Loan Calculator</h1><p class="calc-card-desc">Calculate your monthly car payment, total interest, and true cost of ownership including trade-in value.</p></div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Vehicle Price</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="al_price" class="has-prefix" value="35000" min="0" oninput="calcAuto()"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Down Payment</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="al_down" class="has-prefix" value="5000" min="0" oninput="calcAuto()"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Trade-In Value</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="al_trade" class="has-prefix" value="0" min="0" oninput="calcAuto()"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Sales Tax Rate</label>
+        <div class="input-wrap"><input type="number" id="al_tax" class="has-suffix" value="8" step="0.1" min="0" oninput="calcAuto()"/><span class="input-suffix">%</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Annual Interest Rate</label>
+        <div class="input-wrap"><input type="number" id="al_rate" class="has-suffix" value="7.5" step="0.1" min="0" oninput="calcAuto()"/><span class="input-suffix">%</span></div>
+        <span class="form-hint">Avg new car rate 2025: ~7–8%</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fees (registration, doc)</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="al_fees" class="has-prefix" value="500" min="0" oninput="calcAuto()"/></div>
+      </div>
+    </div>
+
+    <div style="font-size:0.8rem;font-weight:600;color:var(--gray-700);margin-bottom:0.6rem;">Loan Term</div>
+    <div class="term-btns">
+      <button class="term-btn" data-months="24" onclick="setTerm(this)">24 mo</button>
+      <button class="term-btn" data-months="36" onclick="setTerm(this)">36 mo</button>
+      <button class="term-btn active" data-months="48" onclick="setTerm(this)">48 mo</button>
+      <button class="term-btn" data-months="60" onclick="setTerm(this)">60 mo</button>
+      <button class="term-btn" data-months="72" onclick="setTerm(this)">72 mo</button>
+      <button class="term-btn" data-months="84" onclick="setTerm(this)">84 mo</button>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcAuto()">Calculate ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <div class="result-box" id="result">
+      <div class="result-primary">
+        <span class="result-primary-label">Monthly Payment</span>
+        <span class="result-primary-value" id="r-payment">—</span>
+      </div>
+      <div class="result-row"><span class="result-row-label">Loan Amount (after down + trade-in)</span><span class="result-row-value" id="r-loan">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total of All Payments</span><span class="result-row-value" id="r-total">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total Interest Paid</span><span class="result-row-value color-red" id="r-interest">—</span></div>
+      <div class="result-row"><span class="result-row-label">True Cost of Vehicle</span><span class="result-row-value color-blue" id="r-true-cost">—</span></div>
+
+      <div class="bar-chart" id="r-chart" style="margin-top:1.25rem;"></div>
+
+      <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin:1.25rem 0 0.5rem;">Term Comparison</div>
+      <div class="compare-grid" id="compare-grid"></div>
+    </div>
+
+    <div class="disclaimer">⚠️ Estimates only. Actual rates depend on credit score, lender, and vehicle age. Consult your dealer or bank for exact figures.</div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Auto Loan Calculator</h2>
+      <p style="color:var(--gray-700);line-height:1.8;">This calculator shows your true monthly payment including sales tax and fees, which dealers often leave out. A longer loan term means lower monthly payments but significantly more interest paid. Compare the 48-month vs 72-month options — the difference in total interest is often $2,000–$5,000.</p>
+      <div class="faq" style="margin-top:1rem;">
+        <div class="faq-item">
+          <div class="faq-q">What is a good auto loan rate in 2025? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Average new car loan rates in 2025 are around 7–8% for buyers with good credit (700+). Used car rates are typically 1–2% higher. Credit unions often offer lower rates than dealerships. Always get pre-approved from your bank or credit union before visiting a dealer — it gives you negotiating power.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Should I put more money down on a car? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">A larger down payment reduces the loan amount, which reduces both monthly payments and total interest paid. It also helps you avoid being "underwater" (owing more than the car is worth). A general guideline is 20% down for new cars and 10% for used. If the car depreciates faster than you pay down the loan, you risk negative equity.</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="loan.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">💳 Loan Calculator</a>
+        <a href="amortization.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">📋 Amortization</a>
+        <a href="savings.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🐷 Savings Goal</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="loan.html">💳 Loan Calculator</a>
+    <a class="related-link" href="amortization.html">📋 Amortization</a>
+    <a class="related-link" href="mortgage.html">🏠 Mortgage</a>
+  </div>
+  <div class="rail-card"><h3>🚗 2025 Avg Rates</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>New car (720+):</strong> ~6.5%<br>
+      <strong>New car (680–719):</strong> ~8%<br>
+      <strong>Used car (720+):</strong> ~8%<br>
+      <strong>Used car (680–719):</strong> ~10%<br>
+      <strong>Credit union:</strong> often 1–2% less
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('auto-loan'); });</script>
+<script>
+var _term = 48;
+function setTerm(btn) {
+  document.querySelectorAll('.term-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  _term = +btn.dataset.months;
+  calcAuto();
+}
+function calcAuto() {
+  var price  = +document.getElementById('al_price').value || 0;
+  var down   = +document.getElementById('al_down').value  || 0;
+  var trade  = +document.getElementById('al_trade').value || 0;
+  var taxPct = +document.getElementById('al_tax').value   / 100 || 0;
+  var rate   = +document.getElementById('al_rate').value  / 100 / 12 || 0;
+  var fees   = +document.getElementById('al_fees').value  || 0;
+  var taxAmt = (price - trade) * taxPct;
+  var loanAmt = price + taxAmt + fees - down - trade;
+  if (loanAmt <= 0 || !rate) return;
+  var n = _term;
+  var pmt = loanAmt * rate * Math.pow(1+rate,n) / (Math.pow(1+rate,n)-1);
+  var total = pmt * n;
+  var interest = total - loanAmt;
+  var trueCost = price + taxAmt + fees + interest - trade;
+  setText('r-payment',  fmtUSD(pmt) + '/mo');
+  setText('r-loan',     fmtUSD(loanAmt));
+  setText('r-total',    fmtUSD(total));
+  setText('r-interest', fmtUSD(interest));
+  setText('r-true-cost',fmtUSD(trueCost));
+  renderDonutChart('r-chart', [
+    { label:'Loan Amount', value:loanAmt,     color:'#2563eb', display:fmtUSD(loanAmt) },
+    { label:'Interest',    value:interest,    color:'#dc2626', display:fmtUSD(interest) },
+    { label:'Tax + Fees',  value:taxAmt+fees, color:'#d97706', display:fmtUSD(taxAmt+fees) },
+  ], 'True Cost', fmtUSD(trueCost));
+  // Term comparison
+  var terms = [24,36,48,60,72,84];
+  document.getElementById('compare-grid').innerHTML = terms.map(function(t) {
+    var p2 = loanAmt * rate * Math.pow(1+rate,t) / (Math.pow(1+rate,t)-1);
+    var int2 = p2*t - loanAmt;
+    return '<div class="compare-card' + (t===_term?' best':'') + '">'
+      + '<div class="cc-val">' + fmtUSD(p2) + '</div>'
+      + '<div class="cc-label">' + t + ' mo · ' + fmtUSD(int2) + ' interest</div>'
+      + '</div>';
+  }).join('');
+  showResult('result');
+}
+function resetForm() {
+  document.getElementById('al_price').value = 35000;
+  document.getElementById('al_down').value  = 5000;
+  document.getElementById('al_trade').value = 0;
+  document.getElementById('al_tax').value   = 8;
+  document.getElementById('al_rate').value  = 7.5;
+  document.getElementById('al_fees').value  = 500;
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body></html>

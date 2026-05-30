@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Unit Converter — Length, Weight, Temperature, Volume & More (2025)</title>
+<meta name="description" content="Free unit converter for length, weight, temperature, volume, speed, and area. Supports metric and imperial. Instant results."/>
+<meta property="og:title" content="Unit Converter — All Units in One Place"/>
+<meta property="og:type" content="website"/>
+<link rel="canonical" href="https://calchub.com/calculators/unit-converter.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.cat-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1.25rem; }
+.cat-tab { padding:7px 14px; border-radius:20px; border:1px solid var(--gray-200); background:var(--white); color:var(--gray-600); font-size:0.8rem; font-weight:500; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.cat-tab.active { background:var(--blue); border-color:var(--blue); color:#fff; font-weight:600; }
+.cat-tab:hover:not(.active) { background:var(--gray-100); }
+
+.swap-btn { width:44px; height:44px; border-radius:50%; border:2px solid var(--gray-200); background:var(--white); font-size:1.2rem; cursor:pointer; display:flex; align-items:center; justify-content:center; margin:0 auto; transition:all 0.15s; }
+.swap-btn:hover { border-color:var(--blue); background:var(--blue-light); }
+
+.conversion-table-wrap { overflow-x:auto; border-radius:var(--radius-lg); border:1px solid var(--gray-200); margin-top:1.25rem; }
+.conversion-table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+.conversion-table th { background:var(--gray-900); color:#fff; padding:8px 14px; text-align:left; font-size:0.73rem; font-weight:600; letter-spacing:0.05em; }
+.conversion-table td { padding:8px 14px; border-bottom:1px solid var(--gray-100); font-family:'JetBrains Mono',monospace; font-size:0.8rem; }
+.conversion-table td:first-child { font-family:'Inter',sans-serif; color:var(--gray-600); }
+.conversion-table tr:last-child td { border-bottom:none; }
+.conversion-table tr.highlight td { background:var(--blue-light); font-weight:700; color:var(--blue); }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday" class="active">Everyday</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#everyday">Everyday</a><span class="breadcrumb-sep">›</span><span>Unit Converter</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link active" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e6f4ea;">💱</div>
+      <div><h1 class="calc-card-title">Unit Converter</h1><p class="calc-card-desc">Convert between length, weight, temperature, volume, speed, and area — metric and imperial.</p></div>
+    </div>
+
+    <div class="cat-tabs" id="cat-tabs">
+      <button class="cat-tab active" onclick="setCat('length',this)">📏 Length</button>
+      <button class="cat-tab" onclick="setCat('weight',this)">⚖️ Weight</button>
+      <button class="cat-tab" onclick="setCat('temperature',this)">🌡️ Temperature</button>
+      <button class="cat-tab" onclick="setCat('volume',this)">🧪 Volume</button>
+      <button class="cat-tab" onclick="setCat('speed',this)">💨 Speed</button>
+      <button class="cat-tab" onclick="setCat('area',this)">📐 Area</button>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="uc_val">Value</label>
+        <input type="number" id="uc_val" value="1" step="any" oninput="calcUnit()"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="uc_from">From</label>
+        <select id="uc_from" onchange="calcUnit()"></select>
+      </div>
+      <div class="form-group" style="align-self:end;padding-bottom:2px;">
+        <button class="swap-btn" onclick="swapUnits()" title="Swap units">⇄</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="uc_to">To</label>
+        <select id="uc_to" onchange="calcUnit()"></select>
+      </div>
+    </div>
+
+    <div class="result-box" id="result">
+      <div class="result-primary">
+        <span class="result-primary-label" id="r-label">Result</span>
+        <span class="result-primary-value" id="r-out">—</span>
+      </div>
+      <div class="result-row"><span class="result-row-label">Formula</span><span class="result-row-value" id="r-formula">—</span></div>
+
+      <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin:1.25rem 0 0.5rem;">Common Conversions</div>
+      <div class="conversion-table-wrap">
+        <table class="conversion-table">
+          <thead><tr><th>Unit</th><th id="tbl-col-header">Value</th></tr></thead>
+          <tbody id="conversion-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.5rem;">Unit Converter</h2>
+      <p>Convert between all major units of measurement across 6 categories. The converter handles standard metric-to-imperial conversions, temperature conversions (Celsius, Fahrenheit, Kelvin), and more. Tap the ⇄ button to quickly swap the from/to units.</p>
+      <div class="faq" style="margin-top:1rem;">
+        <div class="faq-item">
+          <div class="faq-q">How do you convert Celsius to Fahrenheit? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Multiply by 9/5 then add 32: °F = (°C × 1.8) + 32. Quick reference: 0°C = 32°F (freezing), 100°C = 212°F (boiling), 37°C = 98.6°F (body temperature), 20°C = 68°F (room temperature).</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How many centimeters in an inch? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">1 inch = 2.54 centimeters exactly. To convert inches to cm, multiply by 2.54. To convert cm to inches, divide by 2.54 (or multiply by 0.3937).</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="standard.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🔢 Standard Calculator</a>
+        <a href="scientific.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🔬 Scientific Calculator</a>
+        <a href="bmi.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">⚖️ BMI Calculator</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="standard.html">🔢 Standard Calculator</a>
+    <a class="related-link" href="scientific.html">🔬 Scientific</a>
+    <a class="related-link" href="bmi.html">⚖️ BMI Calculator</a>
+    <a class="related-link" href="age.html">🎂 Age Calculator</a>
+  </div>
+  <div class="rail-card"><h3>⚡ Quick Conversions</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>1 mile</strong> = 1.609 km<br>
+      <strong>1 kg</strong> = 2.205 lbs<br>
+      <strong>1 inch</strong> = 2.54 cm<br>
+      <strong>1 gallon</strong> = 3.785 L<br>
+      <strong>0°C</strong> = 32°F
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('unit-converter'); setCat('length', document.querySelector('.cat-tab.active')); });</script>
+<script>
+var UC = {
+  length:      { Meters:1, Feet:0.3048, Inches:0.0254, Miles:1609.34, Kilometers:1000, Centimeters:0.01, Millimeters:0.001, Yards:0.9144, 'Nautical Miles':1852 },
+  weight:      { Kilograms:1, Pounds:0.453592, Ounces:0.0283495, Grams:0.001, Tonnes:1000, Stone:6.35029, Milligrams:0.000001 },
+  temperature: { Celsius:'C', Fahrenheit:'F', Kelvin:'K' },
+  volume:      { Liters:1, Gallons:3.78541, Milliliters:0.001, Cups:0.236588, Pints:0.473176, Quarts:0.946353, 'Fluid Oz':0.0295735, Tablespoons:0.0147868, Teaspoons:0.00492892 },
+  speed:       { 'Meters/sec':1, 'km/h':0.277778, 'Miles/hr':0.44704, 'Feet/sec':0.3048, Knots:0.514444 },
+  area:        { 'Square Meters':1, 'Square Feet':0.092903, Acres:4046.86, Hectares:10000, 'Square Miles':2589988, 'Square Km':1000000, 'Square Inches':0.00064516 }
+};
+var _cat = 'length';
+
+function setCat(cat, btn) {
+  _cat = cat;
+  document.querySelectorAll('.cat-tab').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  var keys = Object.keys(UC[cat]);
+  ['uc_from','uc_to'].forEach(function(id, i) {
+    var sel = document.getElementById(id);
+    sel.innerHTML = keys.map(function(u, j) { return '<option' + (j === (i === 0 ? 0 : 1) ? ' selected' : '') + '>' + u + '</option>'; }).join('');
+  });
+  calcUnit();
+}
+
+function convertTemp(v, from, to) {
+  if (from === to) return v;
+  var c;
+  if      (from === 'Celsius')    c = v;
+  else if (from === 'Fahrenheit') c = (v - 32) * 5/9;
+  else                             c = v - 273.15;
+  if      (to === 'Celsius')    return c;
+  else if (to === 'Fahrenheit') return c * 9/5 + 32;
+  else                           return c + 273.15;
+}
+
+function swapUnits() {
+  var from = document.getElementById('uc_from');
+  var to   = document.getElementById('uc_to');
+  var tmp  = from.value;
+  from.value = to.value;
+  to.value   = tmp;
+  calcUnit();
+}
+
+function calcUnit() {
+  var cat  = _cat;
+  var from = document.getElementById('uc_from').value;
+  var to   = document.getElementById('uc_to').value;
+  var val  = +document.getElementById('uc_val').value;
+  var result;
+
+  if (cat === 'temperature') {
+    result = convertTemp(val, from, to);
+  } else {
+    result = val * UC[cat][from] / UC[cat][to];
+  }
+
+  var fmt = result.toLocaleString('en-US', { maximumFractionDigits:8 });
+  setText('r-out', fmt + ' ' + to);
+  setText('r-label', val + ' ' + from + ' =');
+  setText('r-formula', from + ' → ' + to);
+  document.getElementById('result').classList.add('show');
+
+  // Conversion table — show all units for this value
+  var units = Object.keys(UC[cat]);
+  var baseVal = cat === 'temperature' ? convertTemp(val, from, 'Celsius') : val * UC[cat][from];
+  document.getElementById('tbl-col-header').textContent = val + ' ' + from + ' in…';
+  document.getElementById('conversion-table-body').innerHTML = units.map(function(u) {
+    var conv;
+    if (cat === 'temperature') conv = convertTemp(val, from, u);
+    else conv = baseVal / UC[cat][u];
+    var isTarget = u === to;
+    return '<tr' + (isTarget ? ' class="highlight"' : '') + '>'
+      + '<td>' + u + (isTarget ? ' ◀' : '') + '</td>'
+      + '<td>' + conv.toLocaleString('en-US', {maximumFractionDigits:8}) + '</td>'
+      + '</tr>';
+  }).join('');
+}
+</script>
+</body></html>

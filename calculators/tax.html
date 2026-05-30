@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Income Tax Calculator — 2025 Federal Tax Brackets & Rates</title>
+<meta name="description" content="Estimate your 2025 US federal income tax, effective rate, marginal bracket, FICA taxes, and after-tax income. Free, accurate, updated for 2025 IRS brackets."/>
+<meta property="og:title" content="Income Tax Calculator — 2025 Federal Tax Brackets"/>
+<meta property="og:description" content="Calculate your 2025 federal income tax, effective rate, and take-home pay. Includes FICA, standard deduction, and bracket breakdown."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/calculators/tax.html"/>
+<link rel="canonical" href="https://calchub.com/calculators/tax.html"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Income Tax Calculator","description":"Estimate 2025 US federal income tax with bracket breakdown, effective rate, and take-home pay","url":"https://calchub.com/calculators/tax.html","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"What are the 2025 federal income tax brackets?","acceptedAnswer":{"@type":"Answer","text":"For 2025, the seven federal tax brackets are 10%, 12%, 22%, 24%, 32%, 35%, and 37%. The income thresholds depend on your filing status. For single filers: 10% on income up to $11,925; 12% up to $48,475; 22% up to $103,350; 24% up to $197,300; 32% up to $250,525; 35% up to $626,350; 37% above that."}},
+  {"@type":"Question","name":"What is the difference between effective and marginal tax rate?","acceptedAnswer":{"@type":"Answer","text":"Your marginal rate is the rate on your last dollar of income (your tax bracket). Your effective rate is the average rate you actually pay across all income — always lower than your marginal rate because only income above each threshold is taxed at that rate."}},
+  {"@type":"Question","name":"What is the 2025 standard deduction?","acceptedAnswer":{"@type":"Answer","text":"The 2025 standard deduction is $15,000 for single filers, $30,000 for married filing jointly, and $22,500 for head of household — increased from 2024 due to inflation adjustments."}}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.bracket-table { width:100%; border-collapse:collapse; font-size:0.82rem; margin-top:1rem; }
+.bracket-table th { background:var(--gray-900); color:#fff; padding:9px 14px; text-align:right; font-size:0.75rem; font-weight:600; letter-spacing:0.04em; }
+.bracket-table th:first-child { text-align:left; }
+.bracket-table td { padding:9px 14px; text-align:right; border-bottom:1px solid var(--gray-100); font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--gray-700); }
+.bracket-table td:first-child { text-align:left; font-family:'Inter',sans-serif; font-weight:600; color:var(--gray-800); }
+.bracket-table tr:last-child td { border-bottom:none; font-weight:700; background:var(--gray-50); }
+.bracket-table tr.active-bracket td { background:var(--blue-light); }
+.bracket-table tr.active-bracket td:first-child { color:var(--blue); }
+.bracket-pill { display:inline-block; padding:2px 8px; border-radius:10px; font-size:0.68rem; font-weight:700; margin-left:6px; background:var(--blue); color:#fff; }
+
+.fica-box { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-top:1.25rem; }
+.fica-box h4 { font-size:0.85rem; font-weight:700; color:var(--gray-700); margin-bottom:0.75rem; }
+
+.income-breakdown { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:1rem; }
+@media(max-width:500px){ .income-breakdown { grid-template-columns:1fr 1fr; } }
+.inc-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:10px 12px; text-align:center; }
+.inc-val { font-size:1rem; font-weight:700; font-family:'JetBrains Mono',monospace; }
+.inc-label { font-size:0.68rem; color:var(--gray-500); margin-top:3px; }
+</style>
+</head>
+<body>
+
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance" class="active">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span class="breadcrumb-sep">›</span>
+  <a href="../index.html#finance">Finance</a><span class="breadcrumb-sep">›</span>
+  <span>Tax Calculator</span>
+</nav>
+
+<div class="page-wrap">
+<aside class="sidebar" aria-label="Finance calculators">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link active" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 Leaderboard — Google AdSense</div></div>
+
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#fef0e0;">🧾</div>
+      <div>
+        <h1 class="calc-card-title">Income Tax Calculator</h1>
+        <p class="calc-card-desc">Estimate your 2025 US federal income tax, effective rate, bracket breakdown, FICA taxes, and take-home pay.</p>
+      </div>
+    </div>
+
+    <div style="background:var(--green-light);border:1px solid #b7dfbe;border-radius:var(--radius);padding:8px 14px;font-size:0.78rem;color:var(--green);font-weight:600;margin-bottom:1.25rem;">
+      ✓ Updated for 2025 IRS tax brackets and standard deductions
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="tx_income">Annual Gross Income</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="tx_income" class="has-prefix" value="75000" min="0"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="tx_status">Filing Status</label>
+        <select id="tx_status" onchange="updateStdDeduct()">
+          <option value="single">Single</option>
+          <option value="married">Married Filing Jointly</option>
+          <option value="hoh">Head of Household</option>
+          <option value="mfs">Married Filing Separately</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="tx_401k">401(k) / Pre-Tax Contributions</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="tx_401k" class="has-prefix" value="0" min="0"/></div>
+        <span class="form-hint">Reduces federal taxable income</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="tx_deduct">Additional Itemized Deductions</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="tx_deduct" class="has-prefix" placeholder="0" min="0"/></div>
+        <span class="form-hint">Leave blank to use standard deduction</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcTax()">Estimate Tax ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="result-box" id="result">
+
+      <div class="result-primary">
+        <span class="result-primary-label">Federal Tax Owed</span>
+        <span class="result-primary-value" id="r-owed">—</span>
+      </div>
+
+      <!-- INCOME BREAKDOWN CARDS -->
+      <div class="income-breakdown">
+        <div class="inc-card"><div class="inc-val" id="r-after" style="color:var(--green);">—</div><div class="inc-label">After-Tax Annual</div></div>
+        <div class="inc-card"><div class="inc-val" id="r-monthly" style="color:var(--blue);">—</div><div class="inc-label">Est. Monthly Take-Home</div></div>
+        <div class="inc-card"><div class="inc-val" id="r-biweekly" style="color:var(--purple);">—</div><div class="inc-label">Est. Bi-Weekly Take-Home</div></div>
+      </div>
+
+      <div class="result-row" style="margin-top:1.25rem;"><span class="result-row-label">Gross Income</span><span class="result-row-value" id="r-gross">—</span></div>
+      <div class="result-row"><span class="result-row-label">Standard / Itemized Deduction</span><span class="result-row-value" id="r-deduct">—</span></div>
+      <div class="result-row"><span class="result-row-label">Pre-Tax Deductions (401k etc.)</span><span class="result-row-value" id="r-pretax">—</span></div>
+      <div class="result-row"><span class="result-row-label">Federal Taxable Income</span><span class="result-row-value" id="r-taxable">—</span></div>
+      <div class="result-row"><span class="result-row-label">Effective Tax Rate</span><span class="result-row-value color-blue" id="r-eff">—</span></div>
+      <div class="result-row"><span class="result-row-label">Marginal Tax Bracket</span><span class="result-row-value" id="r-marginal">—</span></div>
+
+      <!-- FICA -->
+      <div class="fica-box">
+        <h4>FICA Taxes (Social Security & Medicare)</h4>
+        <div class="result-row" style="padding:5px 0;"><span class="result-row-label">Social Security (6.2% on first $176,100)</span><span class="result-row-value color-red" id="r-ss">—</span></div>
+        <div class="result-row" style="padding:5px 0;"><span class="result-row-label">Medicare (1.45% on all wages)</span><span class="result-row-value color-red" id="r-medicare">—</span></div>
+        <div class="result-row" style="padding:5px 0; border-bottom:none;"><span class="result-row-label">Total FICA</span><span class="result-row-value color-red" id="r-fica">—</span></div>
+      </div>
+
+      <div class="result-row" style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-200);"><span class="result-row-label">Total Tax Burden (Federal + FICA)</span><span class="result-row-value color-red" id="r-total-tax">—</span></div>
+      <div class="result-row"><span class="result-row-label">All-In Effective Rate</span><span class="result-row-value" id="r-allin">—</span></div>
+
+      <!-- BAR CHART -->
+      <div class="bar-chart" id="r-chart" style="margin-top:1.25rem;"></div>
+
+      <!-- TAX BRACKET BREAKDOWN -->
+      <div style="font-size:0.85rem;font-weight:700;color:var(--gray-800);margin:1.5rem 0 0.5rem;">2025 Tax Bracket Breakdown</div>
+      <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--gray-200);">
+        <table class="bracket-table">
+          <thead><tr>
+            <th style="text-align:left;">Bracket</th>
+            <th>Rate</th>
+            <th>Income Range</th>
+            <th>Tax in Bracket</th>
+          </tr></thead>
+          <tbody id="bracket-body"></tbody>
+        </table>
+      </div>
+
+    </div><!-- /result-box -->
+
+    <div class="disclaimer">⚠️ Federal income tax estimates only for the 2025 tax year. Does not include state/local taxes or tax credits (child tax credit, EITC, etc.). Self-employment adds an additional 7.65% FICA (employer share). Consult a CPA or tax professional for official advice.</div>
+
+    <div id="ai-problem-section" style="margin-top:1.5rem;"></div>
+    <div class="info-block">
+      <h2 style="font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.75rem;">2025 Federal Income Tax Brackets</h2>
+      <p>The US uses a progressive tax system — higher income is taxed at higher rates, but only the income within each bracket is taxed at that rate. Being in the 22% bracket doesn't mean you pay 22% on all your income — it means you pay 22% only on income within that bracket's range.</p>
+
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin:1.25rem 0 0.5rem;">2025 Standard Deductions</h3>
+      <p>The standard deduction for 2025 increased due to inflation adjustments: <strong>$15,000</strong> for single filers, <strong>$30,000</strong> for married filing jointly, and <strong>$22,500</strong> for head of household. Most taxpayers benefit from taking the standard deduction rather than itemizing.</p>
+
+      <div class="faq" style="margin-top:1.5rem;">
+        <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Frequently Asked Questions</h3>
+
+        <div class="faq-item">
+          <div class="faq-q">What is the difference between effective and marginal tax rate? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Your marginal rate is the tax rate applied to your last dollar of income — your "tax bracket." Your effective rate is the average rate you actually pay across all income. Because the US has a progressive tax system, your effective rate is always lower than your marginal rate. For example, a single filer earning $80,000 might be in the 22% marginal bracket but have an effective federal rate of only about 14–15%, because their income below $48,475 is taxed at 10% and 12%.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Should I itemize or take the standard deduction? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Take whichever gives you a larger deduction. The 2025 standard deduction ($15,000 single / $30,000 married) is high enough that about 90% of taxpayers benefit more from the standard deduction than itemizing. Itemizing makes sense if your deductible expenses exceed the standard amount — typically for high mortgage interest, large charitable donations, or significant medical expenses exceeding 7.5% of AGI.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What are FICA taxes? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">FICA (Federal Insurance Contributions Act) taxes fund Social Security and Medicare. Employees pay 6.2% for Social Security (on wages up to $176,100 in 2025) and 1.45% for Medicare on all wages — totaling 7.65%. Employers match this amount. Self-employed individuals pay both halves (15.3%) but can deduct the employer portion. There's also an Additional Medicare Tax of 0.9% on wages over $200,000 ($250,000 for married filing jointly).</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How does a 401(k) reduce my taxes? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Traditional 401(k) contributions are made pre-tax — they reduce your federal taxable income dollar for dollar. If you're in the 22% bracket and contribute $10,000, you save $2,200 in federal taxes that year. The 2025 401(k) contribution limit is $23,500 ($31,000 if 50+). This is one of the most powerful tax reduction strategies available to employees. Roth 401(k) contributions don't reduce taxes now but grow tax-free.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What tax credits can reduce what I owe? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Tax credits directly reduce your tax bill — more valuable than deductions. Key 2025 credits include: Child Tax Credit ($2,000 per qualifying child under 17), Earned Income Tax Credit (up to $7,830 for low-to-moderate income earners), Child and Dependent Care Credit (up to $1,050 for one child), American Opportunity Credit ($2,500 for college education), and the Saver's Credit (up to $1,000 for retirement contributions with income under certain limits). This calculator does not include credits — your actual tax may be significantly lower.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Finance Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:0.5rem;">
+        <a href="retirement.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏦 Retirement Calculator</a>
+        <a href="savings.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🐷 Savings Goal</a>
+        <a href="compound-interest.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">📈 Compound Interest</a>
+        <a href="percentage.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">% Percentage</a>
+      </div>
+    </div>
+
+  </div><!-- /calc-card -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card">
+    <h3>Related Calculators</h3>
+    <a class="related-link" href="retirement.html">🏦 Retirement Calculator</a>
+    <a class="related-link" href="savings.html">🐷 Savings Goal</a>
+    <a class="related-link" href="compound-interest.html">📈 Compound Interest</a>
+    <a class="related-link" href="roi.html">💰 ROI Calculator</a>
+  </div>
+  <div class="rail-card">
+    <h3>📋 2025 Key Figures</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>Std. Deduction (Single):</strong> $15,000<br>
+      <strong>Std. Deduction (MFJ):</strong> $30,000<br>
+      <strong>SS Wage Base:</strong> $176,100<br>
+      <strong>401(k) Limit:</strong> $23,500<br>
+      <strong>IRA Limit:</strong> $7,000
+    </p>
+  </div>
+  <div class="rail-card">
+    <h3>💡 Tax Tip</h3>
+    <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.65;">Maxing your 401(k) at the 22% bracket saves <strong>$5,170/year</strong> in federal taxes on a $23,500 contribution — guaranteed return before any market gains.</p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native / Affiliate Ad</div></div>
+</aside>
+
+</div><!-- /page-wrap -->
+
+<nav class="mobile-bottom-nav" aria-label="Quick access"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('tax'); updateStdDeduct(); });</script>
+<script>
+// 2025 IRS brackets
+var BRACKETS = {
+  single:  [[11925,.10],[48475,.12],[103350,.22],[197300,.24],[250525,.32],[626350,.35],[Infinity,.37]],
+  married: [[23850,.10],[96950,.12],[206700,.24],[394600,.24],[501050,.32],[751600,.35],[Infinity,.37]],
+  hoh:     [[17000,.10],[64850,.12],[103350,.22],[197300,.24],[250500,.32],[626350,.35],[Infinity,.37]],
+  mfs:     [[11925,.10],[48475,.12],[103350,.22],[197300,.24],[250525,.32],[375800,.35],[Infinity,.37]],
+};
+var STD = { single:15000, married:30000, hoh:22500, mfs:15000 };
+var FICA_SS_WAGE_BASE = 176100;
+
+function updateStdDeduct() {
+  var status = document.getElementById('tx_status').value;
+}
+
+function calcTax() {
+  var income  = +document.getElementById('tx_income').value  || 0;
+  var status  = document.getElementById('tx_status').value;
+  var k401    = +document.getElementById('tx_401k').value    || 0;
+  var extraD  = +document.getElementById('tx_deduct').value  || 0;
+
+  var deduction = Math.max(STD[status], extraD);
+  var taxable   = Math.max(0, income - deduction - k401);
+
+  // Federal income tax
+  var brackets = BRACKETS[status];
+  var tax = 0, prev = 0, marginal = 0;
+  var bracketRows = [];
+  for (var i = 0; i < brackets.length; i++) {
+    var b = brackets[i];
+    var limit = Math.min(b[0], Infinity);
+    if (taxable > prev) {
+      var inBracket = Math.min(taxable, b[0]) - prev;
+      var bracketTax = inBracket * b[1];
+      tax += bracketTax;
+      marginal = b[1];
+      bracketRows.push({ rate: b[1], min: prev, max: b[0], amount: inBracket, tax: bracketTax, active: inBracket > 0 });
+    } else {
+      bracketRows.push({ rate: b[1], min: prev, max: b[0], amount: 0, tax: 0, active: false });
+    }
+    prev = b[0];
+    if (prev >= taxable && taxable > 0) break;
+  }
+
+  // FICA
+  var ssBase = Math.min(income, FICA_SS_WAGE_BASE);
+  var ssTax  = ssBase * 0.062;
+  var medicareTax = income * 0.0145;
+  // Additional Medicare tax
+  var addlMedicare = 0;
+  var addlThreshold = status === 'married' ? 250000 : 200000;
+  if (income > addlThreshold) addlMedicare = (income - addlThreshold) * 0.009;
+  var ficaTotal = ssTax + medicareTax + addlMedicare;
+  var totalTax  = tax + ficaTotal;
+
+  setText('r-owed',     fmtUSD(tax));
+  setText('r-gross',    fmtUSD(income));
+  setText('r-deduct',   fmtUSD(deduction) + (extraD > STD[status] ? ' (itemized)' : ' (standard)'));
+  setText('r-pretax',   k401 > 0 ? fmtUSD(k401) : '$0.00');
+  setText('r-taxable',  fmtUSD(taxable));
+  setText('r-eff',      income > 0 ? (tax / income * 100).toFixed(1) + '%' : '0%');
+  setText('r-marginal', (marginal * 100).toFixed(0) + '% bracket');
+  setText('r-ss',       fmtUSD(ssTax));
+  setText('r-medicare', fmtUSD(medicareTax + addlMedicare));
+  setText('r-fica',     fmtUSD(ficaTotal));
+  setText('r-total-tax',fmtUSD(totalTax));
+  setText('r-allin',    income > 0 ? (totalTax / income * 100).toFixed(1) + '%' : '0%');
+
+  var afterTax = income - totalTax;
+  setText('r-after',    fmtUSD(afterTax));
+  setText('r-monthly',  fmtUSD(afterTax / 12));
+  setText('r-biweekly', fmtUSD(afterTax / 26));
+
+  // Bar chart
+  renderBarChart('r-chart', [
+    { label: 'After-Tax Income', value: afterTax, color: '#34a853', display: fmtUSD(afterTax) },
+    { label: 'Federal Tax',      value: tax,       color: '#ea4335', display: fmtUSD(tax) },
+    { label: 'FICA Taxes',       value: ficaTotal,  color: '#f4511e', display: fmtUSD(ficaTotal) },
+  ]);
+
+  // Bracket breakdown table
+  document.getElementById('bracket-body').innerHTML = bracketRows.map(function(r, i) {
+    var maxStr = r.max === Infinity ? 'and above' : fmtUSD(r.max);
+    return '<tr' + (r.active ? ' class="active-bracket"' : '') + '>'
+      + '<td>' + (r.active ? '<span class="bracket-pill">You</span> ' : '') + (r.rate*100).toFixed(0) + '%</td>'
+      + '<td>' + (r.rate*100).toFixed(0) + '%</td>'
+      + '<td>' + fmtUSD(r.min) + ' – ' + maxStr + '</td>'
+      + '<td>' + (r.active ? fmtUSD(r.tax) : '$0.00') + '</td>'
+      + '</tr>';
+  }).join('');
+
+  showResult('result');
+}
+
+function resetForm() {
+  document.getElementById('tx_income').value = 75000;
+  document.getElementById('tx_status').value = 'single';
+  document.getElementById('tx_401k').value   = 0;
+  document.getElementById('tx_deduct').value = '';
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body>
+</html>

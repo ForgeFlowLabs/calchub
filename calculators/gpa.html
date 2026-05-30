@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GPA Calculator — Weighted Grade Point Average (2025)</title>
+<meta name="description" content="Calculate your weighted GPA from letter grades and credit hours. Add courses dynamically. See your letter grade equivalent. Free."/>
+<meta property="og:title" content="GPA Calculator — Weighted Average by Credit Hours"/>
+<meta property="og:type" content="website"/>
+<link rel="canonical" href="https://calchub.com/calculators/gpa.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.gpa-row { display:flex; gap:8px; align-items:center; margin-bottom:6px; }
+.gpa-row input[type=text] { flex:2; padding:9px 11px; border:1px solid var(--gray-200); border-radius:var(--radius); font-size:0.875rem; font-family:'Inter',sans-serif; outline:none; transition:border-color 0.2s; }
+.gpa-row input[type=text]:focus { border-color:var(--blue); }
+.gpa-row select { width:90px; padding:9px 6px; border:1px solid var(--gray-200); border-radius:var(--radius); font-size:0.875rem; font-family:'Inter',sans-serif; background:var(--white); outline:none; }
+.gpa-row input[type=number] { width:72px; padding:9px 8px; border:1px solid var(--gray-200); border-radius:var(--radius); font-size:0.875rem; font-family:'Inter',sans-serif; outline:none; }
+.gpa-row .remove-btn { background:var(--red-light); color:var(--red); border:none; border-radius:var(--radius); padding:9px 11px; cursor:pointer; flex-shrink:0; }
+
+.gpa-meter { height:18px; background:var(--gray-100); border-radius:9px; overflow:hidden; margin-top:1rem; }
+.gpa-fill { height:100%; border-radius:9px; transition:width 0.6s ease; }
+.gpa-scale { display:flex; justify-content:space-between; font-size:0.68rem; color:var(--gray-400); font-family:'JetBrains Mono',monospace; margin-top:5px; }
+
+#gpa-rows-header { display:flex; gap:8px; font-size:0.72rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; padding:0 2px; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday" class="active">Everyday</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#everyday">Everyday</a><span class="breadcrumb-sep">›</span><span>GPA Calculator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link active" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e6f4ea;">🎓</div>
+      <div><h1 class="calc-card-title">GPA Calculator</h1><p class="calc-card-desc">Calculate your weighted GPA from letter grades and credit hours. Add as many courses as needed.</p></div>
+    </div>
+
+    <div id="gpa-rows-header">
+      <span style="flex:2;">Course (optional)</span>
+      <span style="width:90px;text-align:center;">Grade</span>
+      <span style="width:72px;text-align:center;">Credits</span>
+      <span style="width:36px;"></span>
+    </div>
+    <div id="gpa-rows"></div>
+
+    <button class="btn-secondary" onclick="addRow()" style="margin-top:0.5rem;width:100%;">+ Add Course</button>
+
+    <div class="btn-row" style="margin-top:1rem;">
+      <button class="btn-primary" onclick="calcGPA()">Calculate GPA ›</button>
+      <button class="btn-secondary" onclick="clearAll()">Clear All</button>
+    </div>
+
+    <div class="result-box" id="result">
+      <div class="result-primary">
+        <span class="result-primary-label">Your GPA</span>
+        <span class="result-primary-value" id="r-gpa">—</span>
+      </div>
+
+      <div class="result-chips" id="r-chips" style="margin-bottom:1rem;"></div>
+
+      <div class="gpa-meter">
+        <div class="gpa-fill" id="gpa-fill" style="width:0%;background:#34a853;"></div>
+      </div>
+      <div class="gpa-scale"><span>0.0</span><span>1.0</span><span>2.0</span><span>3.0</span><span>4.0</span></div>
+
+      <div class="result-row" style="margin-top:1.25rem;"><span class="result-row-label">Letter Grade Equivalent</span><span class="result-row-value" id="r-letter">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total Credit Hours</span><span class="result-row-value" id="r-credits">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total Grade Points</span><span class="result-row-value" id="r-points">—</span></div>
+    </div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.5rem;">How GPA is Calculated</h2>
+      <p>GPA (Grade Point Average) is calculated by multiplying each course's grade points by its credit hours, summing all products, then dividing by total credit hours. This is the <strong>weighted GPA</strong> — heavier courses count more. Formula: GPA = Σ(Grade Points × Credits) / Σ(Credits).</p>
+      <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--gray-200);margin-top:1rem;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.8rem;">
+          <thead><tr style="background:var(--gray-900);color:#fff;"><th style="padding:7px 12px;text-align:left;font-weight:600;">Letter</th><th style="padding:7px 12px;font-weight:600;">Points</th><th style="padding:7px 12px;text-align:left;font-weight:600;">Letter</th><th style="padding:7px 12px;font-weight:600;">Points</th></tr></thead>
+          <tbody>
+            <tr><td style="padding:7px 12px;border-bottom:1px solid var(--gray-100);">A+ / A</td><td style="padding:7px 12px;font-family:monospace;border-bottom:1px solid var(--gray-100);">4.0</td><td style="padding:7px 12px;border-bottom:1px solid var(--gray-100);">C+</td><td style="padding:7px 12px;font-family:monospace;border-bottom:1px solid var(--gray-100);">2.3</td></tr>
+            <tr><td style="padding:7px 12px;border-bottom:1px solid var(--gray-100);">A-</td><td style="padding:7px 12px;font-family:monospace;border-bottom:1px solid var(--gray-100);">3.7</td><td style="padding:7px 12px;border-bottom:1px solid var(--gray-100);">C</td><td style="padding:7px 12px;font-family:monospace;border-bottom:1px solid var(--gray-100);">2.0</td></tr>
+            <tr><td style="padding:7px 12px;border-bottom:1px solid var(--gray-100);">B+</td><td style="padding:7px 12px;font-family:monospace;border-bottom:1px solid var(--gray-100);">3.3</td><td style="padding:7px 12px;border-bottom:1px solid var(--gray-100);">C-</td><td style="padding:7px 12px;font-family:monospace;border-bottom:1px solid var(--gray-100);">1.7</td></tr>
+            <tr><td style="padding:7px 12px;border-bottom:1px solid var(--gray-100);">B</td><td style="padding:7px 12px;font-family:monospace;border-bottom:1px solid var(--gray-100);">3.0</td><td style="padding:7px 12px;border-bottom:1px solid var(--gray-100);">D</td><td style="padding:7px 12px;font-family:monospace;border-bottom:1px solid var(--gray-100);">1.0</td></tr>
+            <tr><td style="padding:7px 12px;">B-</td><td style="padding:7px 12px;font-family:monospace;">2.7</td><td style="padding:7px 12px;">F</td><td style="padding:7px 12px;font-family:monospace;">0.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="percentage.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">% Percentage Calculator</a>
+        <a href="age.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🎂 Age Calculator</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="percentage.html">% Percentage Calculator</a>
+    <a class="related-link" href="age.html">🎂 Age Calculator</a>
+    <a class="related-link" href="standard.html">🔢 Standard Calculator</a>
+  </div>
+  <div class="rail-card"><h3>🎓 GPA Scale</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>4.0</strong> — A (Excellent)<br>
+      <strong>3.0</strong> — B (Good)<br>
+      <strong>2.0</strong> — C (Average)<br>
+      <strong>1.0</strong> — D (Below avg)<br>
+      <strong>0.0</strong> — F (Failing)<br><br>
+      Most graduate programs require <strong>3.0+</strong>
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){
+  trackCalcView('gpa');
+  addRow('Math 101','A',3); addRow('English Comp','B+',3); addRow('History','A-',3);
+});</script>
+<script>
+var GRADES = {'A+':4.0,'A':4.0,'A-':3.7,'B+':3.3,'B':3.0,'B-':2.7,'C+':2.3,'C':2.0,'C-':1.7,'D+':1.3,'D':1.0,'D-':0.7,'F':0.0};
+var gradeOpts = Object.keys(GRADES).map(function(g){ return '<option value="'+g+'">'+g+'</option>'; }).join('');
+
+function addRow(name, grade, credits) {
+  var row = document.createElement('div');
+  row.className = 'gpa-row';
+  row.innerHTML = '<input type="text" placeholder="Course name (optional)" value="' + (name||'') + '"/>'
+    + '<select>' + gradeOpts + '</select>'
+    + '<input type="number" value="' + (credits||3) + '" min="0.5" max="6" step="0.5" title="Credit hours"/>'
+    + '<button class="remove-btn" onclick="this.parentElement.remove()" title="Remove">✕</button>';
+  if (grade) row.querySelector('select').value = grade;
+  document.getElementById('gpa-rows').appendChild(row);
+}
+
+function calcGPA() {
+  var rows = document.getElementById('gpa-rows').children;
+  if (!rows.length) { alert('Please add at least one course.'); return; }
+  var totalPts = 0, totalCreds = 0;
+  Array.from(rows).forEach(function(row) {
+    var grade   = row.querySelector('select').value;
+    var credits = +row.querySelectorAll('input')[1].value || 0;
+    totalPts   += GRADES[grade] * credits;
+    totalCreds += credits;
+  });
+  if (!totalCreds) { alert('Total credits must be greater than 0.'); return; }
+  var gpa = totalPts / totalCreds;
+  var letter = gpa>=3.7?'A':gpa>=3.3?'A-':gpa>=3.0?'B+':gpa>=2.7?'B':gpa>=2.3?'B-':gpa>=2.0?'C+':gpa>=1.7?'C':gpa>=1.3?'C-':gpa>=1.0?'D':'F';
+  var chipClass = gpa>=3.5?'chip-green':gpa>=3.0?'chip-blue':gpa>=2.0?'chip-yellow':'chip-red';
+  var standing = gpa>=3.7?'Summa Cum Laude territory':gpa>=3.5?'Dean\'s List range':gpa>=3.0?'Good Standing':gpa>=2.0?'Satisfactory':'At Risk';
+
+  setText('r-gpa',     gpa.toFixed(3));
+  setText('r-letter',  letter + ' (' + standing + ')');
+  setText('r-credits', totalCreds + ' credit hours');
+  setText('r-points',  totalPts.toFixed(2) + ' quality points');
+  document.getElementById('r-chips').innerHTML = '<span class="chip ' + chipClass + '">' + letter + ' — ' + gpa.toFixed(2) + ' GPA</span>';
+
+  // Meter
+  var fillPct = (gpa / 4.0 * 100).toFixed(1);
+  var fillColor = gpa >= 3.5 ? '#34a853' : gpa >= 3.0 ? '#1a73e8' : gpa >= 2.0 ? '#fbbc04' : '#ea4335';
+  document.getElementById('gpa-fill').style.width = fillPct + '%';
+  document.getElementById('gpa-fill').style.background = fillColor;
+
+  showResult('result');
+}
+
+function clearAll() {
+  document.getElementById('gpa-rows').innerHTML = '';
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body></html>

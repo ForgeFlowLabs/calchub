@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Inflation Calculator — Purchasing Power & CPI (2025)</title>
+<meta name="description" content="Calculate the effect of inflation on purchasing power. Find what $100 in 1990 is worth today, or future value of money. Free."/>
+<link rel="canonical" href="https://calchub.io/calculators/inflation.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance" class="active">Finance</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#finance">Finance</a><span class="breadcrumb-sep">›</span><span>Inflation Calculator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link active" href="inflation.html"><span class="sidebar-icon">📉</span>Inflation</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+    <a class="sidebar-link" href="salary.html"><span class="sidebar-icon">💵</span>Salary</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#fef0e0;">📉</div>
+      <div><h1 class="calc-card-title">Inflation Calculator</h1><p class="calc-card-desc">Calculate the effect of inflation on purchasing power — past or future. See what your money is really worth.</p></div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Amount</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="inf_amount" class="has-prefix" value="100" min="0" oninput="calcInflation()"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Annual Inflation Rate</label>
+        <div class="input-wrap"><input type="number" id="inf_rate" class="has-suffix" value="3" step="0.1" min="0" oninput="calcInflation()"/><span class="input-suffix">%</span></div>
+        <span class="form-hint">US historical avg: ~3% · Recent 2022–24: ~4–8%</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Start Year</label>
+        <input type="number" id="inf_start" value="2000" min="1900" max="2100" oninput="calcInflation()"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">End Year</label>
+        <input type="number" id="inf_end" value="2025" min="1900" max="2100" oninput="calcInflation()"/>
+      </div>
+    </div>
+
+    <div class="result-box show" id="result">
+      <div class="result-primary">
+        <span class="result-primary-label" id="r-label">Equivalent Value in End Year</span>
+        <span class="result-primary-value" id="r-equiv">—</span>
+      </div>
+      <div class="result-row"><span class="result-row-label">Original amount</span><span class="result-row-value" id="r-orig">—</span></div>
+      <div class="result-row"><span class="result-row-label">Purchasing power lost</span><span class="result-row-value color-red" id="r-lost">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total inflation over period</span><span class="result-row-value" id="r-total-inf">—</span></div>
+      <div class="result-row"><span class="result-row-label">Years</span><span class="result-row-value" id="r-years">—</span></div>
+
+      <div class="bar-chart" id="r-chart" style="margin-top:1.25rem;"></div>
+
+      <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin:1.25rem 0 0.5rem;">Value Over Time</div>
+      <div id="decade-table" style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--gray-200);"></div>
+    </div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Inflation Calculator</h2>
+      <p style="color:var(--gray-700);line-height:1.8;">Inflation erodes purchasing power over time. $100 in 2000 required about $177 in 2025 to buy the same goods — a 77% increase. This calculator uses compound inflation to show the real value of money across any time period and rate.</p>
+      <div class="faq" style="margin-top:1rem;">
+        <div class="faq-item">
+          <div class="faq-q">What is the average US inflation rate? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">The Federal Reserve targets 2% annual inflation. The historical average since 1913 is approximately 3.1% per year. The period 2021–2023 saw unusually high inflation (7–9%), driven by pandemic supply chain disruptions and stimulus spending. Use 3% for long-term planning and the current rate for near-term projections.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How does inflation affect savings? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">If your savings earn less than the inflation rate, you're losing purchasing power in real terms. A savings account earning 1% while inflation runs at 3% means you're effectively losing 2% per year. This is why financial advisors recommend investing savings rather than holding cash long-term.</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="compound-interest.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">📈 Compound Interest</a>
+        <a href="retirement.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏦 Retirement</a>
+        <a href="savings.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🐷 Savings Goal</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="compound-interest.html">📈 Compound Interest</a>
+    <a class="related-link" href="retirement.html">🏦 Retirement</a>
+    <a class="related-link" href="savings.html">🐷 Savings Goal</a>
+    <a class="related-link" href="tax.html">🧾 Tax Calculator</a>
+  </div>
+  <div class="rail-card"><h3>📉 Historical Rates</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>Fed target:</strong> 2%<br>
+      <strong>US avg (100yr):</strong> ~3.1%<br>
+      <strong>2022 peak:</strong> 9.1%<br>
+      <strong>2024:</strong> ~3.2%<br>
+      <strong>2025:</strong> ~2.8%
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('inflation'); calcInflation(); });</script>
+<script>
+function calcInflation(){
+  var amount = +document.getElementById('inf_amount').value || 0;
+  var rate   = +document.getElementById('inf_rate').value   / 100 || 0;
+  var start  = +document.getElementById('inf_start').value  || 2000;
+  var end    = +document.getElementById('inf_end').value    || 2025;
+  if(!amount) return;
+  var years  = end - start;
+  var direction = end >= start ? 1 : -1;
+  var absYears = Math.abs(years);
+  var factor = Math.pow(1 + rate, absYears);
+  var equiv  = direction > 0 ? amount * factor : amount / factor;
+  var lost   = direction > 0 ? equiv - amount  : amount - equiv;
+  var totalInf = (factor - 1) * 100;
+  setText('r-label',     direction>0 ? 'Value in ' + end + ' (equivalent purchasing power)' : 'Original value in ' + end + ' dollars');
+  setText('r-equiv',     fmtUSD(equiv));
+  setText('r-orig',      fmtUSD(amount) + ' in ' + start);
+  setText('r-lost',      fmtUSD(Math.abs(lost)) + ' ' + (direction>0?'lost to inflation':'gained'));
+  setText('r-total-inf', totalInf.toFixed(1) + '% over ' + absYears + ' years');
+  setText('r-years',     absYears + ' years');
+  renderDonutChart('r-chart',[
+    {label:'Original Value',  value:amount,         color:'#2563eb', display:fmtUSD(amount)},
+    {label:'Inflation Added', value:Math.abs(lost), color:'#dc2626', display:fmtUSD(Math.abs(lost))},
+  ], 'Equiv.', fmtUSD(equiv));
+  // Decade table
+  var rows = '';
+  var step = absYears <= 20 ? 1 : absYears <= 50 ? 5 : 10;
+  for(var i=0; i<=absYears; i+=step){
+    var yr = start + (direction>0?i:-i);
+    var val = direction>0 ? amount * Math.pow(1+rate,i) : amount / Math.pow(1+rate,i);
+    var isCurrent = i===absYears;
+    rows += '<tr' + (isCurrent?' style="background:var(--blue-light);font-weight:700;"':'') + '><td style="padding:8px 12px;border-bottom:1px solid var(--gray-100);">' + yr + '</td><td style="padding:8px 12px;border-bottom:1px solid var(--gray-100);text-align:right;font-family:monospace;">' + fmtUSD(val) + '</td></tr>';
+  }
+  document.getElementById('decade-table').innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:0.82rem;"><thead><tr style="background:var(--gray-900);color:#fff;"><th style="padding:8px 12px;text-align:left;">Year</th><th style="padding:8px 12px;text-align:right;">Equivalent Value</th></tr></thead><tbody>' + rows + '</tbody></table>';
+}
+</script>
+</body></html>

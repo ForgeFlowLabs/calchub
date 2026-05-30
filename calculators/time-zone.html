@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Time Zone Converter — World Clock & Time Difference (2025)</title>
+<meta name="description" content="Convert time between any time zones instantly. Compare up to 5 cities at once. Free world clock."/>
+<link rel="canonical" href="https://calchub.io/calculators/time-zone.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.tz-card{background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.tz-card.primary{border-color:var(--blue);background:var(--blue-light);}
+.tz-flag{font-size:1.6rem;flex-shrink:0;}
+.tz-city{font-size:0.78rem;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.06em;}
+.tz-time{font-size:1.5rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--gray-900);}
+.tz-date{font-size:0.72rem;color:var(--gray-400);margin-top:2px;}
+.tz-offset{font-size:0.75rem;color:var(--blue);font-weight:600;margin-left:auto;}
+.tz-diff{font-size:0.72rem;color:var(--gray-500);font-weight:600;}
+.remove-tz{background:var(--gray-100);border:none;border-radius:var(--radius);padding:4px 8px;cursor:pointer;color:var(--gray-500);font-size:0.75rem;margin-left:auto;}
+.remove-tz:hover{background:var(--red-light);color:var(--red);}
+.world-clock-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:1rem;}
+@media(max-width:500px){.world-clock-grid{grid-template-columns:1fr;}}
+.wc-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:10px 14px;}
+.wc-city{font-size:0.7rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.06em;}
+.wc-time{font-size:1.1rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--gray-900);margin-top:2px;}
+.wc-date{font-size:0.68rem;color:var(--gray-400);}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#everyday" class="active">Everyday</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#everyday">Everyday</a><span class="breadcrumb-sep">›</span><span>Time Zone Converter</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link active" href="time-zone.html"><span class="sidebar-icon">🌍</span>Time Zone</a>
+    <a class="sidebar-link" href="date-difference.html"><span class="sidebar-icon">📅</span>Date Difference</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e8f0fe;">🌍</div>
+      <div><h1 class="calc-card-title">Time Zone Converter</h1><p class="calc-card-desc">Convert time between any cities and time zones. Compare up to 5 locations at once. Updates live.</p></div>
+    </div>
+
+    <!-- SOURCE TIME -->
+    <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin-bottom:0.75rem;">Convert From</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Date & Time</label>
+        <input type="datetime-local" id="tz_datetime"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Source Time Zone</label>
+        <select id="tz_from" onchange="convertTZ()"></select>
+      </div>
+    </div>
+
+    <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin:1.25rem 0 0.75rem;">Convert To</div>
+    <div id="tz-targets"></div>
+    <button class="btn-secondary" onclick="addTarget()" style="width:100%;margin-bottom:1.25rem;">+ Add Time Zone</button>
+
+    <div id="tz-results" style="margin-top:0.5rem;"></div>
+
+    <hr style="border:none;border-top:1px solid var(--gray-100);margin:1.5rem 0;"/>
+
+    <!-- WORLD CLOCK -->
+    <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin-bottom:0.75rem;">🌐 Live World Clock</div>
+    <div class="world-clock-grid" id="world-clock"></div>
+
+    <div class="info-block" style="margin-top:1.5rem;">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Time Zone Converter</h2>
+      <p style="color:var(--gray-700);line-height:1.8;">Convert any time to any time zone instantly. Useful for scheduling international calls, meetings, or travel. All time zone data uses your browser's built-in Intl API for accurate DST (daylight saving time) handling.</p>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="date-difference.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">📅 Date Difference</a>
+        <a href="age.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🎂 Age Calculator</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="date-difference.html">📅 Date Difference</a>
+    <a class="related-link" href="age.html">🎂 Age Calculator</a>
+    <a class="related-link" href="unit-converter.html">💱 Unit Converter</a>
+  </div>
+  <div class="rail-card"><h3>🌍 UTC Offsets</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>New York:</strong> UTC-5/4<br>
+      <strong>London:</strong> UTC+0/1<br>
+      <strong>Paris:</strong> UTC+1/2<br>
+      <strong>Dubai:</strong> UTC+4<br>
+      <strong>Tokyo:</strong> UTC+9<br>
+      <strong>Sydney:</strong> UTC+10/11
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){
+  trackCalcView('time-zone');
+  populateZones();
+  setNow();
+  addTarget('America/Los_Angeles');
+  addTarget('Europe/London');
+  addTarget('Asia/Tokyo');
+  convertTZ();
+  setInterval(updateWorldClock,1000);
+  updateWorldClock();
+});</script>
+<script>
+var TZ_LIST = [
+  {label:'New York (ET)',    tz:'America/New_York',     flag:'🇺🇸'},
+  {label:'Chicago (CT)',     tz:'America/Chicago',      flag:'🇺🇸'},
+  {label:'Denver (MT)',      tz:'America/Denver',       flag:'🇺🇸'},
+  {label:'Los Angeles (PT)', tz:'America/Los_Angeles',  flag:'🇺🇸'},
+  {label:'London (GMT/BST)', tz:'Europe/London',        flag:'🇬🇧'},
+  {label:'Paris (CET/CEST)', tz:'Europe/Paris',         flag:'🇫🇷'},
+  {label:'Berlin',           tz:'Europe/Berlin',        flag:'🇩🇪'},
+  {label:'Moscow',           tz:'Europe/Moscow',        flag:'🇷🇺'},
+  {label:'Dubai',            tz:'Asia/Dubai',           flag:'🇦🇪'},
+  {label:'Mumbai',           tz:'Asia/Kolkata',         flag:'🇮🇳'},
+  {label:'Singapore',        tz:'Asia/Singapore',       flag:'🇸🇬'},
+  {label:'Hong Kong',        tz:'Asia/Hong_Kong',       flag:'🇭🇰'},
+  {label:'Tokyo',            tz:'Asia/Tokyo',           flag:'🇯🇵'},
+  {label:'Sydney',           tz:'Australia/Sydney',     flag:'🇦🇺'},
+  {label:'Auckland',         tz:'Pacific/Auckland',     flag:'🇳🇿'},
+  {label:'São Paulo',        tz:'America/Sao_Paulo',    flag:'🇧🇷'},
+  {label:'Mexico City',      tz:'America/Mexico_City',  flag:'🇲🇽'},
+  {label:'Toronto',          tz:'America/Toronto',      flag:'🇨🇦'},
+  {label:'UTC',              tz:'UTC',                  flag:'🌐'},
+];
+var WORLD_CLOCK = ['America/New_York','Europe/London','Asia/Dubai','Asia/Tokyo','Australia/Sydney','America/Los_Angeles'];
+
+function populateZones(){
+  var sel = document.getElementById('tz_from');
+  TZ_LIST.forEach(function(z){ sel.innerHTML += '<option value="'+z.tz+'">'+z.flag+' '+z.label+'</option>'; });
+  // Default to user's timezone if possible
+  try{ sel.value = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch(e){}
+}
+
+function setNow(){
+  var now = new Date();
+  var local = new Date(now.getTime() - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
+  document.getElementById('tz_datetime').value = local;
+}
+
+var _targets = [];
+var _targetId = 0;
+function addTarget(defaultTZ){
+  var id = 'target_' + (_targetId++);
+  var wrap = document.createElement('div');
+  wrap.id = id;
+  wrap.style.display = 'flex'; wrap.style.gap = '8px'; wrap.style.marginBottom = '8px'; wrap.style.alignItems = 'center';
+  var sel = document.createElement('select');
+  sel.style.flex = '1';
+  sel.onchange = convertTZ;
+  TZ_LIST.forEach(function(z){ sel.innerHTML += '<option value="'+z.tz+'">'+z.flag+' '+z.label+'</option>'; });
+  if(defaultTZ) sel.value = defaultTZ;
+  var rm = document.createElement('button');
+  rm.className = 'remove-tz'; rm.textContent = '✕';
+  rm.onclick = function(){ document.getElementById(id).remove(); convertTZ(); };
+  wrap.appendChild(sel);
+  wrap.appendChild(rm);
+  document.getElementById('tz-targets').appendChild(wrap);
+  _targets.push(id);
+  convertTZ();
+}
+
+function convertTZ(){
+  var dtVal = document.getElementById('tz_datetime').value;
+  if(!dtVal) return;
+  var fromTZ = document.getElementById('tz_from').value;
+  // Parse as source timezone
+  var dt = new Date(dtVal);
+  var html = '';
+  var targets = Array.from(document.getElementById('tz-targets').querySelectorAll('select'));
+  targets.forEach(function(sel, i){
+    var tz = sel.value;
+    var tzInfo = TZ_LIST.find(function(z){ return z.tz===tz; }) || {flag:'🌐',label:tz};
+    var timeStr = dt.toLocaleTimeString('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
+    var dateStr = dt.toLocaleDateString('en-US',{timeZone:tz,weekday:'short',month:'short',day:'numeric',year:'numeric'});
+    var offsetStr = '';
+    try{ var fmt=new Intl.DateTimeFormat('en',{timeZone:tz,timeZoneName:'short'}); offsetStr=fmt.format(dt).split(', ').pop(); }catch(e){}
+    html += '<div class="tz-card'+(i===0?' primary':'')+'"><div class="tz-flag">'+tzInfo.flag+'</div>'
+      + '<div style="flex:1;"><div class="tz-city">'+tzInfo.label+'</div><div class="tz-time">'+timeStr+'</div><div class="tz-date">'+dateStr+'</div></div>'
+      + '<div style="text-align:right;"><div class="tz-offset">'+offsetStr+'</div></div></div>';
+  });
+  document.getElementById('tz-results').innerHTML = html || '<p style="color:var(--gray-400);font-size:0.85rem;">Add a time zone above to see conversions.</p>';
+}
+
+function updateWorldClock(){
+  var now = new Date();
+  document.getElementById('world-clock').innerHTML = WORLD_CLOCK.map(function(tz){
+    var info = TZ_LIST.find(function(z){return z.tz===tz;}) || {flag:'🌐',label:tz};
+    var t = now.toLocaleTimeString('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
+    var d = now.toLocaleDateString('en-US',{timeZone:tz,month:'short',day:'numeric'});
+    return '<div class="wc-card"><div class="wc-city">'+info.flag+' '+info.label+'</div><div class="wc-time">'+t+'</div><div class="wc-date">'+d+'</div></div>';
+  }).join('');
+}
+</script>
+</body></html>

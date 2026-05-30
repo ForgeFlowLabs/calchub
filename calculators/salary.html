@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Salary Calculator — Hourly to Annual, Monthly & Biweekly (2025)</title>
+<meta name="description" content="Convert salary between hourly, daily, weekly, biweekly, monthly, and annual. See take-home pay after taxes. Free."/>
+<link rel="canonical" href="https://calchub.io/calculators/salary.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.salary-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:1.25rem; }
+@media(max-width:500px){ .salary-grid { grid-template-columns:1fr; } }
+.salary-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:1rem; }
+.salary-card.primary { border-color:var(--blue); background:var(--blue-light); }
+.sc-period { font-size:0.72rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
+.sc-gross { font-size:1.2rem; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--gray-900); }
+.sc-net { font-size:0.85rem; font-weight:600; color:var(--green); margin-top:3px; }
+.input-type-tabs { display:flex; gap:4px; margin-bottom:1.25rem; flex-wrap:wrap; }
+.input-tab { padding:7px 16px; border-radius:18px; border:1px solid var(--gray-200); background:var(--white); color:var(--gray-600); font-size:0.82rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.input-tab.active { background:var(--blue); border-color:var(--blue); color:#fff; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance" class="active">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#finance">Finance</a><span class="breadcrumb-sep">›</span><span>Salary Calculator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link active" href="salary.html"><span class="sidebar-icon">💵</span>Salary</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e6f4ea;">💵</div>
+      <div><h1 class="calc-card-title">Salary Calculator</h1><p class="calc-card-desc">Convert your salary between hourly, daily, weekly, biweekly, monthly, and annual. See estimated take-home pay.</p></div>
+    </div>
+
+    <div class="input-type-tabs">
+      <button class="input-tab" onclick="setInputType('hourly',this)">Hourly</button>
+      <button class="input-tab" onclick="setInputType('daily',this)">Daily</button>
+      <button class="input-tab" onclick="setInputType('weekly',this)">Weekly</button>
+      <button class="input-tab active" onclick="setInputType('annual',this)">Annual</button>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" id="salary-input-label">Annual Salary</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="sal_amount" class="has-prefix" value="75000" min="0" oninput="calcSalary()"/></div>
+      </div>
+      <div class="form-group" id="grp-hours">
+        <label class="form-label">Hours per Week</label>
+        <div class="input-wrap"><input type="number" id="sal_hours" class="has-suffix" value="40" min="1" max="168" oninput="calcSalary()"/><span class="input-suffix">hrs</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Weeks per Year</label>
+        <div class="input-wrap"><input type="number" id="sal_weeks" class="has-suffix" value="52" min="1" max="52" oninput="calcSalary()"/><span class="input-suffix">wks</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tax Rate (est.)</label>
+        <div class="input-wrap"><input type="number" id="sal_tax" class="has-suffix" value="25" step="1" min="0" max="60" oninput="calcSalary()"/><span class="input-suffix">%</span></div>
+        <span class="form-hint">Federal + state combined est.</span>
+      </div>
+    </div>
+
+    <div class="result-box show" id="result">
+      <div class="result-primary">
+        <span class="result-primary-label">Annual Salary</span>
+        <span class="result-primary-value" id="r-annual">—</span>
+      </div>
+      <div class="salary-grid" id="salary-grid"></div>
+    </div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Salary Converter</h2>
+      <p style="color:var(--gray-700);line-height:1.8;">Convert any salary to any pay period. The take-home estimate deducts your specified tax rate — for a more detailed breakdown including FICA and brackets, use our <a href="tax.html" style="color:var(--blue);">Tax Calculator</a>.</p>
+      <div class="faq" style="margin-top:1rem;">
+        <div class="faq-item">
+          <div class="faq-q">How do I convert hourly to annual salary? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Multiply hourly rate × hours per week × weeks per year. For a standard 40-hour week, 52 weeks: hourly × 2,080 = annual salary. Example: $25/hr × 2,080 = $52,000/year.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What is a biweekly paycheck? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Biweekly means paid every two weeks — 26 paychecks per year. Biweekly gross = annual salary ÷ 26. Most salaried employees in the US are paid biweekly or semi-monthly (twice per month = 24 paychecks). Note: 2 months per year have 3 biweekly paychecks.</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="tax.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🧾 Tax Calculator</a>
+        <a href="retirement.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏦 Retirement</a>
+        <a href="savings.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🐷 Savings Goal</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="tax.html">🧾 Tax Calculator</a>
+    <a class="related-link" href="retirement.html">🏦 Retirement</a>
+    <a class="related-link" href="savings.html">🐷 Savings Goal</a>
+  </div>
+  <div class="rail-card"><h3>💡 Salary Rules of Thumb</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      Hourly × <strong>2,080</strong> = annual<br>
+      Annual ÷ <strong>26</strong> = biweekly<br>
+      Annual ÷ <strong>12</strong> = monthly<br>
+      Annual ÷ <strong>52</strong> = weekly<br>
+      Annual ÷ <strong>2,080</strong> = hourly
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('salary'); calcSalary(); });</script>
+<script>
+var _inputType = 'annual';
+var LABELS = { hourly:'Hourly Rate', daily:'Daily Rate', weekly:'Weekly Salary', annual:'Annual Salary' };
+
+function setInputType(t, btn) {
+  _inputType = t;
+  document.querySelectorAll('.input-tab').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('salary-input-label').textContent = LABELS[t];
+  calcSalary();
+}
+
+function calcSalary() {
+  var amt   = +document.getElementById('sal_amount').value || 0;
+  var hours = +document.getElementById('sal_hours').value  || 40;
+  var weeks = +document.getElementById('sal_weeks').value  || 52;
+  var tax   = +document.getElementById('sal_tax').value    / 100 || 0;
+  var hoursYear = hours * weeks;
+  var annual;
+  if      (_inputType === 'hourly') annual = amt * hoursYear;
+  else if (_inputType === 'daily')  annual = amt * 5 * weeks;
+  else if (_inputType === 'weekly') annual = amt * weeks;
+  else                               annual = amt;
+
+  var net = annual * (1 - tax);
+  setText('r-annual', fmtUSD(annual) + '/year');
+
+  var periods = [
+    { label:'Hourly',     gross: hoursYear > 0 ? annual/hoursYear : 0,  net: hoursYear > 0 ? net/hoursYear : 0 },
+    { label:'Daily',      gross: annual/(5*weeks),   net: net/(5*weeks) },
+    { label:'Weekly',     gross: annual/weeks,       net: net/weeks },
+    { label:'Biweekly',   gross: annual/26,          net: net/26 },
+    { label:'Semi-Monthly',gross: annual/24,         net: net/24 },
+    { label:'Monthly',    gross: annual/12,          net: net/12 },
+    { label:'Quarterly',  gross: annual/4,           net: net/4 },
+    { label:'Annual',     gross: annual,             net: net },
+  ];
+
+  document.getElementById('salary-grid').innerHTML = periods.map(function(p, i) {
+    var isPrimary = (_inputType === 'hourly' && i===0) || (_inputType === 'annual' && i===7);
+    return '<div class="salary-card' + (isPrimary?' primary':'') + '">'
+      + '<div class="sc-period">' + p.label + '</div>'
+      + '<div class="sc-gross">' + fmtUSD(p.gross) + '</div>'
+      + '<div class="sc-net">~' + fmtUSD(p.net) + ' take-home</div>'
+      + '</div>';
+  }).join('');
+}
+</script>
+</body></html>

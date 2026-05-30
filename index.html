@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CalcHub — Free Online Calculators for Finance, Health & Math</title>
+<meta name="description" content="33 free online calculators — mortgage, BMI, compound interest, tax, tip, loans, retirement and more. No sign-up, always free, updated for 2026."/>
+<meta name="keywords" content="free calculator, mortgage calculator, BMI calculator, compound interest, loan calculator, tax calculator, tip calculator, percentage calculator"/>
+<meta property="og:title" content="CalcHub — Free Online Calculators"/>
+<meta property="og:description" content="33 free, accurate calculators for finance, health, math and everyday decisions. No account required."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/"/>
+<link rel="canonical" href="https://calchub.com/"/>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"CalcHub",
+  "description":"Free online calculators for finance, health, math and everyday use",
+  "url":"https://calchub.com",
+  "potentialAction":{
+    "@type":"SearchAction",
+    "target":"https://calchub.com/?q={search_term_string}",
+    "query-input":"required name=search_term_string"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"ItemList",
+  "name":"Free Online Calculators",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Mortgage Calculator","url":"https://calchub.com/calculators/mortgage.html"},
+    {"@type":"ListItem","position":2,"name":"Compound Interest Calculator","url":"https://calchub.com/calculators/compound-interest.html"},
+    {"@type":"ListItem","position":3,"name":"BMI Calculator","url":"https://calchub.com/calculators/bmi.html"},
+    {"@type":"ListItem","position":4,"name":"Loan Calculator","url":"https://calchub.com/calculators/loan.html"},
+    {"@type":"ListItem","position":5,"name":"Tax Calculator","url":"https://calchub.com/calculators/tax.html"}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.home-wrap {
+  max-width: 1280px; margin: 0 auto; padding: 1.5rem;
+  display: grid; grid-template-columns: 220px 1fr; gap: 1.5rem;
+  align-items: start;
+}
+@media(max-width:900px){ .home-wrap { grid-template-columns:1fr; padding:1rem; } .home-sidebar { display:none; } }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────────── -->
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">&#8721;</div>
+      <div class="logo-name">Calc<span>Hub</span></div>
+    </a>
+    <div class="header-search">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="header-search-input" placeholder="Search 29 calculators… (press /)" autocomplete="off" aria-label="Search calculators"/>
+      <div class="search-dropdown" id="header-search-dropdown" role="listbox"></div>
+    </div>
+    <nav class="header-nav" aria-label="Calculator categories">
+      <a href="#finance">Finance</a>
+      <a href="#health">Health</a>
+      <a href="#math">Math</a>
+      <a href="#everyday">Everyday</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── TRUST BAR ──────────────────────────────────────────── -->
+<div class="trust-bar">
+  <div class="trust-item">✓ <strong>33 free calculators</strong></div>
+  <div class="trust-item">✓ No account required</div>
+  <div class="trust-item">✓ No ads on results</div>
+  <div class="trust-item">✓ Updated for 2026</div>
+  <div class="trust-item">✓ Mobile-friendly</div>
+</div>
+
+<div class="home-wrap">
+
+  <!-- ── SIDEBAR ──────────────────────────────────────────── -->
+  <aside class="home-sidebar sidebar" aria-label="All calculators">
+    <div class="sidebar-section">
+      <div class="sidebar-cat">Finance</div>
+      <a class="sidebar-link" href="calculators/mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+      <a class="sidebar-link" href="calculators/compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+      <a class="sidebar-link" href="calculators/loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+      <a class="sidebar-link" href="calculators/retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+      <a class="sidebar-link" href="calculators/roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+      <a class="sidebar-link" href="calculators/tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+      <a class="sidebar-link" href="calculators/savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-cat">Health</div>
+      <a class="sidebar-link" href="calculators/bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+      <a class="sidebar-link" href="calculators/calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+      <a class="sidebar-link" href="calculators/body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+      <a class="sidebar-link" href="calculators/pregnancy.html"><span class="sidebar-icon">🤱</span>Due Date</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-cat">Math</div>
+      <a class="sidebar-link" href="calculators/standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+      <a class="sidebar-link" href="calculators/scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+      <a class="sidebar-link" href="calculators/percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-cat">Everyday</div>
+      <a class="sidebar-link" href="calculators/tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+      <a class="sidebar-link" href="calculators/unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+      <a class="sidebar-link" href="calculators/age.html"><span class="sidebar-icon">🎂</span>Age</a>
+      <a class="sidebar-link" href="calculators/gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+      <a class="sidebar-link" href="calculators/discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+    </div>
+    <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+  </aside>
+
+  <!-- ── MAIN ─────────────────────────────────────────────── -->
+  <main>
+
+    <!-- TOP AD -->
+    <div class="ad-zone" style="margin-bottom:1.25rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-slot ad-728">728×90 Leaderboard — Google AdSense</div>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero" style="padding:2rem 2rem 1.75rem;">
+      <div class="hero-badge">✓ Free &nbsp;·&nbsp; No sign-up &nbsp;·&nbsp; Updated 2026</div>
+      <h1>Every Calculator You Need</h1>
+      <p>33 free calculators for finance, health, math and everyday decisions.<br>Fast, accurate, no account required.</p>
+      <div class="hero-search">
+        <input type="text" id="hero-search" placeholder="Search calculators — try 'mortgage' or 'BMI'…" autocomplete="off" oninput="heroSearch(this.value)" aria-label="Search calculators"/>
+        <button onclick="heroSearch(document.getElementById('hero-search').value)">Search</button>
+      </div>
+      <div id="hero-results" style="margin-top:0.6rem;text-align:left;"></div>
+
+      <div class="hero-stats">
+        <div class="hero-stat"><span>33</span><small>Calculators</small></div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat"><span>2M+</span><small>Uses / month</small></div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat"><span>$0</span><small>Cost forever</small></div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat"><span>0</span><small>Sign-ups needed</small></div>
+      </div>
+
+      <div class="hero-tags">
+        <span style="color:var(--gray-400)">Popular:</span>
+        <a href="calculators/mortgage.html">🏠 Mortgage</a>
+        <a href="calculators/bmi.html">⚖️ BMI</a>
+        <a href="calculators/compound-interest.html">📈 Compound Interest</a>
+        <a href="calculators/loan.html">💳 Loan</a>
+        <a href="calculators/tip.html">🍽️ Tip</a>
+        <a href="calculators/tax.html">🧾 Tax</a>
+      </div>
+      <div class="hero-shortcut">Press <kbd>/</kbd> to search from anywhere</div>
+    </div>
+
+    <!-- RECENTLY USED STRIP -->
+    <div class="recent-strip" id="recent-strip" aria-label="Recently used calculators">
+      <span class="recent-label">↩ Recent</span>
+      <div class="recent-pills" id="recent-pills"></div>
+    </div>
+
+    <!-- POPULAR -->
+    <div id="popular" style="margin-bottom:1.5rem;">
+      <div class="section-header">
+        <div class="section-title">⭐ Popular Calculators <span>Most used this month</span></div>
+      </div>
+      <div class="calc-grid" id="popular-grid"></div>
+    </div>
+
+    <!-- MID AD -->
+    <div class="ad-zone" style="margin-bottom:1.5rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-slot ad-336">336×280 Rectangle — AdSense</div>
+    </div>
+
+    <!-- FINANCE -->
+    <div id="finance" style="margin-bottom:1.5rem;" data-section="finance">
+      <div class="section-header">
+        <div class="section-title">💰 Finance Calculators</div>
+        <a class="section-see-all" href="#finance">11 tools</a>
+        <div class="vt-group">
+          <button class="vt-btn active" data-view="grid" title="Grid view">▦</button>
+          <button class="vt-btn" data-view="list" title="List view">≡</button>
+        </div>
+      </div>
+      <div class="calc-grid" id="finance-grid"></div>
+    </div>
+
+    <!-- HEALTH -->
+    <div id="health" style="margin-bottom:1.5rem;" data-section="health">
+      <div class="section-header">
+        <div class="section-title">❤️ Health Calculators</div>
+        <a class="section-see-all" href="#health">8 tools</a>
+        <div class="vt-group">
+          <button class="vt-btn active" data-view="grid" title="Grid view">▦</button>
+          <button class="vt-btn" data-view="list" title="List view">≡</button>
+        </div>
+      </div>
+      <div class="calc-grid" id="health-grid"></div>
+    </div>
+
+    <!-- MATH -->
+    <div id="math" style="margin-bottom:1.5rem;" data-section="math">
+      <div class="section-header">
+        <div class="section-title">🔢 Math Calculators</div>
+        <a class="section-see-all" href="#math">4 tools</a>
+        <div class="vt-group">
+          <button class="vt-btn active" data-view="grid" title="Grid view">▦</button>
+          <button class="vt-btn" data-view="list" title="List view">≡</button>
+        </div>
+      </div>
+      <div class="calc-grid" id="math-grid"></div>
+    </div>
+
+    <!-- EMBED CTA -->
+    <div class="embed-cta" role="complementary" aria-label="Embed our calculators">
+      <div class="embed-cta-icon">⚙️</div>
+      <div class="embed-cta-text">
+        <h3>Add CalcHub to Your Website</h3>
+        <p>Embed any calculator on your site in two lines of code. Free forever, no API key required.</p>
+      </div>
+      <div class="embed-cta-code" onclick="copyEmbed()" title="Click to copy embed code">
+        &lt;script src="calchub.com/embed.js"&gt;&lt;/script&gt;
+      </div>
+      <button class="embed-cta-btn" onclick="copyEmbed()">Copy Embed Code</button>
+    </div>
+
+    <!-- EVERYDAY -->
+    <div id="everyday" style="margin-bottom:1.5rem;" data-section="everyday">
+      <div class="section-header">
+        <div class="section-title">🌟 Everyday Calculators</div>
+        <a class="section-see-all" href="#everyday">12 tools</a>
+        <div class="vt-group">
+          <button class="vt-btn active" data-view="grid" title="Grid view">▦</button>
+          <button class="vt-btn" data-view="list" title="List view">≡</button>
+        </div>
+      </div>
+      <div class="calc-grid" id="everyday-grid"></div>
+    </div>
+
+    <!-- BOTTOM AD -->
+    <div class="ad-zone">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-slot ad-728">728×90 Leaderboard — AdSense</div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── FOOTER ────────────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom:0.75rem;">
+          <div class="logo-mark">∑</div>
+          <div class="logo-name">Calc<span>Hub</span></div>
+        </div>
+        <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. No sign-up, no ads on results. Formulas verified for 2026.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Finance</h4>
+        <a class="footer-link" href="calculators/mortgage.html">Mortgage</a>
+        <a class="footer-link" href="calculators/loan.html">Loan</a>
+        <a class="footer-link" href="calculators/auto-loan.html">Auto Loan</a>
+        <a class="footer-link" href="calculators/amortization.html">Amortization</a>
+        <a class="footer-link" href="calculators/tax.html">Tax (2026)</a>
+        <a class="footer-link" href="calculators/retirement.html">Retirement</a>
+        <a class="footer-link" href="calculators/salary.html">Salary</a>
+        <a class="footer-link" href="calculators/inflation.html">Inflation</a>
+      </div>
+      <div class="footer-col">
+        <h4>Health</h4>
+        <a class="footer-link" href="calculators/bmi.html">BMI</a>
+        <a class="footer-link" href="calculators/calorie.html">Calorie</a>
+        <a class="footer-link" href="calculators/bmr.html">BMR</a>
+        <a class="footer-link" href="calculators/ideal-weight.html">Ideal Weight</a>
+        <a class="footer-link" href="calculators/body-fat.html">Body Fat</a>
+        <a class="footer-link" href="calculators/sleep.html">Sleep</a>
+        <a class="footer-link" href="calculators/pregnancy.html">Pregnancy</a>
+        <a class="footer-link" href="calculators/ovulation.html">Ovulation</a>
+      </div>
+      <div class="footer-col">
+        <h4>Everyday</h4>
+        <a class="footer-link" href="calculators/tip.html">Tip</a>
+        <a class="footer-link" href="calculators/age.html">Age</a>
+        <a class="footer-link" href="calculators/date-difference.html">Date Difference</a>
+        <a class="footer-link" href="calculators/time-zone.html">Time Zone</a>
+        <a class="footer-link" href="calculators/word-counter.html">Word Counter</a>
+        <a class="footer-link" href="calculators/password-generator.html">Password Generator</a>
+        <a class="footer-link" href="calculators/grade.html">Grade Calculator</a>
+        <a class="footer-link" href="calculators/gpa.html">GPA</a>
+        <h4 style="margin-top:1.25rem;">About</h4>
+        <a class="footer-link" href="about.html">About</a>
+        <a class="footer-link" href="privacy.html">Privacy Policy</a>
+        <a class="footer-link" href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CalcHub · All calculators free to use · No account required</span>
+      <span>33 calculators · Updated for 2026 · Formulas verified</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── MOBILE BOTTOM NAV ────────────────────────────────── -->
+<nav class="mobile-bottom-nav" aria-label="Quick access">
+  <div class="mobile-bottom-nav-inner">
+    <a class="mbn-item" href="calculators/mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+    <a class="mbn-item" href="calculators/bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+    <a class="mbn-item" href="index.html"><span class="mbn-icon">⌂</span>Home</a>
+    <a class="mbn-item" href="calculators/tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+    <a class="mbn-item" href="calculators/loan.html"><span class="mbn-icon">💳</span>Loan</a>
+  </div>
+</nav>
+
+<script src="js/main.js"></script>
+<script>
+// ── HOME PAGE LOGIC ────────────────────────────────────────
+function heroSearch(q) {
+  var res = document.getElementById('hero-results');
+  if (!q.trim()) { res.innerHTML = ''; return; }
+  var matches = CALCS.filter(function(c) {
+    return c.name.toLowerCase().includes(q.toLowerCase()) || c.desc.toLowerCase().includes(q.toLowerCase()) || c.cat.toLowerCase().includes(q.toLowerCase());
+  });
+  if (!matches.length) {
+    res.innerHTML = '<p style="font-size:0.85rem;color:var(--gray-500);">No calculators found. Try "mortgage" or "BMI".</p>';
+    return;
+  }
+  res.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:7px;">'
+    + matches.map(function(c) {
+        if (c.soon) return '<span onclick="showToast()" style="display:flex;align-items:center;gap:5px;padding:5px 12px;background:var(--gray-100);color:var(--gray-500);border-radius:20px;cursor:pointer;font-size:0.82rem;">' + c.icon + ' ' + c.name + ' <span style="font-size:0.65rem;background:var(--gray-200);border-radius:8px;padding:1px 6px;">Soon</span></span>';
+        return '<a href="calculators/' + c.id + '.html" style="display:flex;align-items:center;gap:5px;padding:5px 12px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">' + c.icon + ' ' + c.name + '</a>';
+      }).join('')
+    + '</div>';
+}
+
+function copyEmbed() {
+  var code = '<script src="https://calchub.com/embed.js"><\/script>';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code).then(function() {
+      showToast('✓ Embed code copied to clipboard!');
+    });
+  } else {
+    showToast('📋 Copy: <script src="calchub.com/embed.js"><\/script>');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var prefix = 'calculators/';
+  renderGrid('popular-grid',  CALCS.filter(function(c){ return c.popular && !c.soon; }), prefix);
+  renderGrid('finance-grid',  CALCS.filter(function(c){ return c.cat === 'Finance'; }), prefix);
+  renderGrid('health-grid',   CALCS.filter(function(c){ return c.cat === 'Health'; }), prefix);
+  renderGrid('math-grid',     CALCS.filter(function(c){ return c.cat === 'Math'; }), prefix);
+  renderGrid('everyday-grid', CALCS.filter(function(c){ return c.cat === 'Everyday'; }), prefix);
+  renderRecentStrip();
+
+  // Highlight active mobile nav item
+  document.querySelectorAll('.mbn-item').forEach(function(a) {
+    if (a.href === window.location.href) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Savings Goal Calculator — How Long to Save & Monthly Needed (2025)</title>
+<meta name="description" content="Calculate how long to reach your savings goal, what monthly contribution you need, or what goal you can reach by a deadline. Free savings planner."/>
+<meta property="og:title" content="Savings Goal Calculator — Time to Save, Monthly Needed"/>
+<meta property="og:description" content="Find out how long to reach your savings goal, or how much to save monthly to hit it by a deadline. Free."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/calculators/savings.html"/>
+<link rel="canonical" href="https://calchub.com/calculators/savings.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.mode-tabs { display:flex; gap:4px; margin-bottom:1.25rem; flex-wrap:wrap; }
+.mode-tab { padding:8px 16px; border-radius:20px; border:1px solid var(--gray-300); background:var(--white); color:var(--gray-600); font-size:0.82rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.mode-tab.active { background:var(--blue); border-color:var(--blue); color:#fff; }
+
+.goal-presets { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1.25rem; }
+.preset-btn { padding:5px 12px; border-radius:16px; border:1px solid var(--gray-200); background:var(--white); color:var(--gray-600); font-size:0.78rem; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.preset-btn:hover { background:var(--blue-light); color:var(--blue); border-color:transparent; }
+
+.progress-ring-wrap { position:relative; width:140px; height:140px; margin:0 auto 1rem; flex-shrink:0; }
+.progress-ring-wrap svg { transform:rotate(-90deg); }
+.ring-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.ring-pct { font-size:1.5rem; font-weight:700; color:var(--blue); font-family:'JetBrains Mono',monospace; }
+.ring-label { font-size:0.65rem; color:var(--gray-500); font-weight:600; text-transform:uppercase; }
+
+.scenario-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:1rem; }
+@media(max-width:500px){ .scenario-grid { grid-template-columns:1fr 1fr; } }
+.scenario-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:10px; text-align:center; cursor:pointer; transition:all 0.15s; }
+.scenario-card:hover { border-color:var(--blue); }
+.scenario-card.highlight { border-color:var(--green); background:var(--green-light); }
+.sc-contrib { font-size:0.95rem; font-weight:700; color:var(--blue); font-family:'JetBrains Mono',monospace; }
+.sc-time { font-size:0.72rem; color:var(--gray-500); margin-top:2px; }
+.sc-label { font-size:0.7rem; font-weight:600; color:var(--gray-500); margin-top:4px; }
+</style>
+</head>
+<body>
+
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance" class="active">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span class="breadcrumb-sep">›</span>
+  <a href="../index.html#finance">Finance</a><span class="breadcrumb-sep">›</span>
+  <span>Savings Goal Calculator</span>
+</nav>
+
+<div class="page-wrap">
+<aside class="sidebar" aria-label="Finance calculators">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link active" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 Leaderboard — Google AdSense</div></div>
+
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e8f0fe;">🐷</div>
+      <div>
+        <h1 class="calc-card-title">Savings Goal Calculator</h1>
+        <p class="calc-card-desc">Find how long to reach your goal, how much to save monthly, or what you'll accumulate by a deadline.</p>
+      </div>
+    </div>
+
+    <!-- MODE TABS -->
+    <div class="mode-tabs">
+      <button class="mode-tab active" id="tab-time" onclick="setMode('time')">⏱ How long to save?</button>
+      <button class="mode-tab" id="tab-monthly" onclick="setMode('monthly')">💵 How much per month?</button>
+      <button class="mode-tab" id="tab-future" onclick="setMode('future')">🎯 What will I have?</button>
+    </div>
+
+    <!-- GOAL PRESETS -->
+    <div style="font-size:0.78rem;color:var(--gray-500);margin-bottom:6px;">Common goals:</div>
+    <div class="goal-presets">
+      <button class="preset-btn" onclick="setGoal(1000,'☕ Coffee fund')">☕ $1k</button>
+      <button class="preset-btn" onclick="setGoal(5000,'🚗 Car down payment')">🚗 $5k</button>
+      <button class="preset-btn" onclick="setGoal(10000,'✈️ Vacation')">✈️ $10k</button>
+      <button class="preset-btn" onclick="setGoal(20000,'🏠 House down payment')">🏠 $20k</button>
+      <button class="preset-btn" onclick="setGoal(50000,'💼 Emergency fund')">💼 $50k</button>
+      <button class="preset-btn" onclick="setGoal(100000,'🎓 Education')">🎓 $100k</button>
+    </div>
+
+    <!-- TIME MODE -->
+    <div id="inputs-time">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="sg_goal">Savings Goal</label>
+          <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="sg_goal" class="has-prefix" value="20000" min="1"/></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sg_current">Current Savings</label>
+          <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="sg_current" class="has-prefix" value="2000" min="0"/></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sg_monthly">Monthly Contribution</label>
+          <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="sg_monthly" class="has-prefix" value="500" min="1"/></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sg_rate">Annual Interest Rate</label>
+          <div class="input-wrap"><input type="number" id="sg_rate" class="has-suffix" value="4.5" step="0.1" min="0"/><span class="input-suffix">%</span></div>
+          <span class="form-hint">HYSA avg 2025: ~4–5%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MONTHLY MODE -->
+    <div id="inputs-monthly" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="sg_goal2">Savings Goal</label>
+          <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="sg_goal2" class="has-prefix" value="20000" min="1"/></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sg_current2">Current Savings</label>
+          <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="sg_current2" class="has-prefix" value="2000" min="0"/></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sg_months">Target Months to Goal</label>
+          <div class="input-wrap"><input type="number" id="sg_months" class="has-suffix" value="36" min="1"/><span class="input-suffix">months</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sg_rate2">Annual Interest Rate</label>
+          <div class="input-wrap"><input type="number" id="sg_rate2" class="has-suffix" value="4.5" step="0.1" min="0"/><span class="input-suffix">%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FUTURE MODE -->
+    <div id="inputs-future" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="sg_current3">Current Savings</label>
+          <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="sg_current3" class="has-prefix" value="2000" min="0"/></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sg_monthly3">Monthly Contribution</label>
+          <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="sg_monthly3" class="has-prefix" value="500" min="0"/></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sg_months3">Time Period</label>
+          <div class="input-wrap"><input type="number" id="sg_months3" class="has-suffix" value="36" min="1"/><span class="input-suffix">months</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sg_rate3">Annual Interest Rate</label>
+          <div class="input-wrap"><input type="number" id="sg_rate3" class="has-suffix" value="4.5" step="0.1" min="0"/><span class="input-suffix">%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcSavings()">Calculate ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="result-box" id="result">
+
+      <div class="result-primary">
+        <span class="result-primary-label" id="r-primary-label">Time to Reach Goal</span>
+        <span class="result-primary-value" id="r-primary">—</span>
+      </div>
+
+      <!-- PROGRESS RING -->
+      <div style="display:flex;align-items:center;gap:1.5rem;margin-top:1rem;flex-wrap:wrap;">
+        <div class="progress-ring-wrap">
+          <svg width="140" height="140" viewBox="0 0 140 140">
+            <circle cx="70" cy="70" r="56" fill="none" stroke="var(--gray-100)" stroke-width="16"/>
+            <circle id="ring-fill" cx="70" cy="70" r="56" fill="none" stroke="var(--blue)" stroke-width="16"
+              stroke-dasharray="351.86" stroke-dashoffset="351.86" stroke-linecap="round"
+              style="transition:stroke-dashoffset 0.6s ease;"/>
+          </svg>
+          <div class="ring-center">
+            <div class="ring-pct" id="ring-pct">0%</div>
+            <div class="ring-label">Progress</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:160px;">
+          <div class="result-row" style="padding:6px 0;"><span class="result-row-label">Current Savings</span><span class="result-row-value color-blue" id="r-current">—</span></div>
+          <div class="result-row" style="padding:6px 0;"><span class="result-row-label">Goal Amount</span><span class="result-row-value" id="r-goal">—</span></div>
+          <div class="result-row" style="padding:6px 0;"><span class="result-row-label">Amount Remaining</span><span class="result-row-value" id="r-remaining">—</span></div>
+        </div>
+      </div>
+
+      <div class="result-row"><span class="result-row-label">Total Contributions</span><span class="result-row-value" id="r-contrib">—</span></div>
+      <div class="result-row"><span class="result-row-label">Interest Earned</span><span class="result-row-value color-green" id="r-interest">—</span></div>
+      <div class="result-row"><span class="result-row-label">Goal Reached By</span><span class="result-row-value color-blue" id="r-date">—</span></div>
+
+      <!-- SCENARIO COMPARISON -->
+      <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin:1.25rem 0 0.5rem;">📊 Contribution Scenarios</div>
+      <div class="scenario-grid" id="scenario-grid"></div>
+
+      <div class="bar-chart" id="r-chart" style="margin-top:1.25rem;"></div>
+
+    </div><!-- /result-box -->
+
+    <div class="disclaimer">⚠️ Assumes constant interest rate and consistent contributions. Actual savings account rates vary. FDIC-insured accounts are safest for short-term goals.</div>
+
+    <div class="info-block">
+      <h2 style="font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.75rem;">How to Reach Your Savings Goal Faster</h2>
+      <p>Three levers control how quickly you reach a savings goal: your starting balance, your monthly contribution, and your interest rate. Of these, the monthly contribution is the most controllable. Even small increases — cutting a subscription or reducing dining out — can shave months off your timeline.</p>
+
+      <div class="faq" style="margin-top:1.5rem;">
+        <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Frequently Asked Questions</h3>
+
+        <div class="faq-item">
+          <div class="faq-q">Where should I keep my savings? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">For short-term goals (under 2–3 years), a high-yield savings account (HYSA) or money market account is ideal — FDIC-insured, no risk to principal, and currently earning 4–5% APY in 2025. For longer-term goals (5+ years), you could consider I-bonds or CD ladders. For goals 10+ years away, investing in index funds typically outperforms, but comes with market risk.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How much should I have in an emergency fund? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Most financial advisors recommend 3–6 months of essential living expenses in an accessible, liquid account. If you have variable income, are self-employed, or have dependents, aim for 6–12 months. Don't invest your emergency fund — keep it in a HYSA or money market where it earns interest but is instantly accessible. This is the most important savings goal to establish before investing.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Is it better to pay off debt or save? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Compare interest rates. If your debt carries a higher interest rate than your savings earn, paying off the debt is mathematically better — it's a guaranteed return equal to the interest rate. Exception: always maintain a small emergency fund (1–2 months) even while paying off debt, to avoid taking on new debt for unexpected expenses. Employer 401(k) matching is also usually worth capturing before aggressive debt paydown.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What are the best high-yield savings rates in 2025? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Online banks and credit unions tend to offer the best HYSA rates. In 2025, leading accounts offer 4.5–5.0% APY — significantly better than the national bank average of ~0.5%. Look for accounts with no minimum balance requirements, FDIC insurance up to $250,000, and no monthly fees. Rates change frequently, so compare current offerings at sites like Bankrate or NerdWallet.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Finance Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:0.5rem;">
+        <a href="compound-interest.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">📈 Compound Interest</a>
+        <a href="retirement.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏦 Retirement</a>
+        <a href="roi.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">💰 ROI Calculator</a>
+        <a href="mortgage.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏠 Mortgage</a>
+      </div>
+    </div>
+
+  </div><!-- /calc-card -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card">
+    <h3>Related Calculators</h3>
+    <a class="related-link" href="compound-interest.html">📈 Compound Interest</a>
+    <a class="related-link" href="retirement.html">🏦 Retirement Calculator</a>
+    <a class="related-link" href="roi.html">💰 ROI Calculator</a>
+    <a class="related-link" href="mortgage.html">🏠 Mortgage</a>
+  </div>
+  <div class="rail-card">
+    <h3>💡 Best Savings Rates</h3>
+    <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.65;">High-yield savings accounts in 2025 offer <strong>4–5% APY</strong> — 8–10x the national average. Switching from a 0.5% account to a 4.5% HYSA on $10k saves/earns $400 extra per year.</p>
+  </div>
+  <div class="rail-card">
+    <h3>🎯 Emergency Fund Rule</h3>
+    <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.65;">Aim for <strong>3–6 months</strong> of expenses in a liquid account. On $4,000/month in expenses, that's $12,000–$24,000 as your first savings goal.</p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native / Affiliate Ad</div></div>
+</aside>
+
+</div><!-- /page-wrap -->
+
+<nav class="mobile-bottom-nav" aria-label="Quick access"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('savings'); });</script>
+<script>
+var _mode = 'time';
+
+function setMode(m) {
+  _mode = m;
+  ['time','monthly','future'].forEach(function(k){
+    document.getElementById('tab-' + k).classList.toggle('active', k === m);
+    document.getElementById('inputs-' + k).style.display = k === m ? '' : 'none';
+  });
+  document.getElementById('result').classList.remove('show');
+}
+
+function setGoal(amount, label) {
+  document.getElementById('sg_goal').value  = amount;
+  document.getElementById('sg_goal2').value = amount;
+  showToast('Goal set: ' + label + ' (' + fmtUSD(amount) + ')');
+}
+
+function simMonths(current, monthly, rate, goal) {
+  var r = rate / 100 / 12;
+  var balance = current, months = 0;
+  while (balance < goal && months < 1200) {
+    balance = balance * (1 + r) + monthly;
+    months++;
+  }
+  return { months: months, balance: balance };
+}
+
+function calcSavings() {
+  var result, goal, current, monthly, months, rate;
+
+  if (_mode === 'time') {
+    goal    = +document.getElementById('sg_goal').value    || 0;
+    current = +document.getElementById('sg_current').value || 0;
+    monthly = +document.getElementById('sg_monthly').value || 0;
+    rate    = +document.getElementById('sg_rate').value    || 0;
+    if (!goal || !monthly) { alert('Please enter a goal and monthly contribution.'); return; }
+    if (current >= goal) { showResult('result'); setText('r-primary', 'Already reached! 🎉'); return; }
+    var sim = simMonths(current, monthly, rate, goal);
+    months = sim.months;
+    var yrs = Math.floor(months / 12), mos = months % 12;
+    setText('r-primary-label', 'Time to Reach Goal');
+    setText('r-primary', (yrs > 0 ? yrs + ' yr ' : '') + mos + ' mo');
+    renderResults(current, monthly, months, rate, goal);
+
+  } else if (_mode === 'monthly') {
+    goal    = +document.getElementById('sg_goal2').value   || 0;
+    current = +document.getElementById('sg_current2').value|| 0;
+    months  = +document.getElementById('sg_months').value  || 0;
+    rate    = +document.getElementById('sg_rate2').value   || 0;
+    if (!goal || !months) { alert('Please enter a goal and target months.'); return; }
+    var r = rate / 100 / 12;
+    var needed = r > 0
+      ? (goal - current * Math.pow(1+r, months)) * r / (Math.pow(1+r, months) - 1)
+      : (goal - current) / months;
+    needed = Math.max(0, needed);
+    setText('r-primary-label', 'Monthly Contribution Needed');
+    setText('r-primary', fmtUSD(needed) + '/mo');
+    monthly = needed;
+    renderResults(current, monthly, months, rate, goal);
+
+  } else {
+    current = +document.getElementById('sg_current3').value || 0;
+    monthly = +document.getElementById('sg_monthly3').value || 0;
+    months  = +document.getElementById('sg_months3').value  || 0;
+    rate    = +document.getElementById('sg_rate3').value    || 0;
+    if (!months) { alert('Please enter a time period.'); return; }
+    var r = rate / 100 / 12;
+    var future = current * Math.pow(1+r, months);
+    for (var i = 1; i <= months; i++) future += monthly * Math.pow(1+r, months - i);
+    setText('r-primary-label', 'Balance After ' + months + ' Months');
+    setText('r-primary', fmtUSD(future));
+    goal = future;
+    renderResults(current, monthly, months, rate, goal);
+  }
+
+  showResult('result');
+}
+
+function renderResults(current, monthly, months, rate, goal) {
+  var r = rate / 100 / 12;
+  var finalBal = current * Math.pow(1+r, months);
+  for (var i = 1; i <= months; i++) finalBal += monthly * Math.pow(1+r, months - i);
+  var totalContrib = current + monthly * months;
+  var interest = finalBal - totalContrib;
+  var pct = goal > 0 ? Math.min(100, current / goal * 100) : 0;
+
+  setText('r-current',   fmtUSD(current));
+  setText('r-goal',      fmtUSD(goal));
+  setText('r-remaining', fmtUSD(Math.max(0, goal - current)));
+  setText('r-contrib',   fmtUSD(totalContrib));
+  setText('r-interest',  fmtUSD(Math.max(0, interest)));
+
+  // Goal reached by date
+  var targetDate = new Date();
+  targetDate.setMonth(targetDate.getMonth() + months);
+  setText('r-date', targetDate.toLocaleDateString('en-US', { month:'long', year:'numeric' }));
+
+  // Progress ring
+  var circ = 2 * Math.PI * 56;
+  var offset = circ - (pct / 100 * circ);
+  document.getElementById('ring-fill').style.strokeDashoffset = offset.toFixed(2);
+  document.getElementById('ring-pct').textContent = Math.round(pct) + '%';
+
+  // Bar chart
+  renderBarChart('r-chart', [
+    { label: 'Starting Balance', value: current,    color: '#9aa0a6', display: fmtUSD(current) },
+    { label: 'Contributions',    value: monthly * months, color: '#1a73e8', display: fmtUSD(monthly * months) },
+    { label: 'Interest Earned',  value: Math.max(0, interest), color: '#34a853', display: fmtUSD(Math.max(0, interest)) },
+  ]);
+
+  // Scenario grid — show what different contribution amounts would do
+  var scenarios = [
+    { mult: 0.5,  label: '½ current' },
+    { mult: 0.75, label: '¾ current' },
+    { mult: 1,    label: 'Current' },
+    { mult: 1.25, label: '+25%' },
+    { mult: 1.5,  label: '+50%' },
+    { mult: 2,    label: 'Double' },
+  ];
+  document.getElementById('scenario-grid').innerHTML = scenarios.map(function(s) {
+    var sc = s.mult * monthly;
+    var sim = simMonths(current, sc, rate, goal);
+    var yrs = Math.floor(sim.months / 12), mos = sim.months % 12;
+    var timeStr = (yrs > 0 ? yrs + 'y ' : '') + mos + 'mo';
+    var isCurrent = s.mult === 1;
+    return '<div class="scenario-card' + (isCurrent ? ' highlight' : '') + '">'
+      + '<div class="sc-contrib">' + fmtUSD(sc) + '/mo</div>'
+      + '<div class="sc-time">' + timeStr + '</div>'
+      + '<div class="sc-label">' + s.label + (isCurrent ? ' ◀' : '') + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function resetForm() {
+  document.getElementById('sg_goal').value    = 20000;
+  document.getElementById('sg_current').value = 2000;
+  document.getElementById('sg_monthly').value = 500;
+  document.getElementById('sg_rate').value    = 4.5;
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body>
+</html>

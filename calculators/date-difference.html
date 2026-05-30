@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Date Difference Calculator — Days Between Dates (2025)</title>
+<meta name="description" content="Calculate the number of days, weeks, months, and years between two dates. Add or subtract days from a date. Free."/>
+<link rel="canonical" href="https://calchub.io/calculators/date-difference.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.mode-tabs { display:flex; gap:4px; margin-bottom:1.25rem; flex-wrap:wrap; }
+.mode-tab { padding:8px 16px; border-radius:20px; border:1px solid var(--gray-300); background:var(--white); color:var(--gray-600); font-size:0.82rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.mode-tab.active { background:var(--purple); border-color:var(--purple); color:#fff; }
+.date-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:1rem; }
+@media(max-width:500px){ .date-cards { grid-template-columns:1fr 1fr; } }
+.date-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:10px; text-align:center; }
+.dc-val { font-size:1.2rem; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--purple); }
+.dc-label { font-size:0.7rem; color:var(--gray-500); margin-top:3px; text-transform:uppercase; letter-spacing:0.05em; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#everyday" class="active">Everyday</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#everyday">Everyday</a><span class="breadcrumb-sep">›</span><span>Date Difference</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link active" href="date-difference.html"><span class="sidebar-icon">📅</span>Date Difference</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#f3e8fd;">📅</div>
+      <div><h1 class="calc-card-title">Date Difference Calculator</h1><p class="calc-card-desc">Find days between dates, or add/subtract days to get a future or past date.</p></div>
+    </div>
+
+    <div class="mode-tabs">
+      <button class="mode-tab active" id="tab-diff" onclick="setMode('diff',this)">📅 Days Between Dates</button>
+      <button class="mode-tab" id="tab-add" onclick="setMode('add',this)">➕ Add / Subtract Days</button>
+    </div>
+
+    <!-- DIFF MODE -->
+    <div id="inputs-diff">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Start Date</label>
+          <input type="date" id="dd_start"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">End Date</label>
+          <input type="date" id="dd_end"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD MODE -->
+    <div id="inputs-add" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Starting Date</label>
+          <input type="date" id="da_start"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Days to Add/Subtract</label>
+          <input type="number" id="da_days" placeholder="30 (negative to subtract)"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcDate()">Calculate ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <div class="result-box" id="result">
+      <div class="result-primary">
+        <span class="result-primary-label" id="r-label">Total Days</span>
+        <span class="result-primary-value" id="r-primary">—</span>
+      </div>
+      <div class="date-cards" id="date-cards"></div>
+      <div class="result-row" style="margin-top:1.25rem;" id="r-extra-row"><span class="result-row-label" id="r-extra-label"></span><span class="result-row-value" id="r-extra"></span></div>
+    </div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Date Difference Calculator</h2>
+      <p style="color:var(--gray-700);line-height:1.8;">Calculate exactly how many days, weeks, months, and years are between any two dates. Also useful for finding what date is 30, 60, or 90 days from today — common for contract deadlines, loan payoff dates, and subscription renewals.</p>
+      <div class="faq" style="margin-top:1rem;">
+        <div class="faq-item">
+          <div class="faq-q">How many days until a date? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Select today as the start date and your target date as the end date. The calculator will show the exact number of days remaining. Alternatively, use the Age Calculator for birthday countdowns.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What date is 90 days from today? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Use the "Add / Subtract Days" mode — enter today's date and 90 as the number of days. This is useful for calculating notice periods, contract deadlines, trial period end dates, or loan due dates.</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="age.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🎂 Age Calculator</a>
+        <a href="pregnancy.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🤱 Pregnancy Due Date</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="age.html">🎂 Age Calculator</a>
+    <a class="related-link" href="pregnancy.html">🤱 Pregnancy Due Date</a>
+    <a class="related-link" href="unit-converter.html">💱 Unit Converter</a>
+  </div>
+  <div class="rail-card"><h3>📅 Common Periods</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>30 days</strong> = ~1 month<br>
+      <strong>90 days</strong> = ~1 quarter<br>
+      <strong>180 days</strong> = ~6 months<br>
+      <strong>365 days</strong> = 1 year<br>
+      <strong>366 days</strong> = leap year
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){
+  trackCalcView('date-difference');
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('dd_start').value = today;
+  document.getElementById('da_start').value = today;
+  var end = new Date(); end.setDate(end.getDate()+30);
+  document.getElementById('dd_end').value = end.toISOString().split('T')[0];
+});</script>
+<script>
+var _mode = 'diff';
+function setMode(m, btn) {
+  _mode = m;
+  document.querySelectorAll('.mode-tab').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('inputs-diff').style.display = m==='diff'?'':'none';
+  document.getElementById('inputs-add').style.display  = m==='add' ?'':'none';
+  document.getElementById('result').classList.remove('show');
+}
+function calcDate() {
+  if (_mode === 'diff') {
+    var s = new Date(document.getElementById('dd_start').value + 'T00:00:00');
+    var e = new Date(document.getElementById('dd_end').value   + 'T00:00:00');
+    if (!s || !e) return;
+    var ms   = Math.abs(e - s);
+    var days = Math.floor(ms / 86400000);
+    var weeks = Math.floor(days / 7);
+    var months = Math.floor(days / 30.44);
+    var years  = Math.floor(days / 365.25);
+    var direction = e >= s ? 'ahead' : 'ago';
+    setText('r-label', 'Days Between Dates');
+    setText('r-primary', days.toLocaleString() + ' days');
+    document.getElementById('date-cards').innerHTML =
+      card(days.toLocaleString(), 'Days') +
+      card(weeks.toLocaleString(), 'Weeks') +
+      card(months.toLocaleString(), 'Months') +
+      card(years.toLocaleString(), 'Years') +
+      card(Math.floor(days/7).toLocaleString(), 'Work Weeks (est.)') +
+      card((days * 24).toLocaleString(), 'Hours');
+    document.getElementById('r-extra-label').textContent = 'Direction';
+    document.getElementById('r-extra').textContent = e.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) + ' is ' + direction;
+    document.getElementById('r-extra-row').style.display = '';
+  } else {
+    var s = new Date(document.getElementById('da_start').value + 'T00:00:00');
+    var d = +document.getElementById('da_days').value || 0;
+    var result = new Date(s); result.setDate(result.getDate() + d);
+    var absDays = Math.abs(d);
+    setText('r-label', d >= 0 ? 'Date + ' + d + ' days' : 'Date − ' + Math.abs(d) + ' days');
+    setText('r-primary', result.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'}));
+    document.getElementById('date-cards').innerHTML =
+      card(absDays.toLocaleString(), 'Days') +
+      card(Math.floor(absDays/7).toLocaleString(), 'Weeks') +
+      card(Math.round(absDays/30.44).toLocaleString(), 'Months') +
+      card((absDays * 24).toLocaleString(), 'Hours');
+    document.getElementById('r-extra-row').style.display = 'none';
+  }
+  showResult('result');
+}
+function card(val, label) {
+  return '<div class="date-card"><div class="dc-val">' + val + '</div><div class="dc-label">' + label + '</div></div>';
+}
+function resetForm() {
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('dd_start').value = today;
+  document.getElementById('da_start').value = today;
+  document.getElementById('da_days').value  = '';
+  var end = new Date(); end.setDate(end.getDate()+30);
+  document.getElementById('dd_end').value = end.toISOString().split('T')[0];
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body></html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Amortization Calculator — Loan Payment Schedule (2025)</title>
+<meta name="description" content="Calculate your full loan amortization schedule. See principal vs interest breakdown for every payment. Free, accurate."/>
+<link rel="canonical" href="https://calchub.io/calculators/amortization.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.amort-table-wrap { overflow-x:auto; border-radius:var(--radius-lg); border:1px solid var(--gray-200); margin-top:1.25rem; max-height:400px; overflow-y:auto; }
+.amort-table { width:100%; border-collapse:collapse; font-size:0.8rem; }
+.amort-table th { background:var(--gray-900); color:#fff; padding:9px 12px; text-align:right; font-size:0.72rem; font-weight:600; letter-spacing:0.04em; position:sticky; top:0; }
+.amort-table th:first-child { text-align:left; }
+.amort-table td { padding:8px 12px; text-align:right; border-bottom:1px solid var(--gray-100); font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--gray-700); }
+.amort-table td:first-child { text-align:left; font-family:'Inter',sans-serif; color:var(--gray-800); font-weight:500; }
+.amort-table tr:hover td { background:var(--gray-50); }
+.amort-table tr.year-row td { background:var(--blue-light); font-weight:700; color:var(--blue); }
+.amort-table .col-interest { color:var(--red); }
+.amort-table .col-principal { color:var(--green); }
+.toggle-row { display:flex; gap:8px; margin-bottom:1rem; }
+.toggle-btn { padding:6px 16px; border-radius:18px; border:1px solid var(--gray-200); background:var(--white); color:var(--gray-600); font-size:0.8rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.toggle-btn.active { background:var(--blue); border-color:var(--blue); color:#fff; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance" class="active">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#finance">Finance</a><span class="breadcrumb-sep">›</span><span>Amortization Calculator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link active" href="amortization.html"><span class="sidebar-icon">📋</span>Amortization</a>
+    <a class="sidebar-link" href="auto-loan.html"><span class="sidebar-icon">🚗</span>Auto Loan</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e8f0fe;">📋</div>
+      <div><h1 class="calc-card-title">Amortization Calculator</h1><p class="calc-card-desc">See your full loan payment schedule — how much goes to principal vs interest each month.</p></div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Loan Amount</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="am_principal" class="has-prefix" value="300000" min="0"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Annual Interest Rate</label>
+        <div class="input-wrap"><input type="number" id="am_rate" class="has-suffix" value="6.5" step="0.1" min="0"/><span class="input-suffix">%</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Loan Term</label>
+        <div class="input-wrap"><input type="number" id="am_years" class="has-suffix" value="30" min="1" max="50"/><span class="input-suffix">years</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Extra Monthly Payment</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="am_extra" class="has-prefix" value="0" min="0"/></div>
+        <span class="form-hint">Reduces interest & payoff time</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcAmort()">Calculate ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <div class="result-box" id="result">
+      <div class="result-primary">
+        <span class="result-primary-label">Monthly Payment</span>
+        <span class="result-primary-value" id="r-payment">—</span>
+      </div>
+      <div class="result-row"><span class="result-row-label">Total Amount Paid</span><span class="result-row-value" id="r-total">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total Interest Paid</span><span class="result-row-value color-red" id="r-interest">—</span></div>
+      <div class="result-row"><span class="result-row-label">Loan Paid Off</span><span class="result-row-value color-blue" id="r-payoff">—</span></div>
+      <div class="result-row" id="r-savings-row" style="display:none;"><span class="result-row-label">Interest Saved with Extra Payment</span><span class="result-row-value color-green" id="r-savings">—</span></div>
+      <div class="result-row" id="r-shorter-row" style="display:none;"><span class="result-row-label">Time Saved</span><span class="result-row-value color-green" id="r-shorter">—</span></div>
+
+      <div class="bar-chart" id="r-chart" style="margin-top:1.25rem;"></div>
+
+      <div style="font-size:0.85rem;font-weight:700;color:var(--gray-800);margin:1.5rem 0 0.75rem;">Payment Schedule</div>
+      <div class="toggle-row">
+        <button class="toggle-btn active" id="btn-annual" onclick="setView('annual',this)">Annual Summary</button>
+        <button class="toggle-btn" id="btn-monthly" onclick="setView('monthly',this)">Monthly Detail</button>
+      </div>
+      <div class="amort-table-wrap">
+        <table class="amort-table">
+          <thead><tr>
+            <th style="text-align:left;">Period</th>
+            <th>Payment</th>
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Balance</th>
+          </tr></thead>
+          <tbody id="amort-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="disclaimer">⚠️ Results are estimates. Actual loan terms may vary. Consult your lender for exact figures.</div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">What Is Amortization?</h2>
+      <p style="color:var(--gray-700);line-height:1.8;">Amortization is the process of paying off a loan through regular payments over time. Each payment covers both interest (charged on the remaining balance) and principal (reducing what you owe). Early payments are mostly interest — late payments are mostly principal. This calculator shows the exact breakdown for every payment.</p>
+      <div class="faq" style="margin-top:1rem;">
+        <div class="faq-item">
+          <div class="faq-q">How does an extra payment affect my loan? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Extra payments go entirely toward principal, reducing the balance faster. This cuts the interest charged in future months, creating a compounding savings effect. Even $100/month extra on a 30-year mortgage can save $30,000+ in interest and cut years off the loan.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Why do I pay so much interest at the start? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Interest is calculated on the remaining balance. At the start, the balance is highest, so the interest portion of each payment is highest. As you pay down principal, the balance drops, and more of each payment goes to principal. This is why the first years of a mortgage feel like you're making no progress — you are, but slowly.</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="mortgage.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏠 Mortgage</a>
+        <a href="loan.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">💳 Loan Calculator</a>
+        <a href="auto-loan.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🚗 Auto Loan</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="mortgage.html">🏠 Mortgage Calculator</a>
+    <a class="related-link" href="loan.html">💳 Loan Calculator</a>
+    <a class="related-link" href="auto-loan.html">🚗 Auto Loan</a>
+    <a class="related-link" href="compound-interest.html">📈 Compound Interest</a>
+  </div>
+  <div class="rail-card"><h3>💡 Extra Payment Tip</h3>
+    <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.65;">On a $300k 30-year mortgage at 6.5%, paying just <strong>$200 extra/month</strong> saves ~$80,000 in interest and pays it off 6 years early.</p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('amortization'); });</script>
+<script>
+var _schedule = [];
+var _view = 'annual';
+
+function setView(v, btn) {
+  _view = v;
+  document.querySelectorAll('.toggle-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderTable();
+}
+
+function calcAmort() {
+  var P     = +document.getElementById('am_principal').value || 0;
+  var rate  = +document.getElementById('am_rate').value / 100 / 12;
+  var years = +document.getElementById('am_years').value || 30;
+  var extra = +document.getElementById('am_extra').value || 0;
+  if (!P || !rate) return;
+
+  var n = years * 12;
+  var payment = rate > 0 ? P * rate * Math.pow(1+rate,n) / (Math.pow(1+rate,n)-1) : P/n;
+  payment = Math.round(payment * 100) / 100;
+
+  // Build schedule with extra payments
+  var balance = P;
+  var totalInterest = 0, totalPaid = 0;
+  _schedule = [];
+  var month = 0;
+
+  while (balance > 0.01 && month < n + 12) {
+    month++;
+    var interest = balance * rate;
+    var principal = Math.min(payment - interest + extra, balance);
+    if (principal < 0) principal = 0;
+    balance = Math.max(0, balance - principal);
+    totalInterest += interest;
+    totalPaid += principal + interest;
+    _schedule.push({ month: month, payment: principal+interest, principal: principal, interest: interest, balance: balance });
+    if (balance <= 0) break;
+  }
+
+  // No-extra baseline for savings calc
+  var baseMonths = years * 12;
+  var baseInterest = payment * baseMonths - P;
+
+  setText('r-payment', fmtUSD(payment + extra) + '/mo');
+  setText('r-total',   fmtUSD(totalPaid));
+  setText('r-interest',fmtUSD(totalInterest));
+
+  var payoffDate = new Date();
+  payoffDate.setMonth(payoffDate.getMonth() + month);
+  setText('r-payoff', payoffDate.toLocaleDateString('en-US',{month:'long',year:'numeric'}));
+
+  if (extra > 0) {
+    var saved = baseInterest - totalInterest;
+    var shorter = baseMonths - month;
+    document.getElementById('r-savings-row').style.display = '';
+    document.getElementById('r-shorter-row').style.display = '';
+    setText('r-savings', fmtUSD(Math.max(0, saved)) + ' saved');
+    var sy = Math.floor(shorter/12), sm = shorter%12;
+    setText('r-shorter', (sy>0?sy+'y ':'') + sm + 'mo faster');
+  } else {
+    document.getElementById('r-savings-row').style.display = 'none';
+    document.getElementById('r-shorter-row').style.display = 'none';
+  }
+
+  renderDonutChart('r-chart', [
+    { label: 'Principal', value: P,             color: '#2563eb', display: fmtUSD(P) },
+    { label: 'Interest',  value: totalInterest,  color: '#dc2626', display: fmtUSD(totalInterest) },
+  ], 'Total Cost', fmtUSD(P + totalInterest));
+
+  renderTable();
+  showResult('result');
+}
+
+function renderTable() {
+  if (!_schedule.length) return;
+  var tbody = document.getElementById('amort-body');
+
+  if (_view === 'monthly') {
+    tbody.innerHTML = _schedule.map(function(r) {
+      return '<tr><td>Month ' + r.month + '</td>'
+        + '<td>' + fmtUSD(r.payment) + '</td>'
+        + '<td class="col-principal">' + fmtUSD(r.principal) + '</td>'
+        + '<td class="col-interest">' + fmtUSD(r.interest) + '</td>'
+        + '<td>' + fmtUSD(r.balance) + '</td></tr>';
+    }).join('');
+  } else {
+    // Annual summary
+    var years = {};
+    _schedule.forEach(function(r) {
+      var yr = Math.ceil(r.month / 12);
+      if (!years[yr]) years[yr] = { payment:0, principal:0, interest:0, balance:0 };
+      years[yr].payment   += r.payment;
+      years[yr].principal += r.principal;
+      years[yr].interest  += r.interest;
+      years[yr].balance    = r.balance;
+    });
+    tbody.innerHTML = Object.keys(years).map(function(yr) {
+      var y = years[yr];
+      return '<tr class="year-row"><td>Year ' + yr + '</td>'
+        + '<td>' + fmtUSD(y.payment) + '</td>'
+        + '<td class="col-principal">' + fmtUSD(y.principal) + '</td>'
+        + '<td class="col-interest">' + fmtUSD(y.interest) + '</td>'
+        + '<td>' + fmtUSD(y.balance) + '</td></tr>';
+    }).join('');
+  }
+}
+
+function resetForm() {
+  document.getElementById('am_principal').value = 300000;
+  document.getElementById('am_rate').value = 6.5;
+  document.getElementById('am_years').value = 30;
+  document.getElementById('am_extra').value = 0;
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body></html>

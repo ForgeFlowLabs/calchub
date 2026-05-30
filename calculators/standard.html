@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Standard Calculator — Free Online Calculator with Keyboard Support</title>
+<meta name="description" content="Free online standard calculator with keyboard support, calculation history, and backspace. Works on any device. No download needed."/>
+<meta property="og:title" content="Standard Calculator — Free Online Calculator"/>
+<meta property="og:description" content="Free online calculator with full keyboard support and calculation history. Works on any device."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/calculators/standard.html"/>
+<link rel="canonical" href="https://calchub.com/calculators/standard.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.calc-wrap { display:grid; grid-template-columns:1fr 220px; gap:1rem; align-items:start; }
+@media(max-width:600px){ .calc-wrap { grid-template-columns:1fr; } }
+
+.history-panel { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:0.75rem; min-height:200px; }
+.history-title { font-size:0.72rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.5rem; display:flex; justify-content:space-between; align-items:center; }
+.history-clear { font-size:0.7rem; color:var(--blue); cursor:pointer; font-weight:500; }
+.history-clear:hover { text-decoration:underline; }
+.history-list { display:flex; flex-direction:column; gap:4px; max-height:280px; overflow-y:auto; }
+.history-item { font-size:0.78rem; color:var(--gray-600); font-family:'JetBrains Mono',monospace; cursor:pointer; padding:4px 6px; border-radius:4px; line-height:1.4; }
+.history-item:hover { background:var(--gray-200); }
+.history-item .h-expr { color:var(--gray-400); font-size:0.7rem; }
+.history-item .h-result { color:var(--gray-800); font-weight:600; }
+.history-empty { font-size:0.75rem; color:var(--gray-400); text-align:center; padding:1rem; }
+
+.kb-hint { font-size:0.72rem; color:var(--gray-400); margin-top:0.75rem; line-height:1.8; }
+.kb-hint kbd { display:inline-block; background:var(--gray-100); border:1px solid var(--gray-300); border-radius:3px; padding:1px 5px; font-family:'JetBrains Mono',monospace; font-size:0.7rem; }
+</style>
+</head>
+<body>
+
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math" class="active">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span class="breadcrumb-sep">›</span>
+  <a href="../index.html#math">Math</a><span class="breadcrumb-sep">›</span>
+  <span>Standard Calculator</span>
+</nav>
+
+<div class="page-wrap">
+<aside class="sidebar" aria-label="Math calculators">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link active" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 Leaderboard — Google AdSense</div></div>
+
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e8f0fe;">🔢</div>
+      <div>
+        <h1 class="calc-card-title">Standard Calculator</h1>
+        <p class="calc-card-desc">Basic arithmetic with full keyboard support, backspace, and calculation history.</p>
+      </div>
+    </div>
+
+    <div class="calc-wrap">
+      <!-- CALCULATOR -->
+      <div>
+        <div class="std-display">
+          <div class="std-expr" id="std-expr"></div>
+          <div class="std-result" id="std-disp">0</div>
+        </div>
+        <div class="std-grid">
+          <button class="std-btn btn-clr"  onclick="sd('C')"    aria-label="Clear">C</button>
+          <button class="std-btn btn-op"   onclick="sd('⌫')"    aria-label="Backspace">⌫</button>
+          <button class="std-btn btn-op"   onclick="sd('%')"    aria-label="Percent">%</button>
+          <button class="std-btn btn-op"   onclick="sd('÷')"    aria-label="Divide">÷</button>
+          <button class="std-btn btn-num"  onclick="sd('7')">7</button>
+          <button class="std-btn btn-num"  onclick="sd('8')">8</button>
+          <button class="std-btn btn-num"  onclick="sd('9')">9</button>
+          <button class="std-btn btn-op"   onclick="sd('×')"    aria-label="Multiply">×</button>
+          <button class="std-btn btn-num"  onclick="sd('4')">4</button>
+          <button class="std-btn btn-num"  onclick="sd('5')">5</button>
+          <button class="std-btn btn-num"  onclick="sd('6')">6</button>
+          <button class="std-btn btn-op"   onclick="sd('−')"    aria-label="Minus">−</button>
+          <button class="std-btn btn-num"  onclick="sd('1')">1</button>
+          <button class="std-btn btn-num"  onclick="sd('2')">2</button>
+          <button class="std-btn btn-num"  onclick="sd('3')">3</button>
+          <button class="std-btn btn-op"   onclick="sd('+')"    aria-label="Plus">+</button>
+          <button class="std-btn btn-op"   onclick="sd('+/-')"  aria-label="Toggle sign">±</button>
+          <button class="std-btn btn-num"  onclick="sd('0')">0</button>
+          <button class="std-btn btn-num"  onclick="sd('.')">.</button>
+          <button class="std-btn btn-eq"   onclick="sd('=')"    aria-label="Equals">=</button>
+        </div>
+        <div class="kb-hint">
+          Keyboard: <kbd>0–9</kbd> digits &nbsp; <kbd>+</kbd><kbd>-</kbd><kbd>*</kbd><kbd>/</kbd> operators &nbsp;
+          <kbd>Enter</kbd> equals &nbsp; <kbd>Esc</kbd> clear &nbsp; <kbd>⌫</kbd> backspace
+        </div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="history-panel">
+        <div class="history-title">
+          History
+          <span class="history-clear" onclick="clearHistory()">Clear</span>
+        </div>
+        <div class="history-list" id="history-list">
+          <div class="history-empty">No calculations yet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block" style="margin-top:1.5rem;">
+      <h2 style="font-size:1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.5rem;">Online Calculator</h2>
+      <p>This free online calculator supports addition, subtraction, multiplication, and division. Full keyboard support means you can type calculations as fast as you would on a physical calculator. The calculation history panel keeps your recent results — click any history item to restore that result. Works on desktop and mobile.</p>
+
+      <div class="faq" style="margin-top:1.25rem;">
+        <div class="faq-item">
+          <div class="faq-q">What keyboard shortcuts does this calculator support? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">You can use number keys 0–9 for digits, + − * / for operations, Enter or = for equals, Escape to clear, and Backspace to delete the last digit. The % key applies percentage. This matches standard calculator keyboard behavior so you can work quickly without reaching for the mouse.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Need more functions? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">For trigonometry, logarithms, exponents, square roots, and scientific notation, use our <a href="scientific.html" style="color:var(--blue);">Scientific Calculator</a>. For percentage calculations (finding X% of Y, percent change, etc.), use our <a href="percentage.html" style="color:var(--blue);">Percentage Calculator</a>.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:0.5rem;">
+        <a href="scientific.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🔬 Scientific Calculator</a>
+        <a href="percentage.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">% Percentage Calculator</a>
+        <a href="tip.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🍽️ Tip Calculator</a>
+        <a href="discount.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏷️ Discount Calculator</a>
+      </div>
+    </div>
+
+  </div><!-- /calc-card -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card">
+    <h3>Related Calculators</h3>
+    <a class="related-link" href="scientific.html">🔬 Scientific Calculator</a>
+    <a class="related-link" href="percentage.html">% Percentage Calculator</a>
+    <a class="related-link" href="tip.html">🍽️ Tip Calculator</a>
+    <a class="related-link" href="discount.html">🏷️ Discount Calculator</a>
+    <a class="related-link" href="unit-converter.html">💱 Unit Converter</a>
+  </div>
+  <div class="rail-card">
+    <h3>⌨️ Keyboard Tips</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <kbd style="background:var(--gray-100);border:1px solid var(--gray-300);border-radius:3px;padding:1px 5px;font-family:monospace;">*</kbd> = multiply<br>
+      <kbd style="background:var(--gray-100);border:1px solid var(--gray-300);border-radius:3px;padding:1px 5px;font-family:monospace;">/</kbd> = divide<br>
+      <kbd style="background:var(--gray-100);border:1px solid var(--gray-300);border-radius:3px;padding:1px 5px;font-family:monospace;">Enter</kbd> = equals<br>
+      <kbd style="background:var(--gray-100);border:1px solid var(--gray-300);border-radius:3px;padding:1px 5px;font-family:monospace;">Esc</kbd> = clear
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native / Affiliate Ad</div></div>
+</aside>
+
+</div><!-- /page-wrap -->
+
+<nav class="mobile-bottom-nav" aria-label="Quick access"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('standard'); });</script>
+<script>
+var state = makeCalcState();
+var _history = [];
+
+function sd(k) {
+  // Handle backspace
+  if (k === '⌫') {
+    if (state.val.length > 1) state.val = state.val.slice(0, -1);
+    else state.val = '0';
+    document.getElementById('std-disp').textContent = state.val;
+    return;
+  }
+  // Capture expression before equals for history
+  var prevExpr = state.expr;
+  var prevVal  = state.val;
+  calcEngine(state, k, 'std-disp', 'std-expr');
+  // If equals was pressed and result is valid, add to history
+  if (k === '=' && prevExpr && state.val !== 'Error') {
+    addHistory(prevExpr + ' ' + prevVal + ' =', state.val);
+  }
+}
+
+function addHistory(expr, result) {
+  _history.unshift({ expr: expr, result: result });
+  if (_history.length > 20) _history.pop();
+  renderHistory();
+}
+
+function renderHistory() {
+  var list = document.getElementById('history-list');
+  if (!_history.length) {
+    list.innerHTML = '<div class="history-empty">No calculations yet</div>';
+    return;
+  }
+  list.innerHTML = _history.map(function(h) {
+    return '<div class="history-item" onclick="restoreResult(\'' + h.result + '\')">'
+      + '<div class="h-expr">' + h.expr + '</div>'
+      + '<div class="h-result">= ' + h.result + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function restoreResult(val) {
+  state = makeCalcState();
+  state.val = val;
+  document.getElementById('std-disp').textContent = val;
+  document.getElementById('std-expr').textContent = '';
+}
+
+function clearHistory() {
+  _history = [];
+  renderHistory();
+}
+
+document.addEventListener('keydown', function(e) {
+  if (document.activeElement.tagName === 'INPUT') return;
+  var map = {
+    '0':'0','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7','8':'8','9':'9',
+    '+':'+','-':'−','*':'×','/':'÷','Enter':'=','=':'=','.':'.','Escape':'C','Backspace':'⌫','%':'%'
+  };
+  if (map[e.key]) { e.preventDefault(); sd(map[e.key]); }
+});
+</script>
+</body>
+</html>

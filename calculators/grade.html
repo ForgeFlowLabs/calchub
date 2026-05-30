@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Grade Calculator — Test Score & Final Grade (2025)</title>
+<meta name="description" content="Calculate your test score percentage, letter grade, and final course grade with weighted assignments. Free."/>
+<link rel="canonical" href="https://calchub.io/calculators/grade.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.mode-tabs{display:flex;gap:4px;margin-bottom:1.25rem;flex-wrap:wrap;}
+.mode-tab{padding:8px 16px;border-radius:20px;border:1px solid var(--gray-300);background:var(--white);color:var(--gray-600);font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
+.mode-tab.active{background:var(--green);border-color:var(--green);color:#fff;}
+.grade-row{display:flex;gap:8px;align-items:center;margin-bottom:6px;}
+.grade-row input{padding:9px 11px;border:1px solid var(--gray-200);border-radius:var(--radius);font-size:0.875rem;font-family:'Inter',sans-serif;outline:none;}
+.grade-row input:focus{border-color:var(--blue);}
+.grade-scale{width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:1rem;}
+.grade-scale th{background:var(--gray-900);color:#fff;padding:7px 12px;text-align:left;font-size:0.75rem;font-weight:600;}
+.grade-scale td{padding:7px 12px;border-bottom:1px solid var(--gray-100);}
+.grade-scale tr.highlight td{background:var(--green-light);font-weight:700;color:var(--green);}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#everyday" class="active">Everyday</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#everyday">Everyday</a><span class="breadcrumb-sep">›</span><span>Grade Calculator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link active" href="grade.html"><span class="sidebar-icon">📝</span>Grade</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e6f4ea;">📝</div>
+      <div><h1 class="calc-card-title">Grade Calculator</h1><p class="calc-card-desc">Calculate your test score percentage, letter grade, and weighted final course grade.</p></div>
+    </div>
+
+    <div class="mode-tabs">
+      <button class="mode-tab active" id="tab-score" onclick="setMode('score',this)">📊 Test Score</button>
+      <button class="mode-tab" id="tab-final" onclick="setMode('final',this)">🏆 Final Grade</button>
+      <button class="mode-tab" id="tab-needed" onclick="setMode('needed',this)">🎯 Grade Needed</button>
+    </div>
+
+    <!-- TEST SCORE MODE -->
+    <div id="inputs-score">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Points Earned</label>
+          <input type="number" id="sc_earned" value="85" min="0" oninput="calcScore()"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Total Points Possible</label>
+          <input type="number" id="sc_total" value="100" min="1" oninput="calcScore()"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINAL GRADE MODE -->
+    <div id="inputs-final" style="display:none;">
+      <div id="grade-rows-header" style="display:flex;gap:8px;font-size:0.72rem;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">
+        <span style="flex:2;">Assignment</span>
+        <span style="width:90px;text-align:center;">Score %</span>
+        <span style="width:80px;text-align:center;">Weight %</span>
+        <span style="width:36px;"></span>
+      </div>
+      <div id="grade-rows"></div>
+      <button class="btn-secondary" onclick="addGradeRow()" style="width:100%;margin-top:0.5rem;">+ Add Assignment</button>
+    </div>
+
+    <!-- GRADE NEEDED MODE -->
+    <div id="inputs-needed" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Current Grade</label>
+          <div class="input-wrap"><input type="number" id="ng_current" class="has-suffix" value="78" min="0" max="100" oninput="calcNeeded()"/><span class="input-suffix">%</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Desired Final Grade</label>
+          <div class="input-wrap"><input type="number" id="ng_desired" class="has-suffix" value="85" min="0" max="100" oninput="calcNeeded()"/><span class="input-suffix">%</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Final Exam Weight</label>
+          <div class="input-wrap"><input type="number" id="ng_weight" class="has-suffix" value="30" min="1" max="100" oninput="calcNeeded()"/><span class="input-suffix">%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row" id="calc-btn-row">
+      <button class="btn-primary" onclick="calcGrade()">Calculate ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <div class="result-box" id="result">
+      <div class="result-primary">
+        <span class="result-primary-label" id="r-label">Score</span>
+        <span class="result-primary-value" id="r-primary">—</span>
+      </div>
+      <div class="result-chips" id="r-chips" style="margin-bottom:1rem;"></div>
+      <div class="result-row"><span class="result-row-label" id="r2-label">Letter Grade</span><span class="result-row-value" id="r-letter">—</span></div>
+      <div class="result-row"><span class="result-row-label" id="r3-label">Grade Points</span><span class="result-row-value" id="r-gpa">—</span></div>
+
+      <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin:1.25rem 0 0.5rem;">Grading Scale Reference</div>
+      <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--gray-200);">
+        <table class="grade-scale" id="grade-scale-table">
+          <thead><tr><th>Letter</th><th>Percentage</th><th>GPA Points</th><th>Description</th></tr></thead>
+          <tbody id="grade-scale-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Grade Calculator</h2>
+      <p style="color:var(--gray-700);line-height:1.8;">Calculate your test score percentage and letter grade, find your weighted final course grade across multiple assignments, or figure out what score you need on the final exam to achieve your target grade.</p>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="gpa.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🎓 GPA Calculator</a>
+        <a href="percentage.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">% Percentage Calculator</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="gpa.html">🎓 GPA Calculator</a>
+    <a class="related-link" href="percentage.html">% Percentage</a>
+    <a class="related-link" href="standard.html">🔢 Standard Calc</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('grade'); buildScaleTable(); addGradeRow('Midterm',78,30); addGradeRow('Homework',92,20); addGradeRow('Final Exam',0,30); calcScore(); });</script>
+<script>
+var _mode='score';
+var SCALE=[{letter:'A+',min:97,gpa:4.0,desc:'Outstanding'},{letter:'A',min:93,gpa:4.0,desc:'Excellent'},{letter:'A-',min:90,gpa:3.7,desc:'Very Good'},{letter:'B+',min:87,gpa:3.3,desc:'Good'},{letter:'B',min:83,gpa:3.0,desc:'Above Average'},{letter:'B-',min:80,gpa:2.7,desc:'Slightly Above Avg'},{letter:'C+',min:77,gpa:2.3,desc:'Average'},{letter:'C',min:73,gpa:2.0,desc:'Satisfactory'},{letter:'C-',min:70,gpa:1.7,desc:'Passing'},{letter:'D+',min:67,gpa:1.3,desc:'Below Average'},{letter:'D',min:60,gpa:1.0,desc:'Minimum Passing'},{letter:'F',min:0,gpa:0.0,desc:'Failing'}];
+
+function setMode(m,btn){ _mode=m; document.querySelectorAll('.mode-tab').forEach(function(b){b.classList.remove('active');}); btn.classList.add('active'); document.getElementById('inputs-score').style.display=m==='score'?'':'none'; document.getElementById('inputs-final').style.display=m==='final'?'':'none'; document.getElementById('inputs-needed').style.display=m==='needed'?'':'none'; document.getElementById('result').classList.remove('show'); }
+
+function getLetterGrade(pct){ for(var i=0;i<SCALE.length;i++){ if(pct>=SCALE[i].min) return SCALE[i]; } return SCALE[SCALE.length-1]; }
+
+function buildScaleTable(activePct){
+  document.getElementById('grade-scale-body').innerHTML=SCALE.map(function(s){
+    var isActive=activePct!=null&&activePct>=s.min&&(SCALE.indexOf(s)===0||activePct<SCALE[SCALE.indexOf(s)-1].min);
+    return '<tr'+(isActive?' class="highlight"':'')+'><td>'+s.letter+'</td><td>'+s.min+'%+</td><td>'+s.gpa.toFixed(1)+'</td><td>'+s.desc+'</td></tr>';
+  }).join('');
+}
+
+function showGradeResult(pct){
+  var g=getLetterGrade(pct);
+  var chipClass=g.gpa>=3.5?'chip-green':g.gpa>=2.7?'chip-blue':g.gpa>=2.0?'chip-yellow':'chip-red';
+  setText('r-primary', pct.toFixed(1)+'%');
+  setText('r-letter',  g.letter+' ('+g.desc+')');
+  setText('r-gpa',     g.gpa.toFixed(1)+' GPA points');
+  document.getElementById('r-chips').innerHTML='<span class="chip '+chipClass+'">'+g.letter+' — '+pct.toFixed(1)+'%</span>';
+  buildScaleTable(pct);
+  showResult('result');
+}
+
+function calcScore(){
+  var earned=+document.getElementById('sc_earned').value||0;
+  var total =+document.getElementById('sc_total').value||1;
+  var pct=(earned/total)*100;
+  setText('r-label','Score');
+  setText('r2-label','Letter Grade');
+  setText('r3-label','GPA Points');
+  showGradeResult(pct);
+}
+
+function addGradeRow(name,score,weight){
+  var row=document.createElement('div'); row.className='grade-row';
+  row.innerHTML='<input type="text" placeholder="Assignment name" value="'+(name||'')+'" style="flex:2;"/>'
+    +'<input type="number" placeholder="Score %" value="'+(score||'')+'" min="0" max="100" style="width:90px;" title="Score %"/>'
+    +'<input type="number" placeholder="Weight %" value="'+(weight||'')+'" min="0" max="100" style="width:80px;" title="Weight %"/>'
+    +'<button onclick="this.parentElement.remove()" style="background:var(--red-light);color:var(--red);border:none;border-radius:var(--radius);padding:9px 11px;cursor:pointer;">✕</button>';
+  document.getElementById('grade-rows').appendChild(row);
+}
+
+function calcGrade(){
+  if(_mode==='score'){ calcScore(); return; }
+  if(_mode==='needed'){ calcNeeded(); return; }
+  var rows=document.getElementById('grade-rows').children;
+  var totalWeight=0,weightedSum=0;
+  Array.from(rows).forEach(function(row){
+    var score =+row.querySelectorAll('input')[1].value||0;
+    var weight=+row.querySelectorAll('input')[2].value||0;
+    weightedSum+=score*weight; totalWeight+=weight;
+  });
+  if(!totalWeight){ alert('Add at least one assignment.'); return; }
+  var avg=weightedSum/totalWeight;
+  setText('r-label','Weighted Final Grade');
+  setText('r2-label','Letter Grade');
+  setText('r3-label','GPA Points');
+  showGradeResult(avg);
+}
+
+function calcNeeded(){
+  var current=+document.getElementById('ng_current').value||0;
+  var desired=+document.getElementById('ng_desired').value||0;
+  var weight =+document.getElementById('ng_weight').value||30;
+  var currentWeight=100-weight;
+  var needed=(desired-current*(currentWeight/100))/(weight/100);
+  setText('r-label','Score Needed on Final');
+  setText('r-primary',needed.toFixed(1)+'%');
+  var g=getLetterGrade(needed);
+  setText('r-letter',needed>100?'Impossible — current grade too low':needed<0?'Any score will do':g.letter+' ('+g.desc+')');
+  setText('r-gpa',needed>100?'Raise current grade first':g.gpa.toFixed(1)+' GPA points');
+  document.getElementById('r-chips').innerHTML='';
+  buildScaleTable(needed);
+  showResult('result');
+}
+
+function resetForm(){ document.getElementById('result').classList.remove('show'); }
+</script>
+</body></html>

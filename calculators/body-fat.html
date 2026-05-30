@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Body Fat Calculator — US Navy Method & Body Fat Percentage Chart (2025)</title>
+<meta name="description" content="Estimate your body fat percentage using the US Navy method. See fat mass, lean mass, and your category. Imperial and metric. Free, accurate."/>
+<meta property="og:title" content="Body Fat Calculator — US Navy Method"/>
+<meta property="og:description" content="Calculate your body fat percentage with waist, neck and hip measurements. See fat mass, lean mass and fitness category. Free."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/calculators/body-fat.html"/>
+<link rel="canonical" href="https://calchub.com/calculators/body-fat.html"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Body Fat Calculator","description":"Estimate body fat percentage using the US Navy circumference method","url":"https://calchub.com/calculators/body-fat.html","applicationCategory":"HealthApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"How accurate is the Navy body fat method?","acceptedAnswer":{"@type":"Answer","text":"The US Navy method is typically accurate to within 3–4% of DEXA scan results for most people. It's more accurate than BMI and more accessible than skinfold calipers or hydrostatic weighing."}},
+  {"@type":"Question","name":"What is a healthy body fat percentage?","acceptedAnswer":{"@type":"Answer","text":"For men, 8–19% is considered healthy (fitness to average range). For women, 21–33% is healthy. Athletes typically have 6–13% (men) or 14–20% (women). Below essential fat levels (2–5% for men, 10–13% for women) is dangerous."}}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.unit-toggle { display:flex; gap:0; margin-bottom:1.25rem; border-radius:22px; overflow:hidden; border:1px solid var(--gray-300); width:fit-content; }
+.unit-btn { padding:8px 22px; font-size:0.85rem; font-weight:600; cursor:pointer; border:none; background:var(--white); color:var(--gray-600); font-family:'Inter',sans-serif; transition:all 0.15s; }
+.unit-btn.active { background:var(--blue); color:#fff; }
+
+.sex-toggle { display:flex; gap:8px; margin-bottom:1.25rem; }
+.sex-btn { padding:8px 24px; border-radius:22px; border:1px solid var(--gray-300); background:var(--white); color:var(--gray-600); font-size:0.85rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.sex-btn.active { background:var(--purple); border-color:var(--purple); color:#fff; }
+
+.measure-guide { background:var(--blue-light); border:1px solid #c5d8fb; border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-bottom:1.25rem; font-size:0.82rem; color:var(--gray-700); }
+.measure-guide h4 { font-size:0.82rem; font-weight:700; color:var(--blue); margin-bottom:0.5rem; }
+.measure-guide ul { padding-left:1.2rem; line-height:1.9; }
+
+.bf-scale { margin:1.25rem 0 0.5rem; }
+.bf-scale-bar { height:14px; border-radius:7px; position:relative; }
+.bf-scale-needle { position:absolute; top:-5px; width:4px; height:24px; background:var(--gray-900); border-radius:2px; transform:translateX(-50%); transition:left 0.5s ease; }
+.bf-scale-labels { display:flex; justify-content:space-between; font-size:0.68rem; color:var(--gray-500); margin-top:6px; font-family:'JetBrains Mono',monospace; }
+
+.bf-table { width:100%; border-collapse:collapse; font-size:0.82rem; margin-top:1rem; }
+.bf-table th { background:var(--gray-900); color:#fff; padding:9px 14px; text-align:left; font-size:0.75rem; font-weight:600; letter-spacing:0.04em; }
+.bf-table td { padding:9px 14px; border-bottom:1px solid var(--gray-100); }
+.bf-table tr:last-child td { border-bottom:none; }
+.bf-table tr.highlight td { font-weight:700; }
+.bf-dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:7px; }
+
+.composition-bars { margin-top:1.25rem; }
+.comp-bar-row { margin-bottom:12px; }
+.comp-bar-label { display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px; }
+.comp-bar-label span:first-child { color:var(--gray-600); font-weight:500; }
+.comp-bar-label span:last-child { font-weight:700; font-family:'JetBrains Mono',monospace; }
+.comp-bar-track { height:10px; background:var(--gray-100); border-radius:5px; overflow:hidden; }
+.comp-bar-fill { height:100%; border-radius:5px; transition:width 0.6s ease; }
+</style>
+</head>
+<body>
+
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance">Finance</a><a href="../index.html#health" class="active">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span class="breadcrumb-sep">›</span>
+  <a href="../index.html#health">Health</a><span class="breadcrumb-sep">›</span>
+  <span>Body Fat Calculator</span>
+</nav>
+
+<div class="page-wrap">
+<aside class="sidebar" aria-label="Health calculators">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link active" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 Leaderboard — Google AdSense</div></div>
+
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#f3e8fd;">📊</div>
+      <div>
+        <h1 class="calc-card-title">Body Fat Calculator</h1>
+        <p class="calc-card-desc">Estimate your body fat percentage using the US Navy circumference method. See your fat mass, lean mass, and fitness category.</p>
+      </div>
+    </div>
+
+    <!-- SEX TOGGLE -->
+    <div class="sex-toggle">
+      <button class="sex-btn active" id="btn-male" onclick="setSex('male')">♂ Male</button>
+      <button class="sex-btn" id="btn-female" onclick="setSex('female')">♀ Female</button>
+    </div>
+
+    <!-- UNIT TOGGLE -->
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="btn-imperial" onclick="setUnit('imperial')">🇺🇸 Imperial (in)</button>
+      <button class="unit-btn" id="btn-metric" onclick="setUnit('metric')">🌍 Metric (cm)</button>
+    </div>
+
+    <!-- MEASUREMENT GUIDE -->
+    <div class="measure-guide">
+      <h4>📐 How to measure correctly</h4>
+      <ul>
+        <li><strong>Waist:</strong> Measure at the narrowest point (men) or at the navel (women), relaxed — not sucked in</li>
+        <li><strong>Neck:</strong> Measure just below the larynx (Adam's apple), sloping slightly downward</li>
+        <li id="hip-guide"><strong>Hips (women):</strong> Measure at the widest point of the hips/buttocks</li>
+      </ul>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="bf_h">Height</label>
+        <div id="grp-height-imp">
+          <div style="display:flex;gap:8px;">
+            <div class="input-wrap" style="flex:1;"><input type="number" id="bf_ft" class="has-suffix" placeholder="5" min="1" max="8"/><span class="input-suffix">ft</span></div>
+            <div class="input-wrap" style="flex:1;"><input type="number" id="bf_in" class="has-suffix" placeholder="10" min="0" max="11"/><span class="input-suffix">in</span></div>
+          </div>
+        </div>
+        <div id="grp-height-met" style="display:none;">
+          <div class="input-wrap"><input type="number" id="bf_cm" class="has-suffix" placeholder="178" min="50"/><span class="input-suffix">cm</span></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bf_wt">Body Weight <span style="font-weight:400;color:var(--gray-400);font-size:0.72rem;">(for fat/lean mass)</span></label>
+        <div class="input-wrap"><input type="number" id="bf_wt" class="has-suffix" placeholder="165"/><span class="input-suffix" id="wt-unit">lbs</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Waist</label>
+        <div class="input-wrap"><input type="number" id="bf_waist" class="has-suffix" placeholder="34" step="0.5"/><span class="input-suffix" id="meas-unit">in</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Neck</label>
+        <div class="input-wrap"><input type="number" id="bf_neck" class="has-suffix" placeholder="15" step="0.5"/><span class="input-suffix" id="meas-unit2">in</span></div>
+      </div>
+      <div class="form-group full" id="grp-hip">
+        <label class="form-label">Hips <span style="font-weight:400;color:var(--gray-500);font-size:0.78rem;">(women only)</span></label>
+        <div class="input-wrap" style="max-width:200px;"><input type="number" id="bf_hip" class="has-suffix" placeholder="38" step="0.5"/><span class="input-suffix" id="meas-unit3">in</span></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcBF()">Calculate Body Fat ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="result-box" id="result">
+
+      <div class="result-primary">
+        <span class="result-primary-label">Estimated Body Fat</span>
+        <span class="result-primary-value" id="r-bf">—</span>
+      </div>
+
+      <div class="result-row"><span class="result-row-label">Category</span><span class="result-row-value" id="r-cat">—</span></div>
+      <div class="result-row"><span class="result-row-label">Fat Mass</span><span class="result-row-value color-red" id="r-fat">—</span></div>
+      <div class="result-row"><span class="result-row-label">Lean Mass</span><span class="result-row-value color-green" id="r-lean">—</span></div>
+      <div class="result-row"><span class="result-row-label">Fat to Lose for Next Category</span><span class="result-row-value" id="r-to-next">—</span></div>
+
+      <div class="result-chips" id="r-chips" style="margin-bottom:1rem;"></div>
+
+      <!-- BF SCALE -->
+      <div class="bf-scale">
+        <div class="bf-scale-bar" id="bf-scale-bar">
+          <div class="bf-scale-needle" id="bf-needle" style="left:0%;"></div>
+        </div>
+        <div class="bf-scale-labels" id="bf-scale-labels"></div>
+      </div>
+
+      <!-- COMPOSITION BARS -->
+      <div class="composition-bars" id="comp-bars" style="display:none;">
+        <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin-bottom:0.75rem;">Body Composition</div>
+        <div class="comp-bar-row">
+          <div class="comp-bar-label"><span>Fat Mass</span><span id="cb-fat">—</span></div>
+          <div class="comp-bar-track"><div class="comp-bar-fill" id="cb-fat-bar" style="background:#ea4335;width:0%;"></div></div>
+        </div>
+        <div class="comp-bar-row">
+          <div class="comp-bar-label"><span>Lean Mass</span><span id="cb-lean">—</span></div>
+          <div class="comp-bar-track"><div class="comp-bar-fill" id="cb-lean-bar" style="background:#34a853;width:0%;"></div></div>
+        </div>
+      </div>
+
+      <!-- CATEGORY TABLE -->
+      <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--gray-200);margin-top:1.25rem;">
+        <table class="bf-table">
+          <thead><tr><th>Category</th><th>Men</th><th>Women</th></tr></thead>
+          <tbody id="bf-table-body"></tbody>
+        </table>
+      </div>
+
+    </div><!-- /result-box -->
+
+    <div class="disclaimer">⚠️ The Navy method estimates are typically within 3–4% of DEXA scan results. All body fat calculations are estimates. Consult a healthcare professional for clinical body composition assessment.</div>
+
+    <div class="info-block">
+      <h2 style="font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.75rem;">What Is Body Fat Percentage?</h2>
+      <p>Body fat percentage is the proportion of your total body weight that is fat tissue. The remainder — muscle, bone, organs, water, and connective tissue — is called lean mass. Unlike BMI, body fat percentage directly measures body composition, making it a more useful health indicator for athletes and people with high muscle mass.</p>
+
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin:1.25rem 0 0.5rem;">The US Navy Method Formula</h3>
+      <p>This calculator uses the US Navy circumference method, developed for military fitness assessment:</p>
+      <div class="formula">Men: 86.010×log₁₀(waist−neck) − 70.041×log₁₀(height) + 36.76</div>
+      <div class="formula" style="margin-top:8px;">Women: 163.205×log₁₀(waist+hip−neck) − 97.684×log₁₀(height) − 78.387</div>
+      <p style="margin-top:0.5rem;">All measurements in inches (or converted from cm). The method is validated against hydrostatic weighing and DEXA scan, with a typical error of ±3–4%.</p>
+
+      <div class="faq" style="margin-top:1.5rem;">
+        <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Frequently Asked Questions</h3>
+
+        <div class="faq-item">
+          <div class="faq-q">How accurate is the Navy body fat method? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">The US Navy method is typically accurate to within 3–4 percentage points of a DEXA scan for most people. It's more accurate than BMI (which doesn't measure fat at all) and more accessible than skinfold calipers (which require trained technique) or hydrostatic weighing (which requires a special tank). The main source of error is measurement technique — ensure you measure correctly for best accuracy.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is a healthy body fat percentage? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">For men, the fitness range is 8–19% body fat. For women, 21–33% is considered healthy. Athletes typically have lower percentages: 6–13% for male athletes and 14–20% for female athletes. Going below essential fat levels (2–5% for men, 10–13% for women) is dangerous and associated with hormonal disruption, immune dysfunction, and organ damage.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Why do women have higher body fat than men at the same fitness level? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Women naturally carry more body fat due to higher estrogen levels and physiological requirements — particularly for reproductive health. The essential fat required for basic physiological function is 10–13% in women vs. 2–5% in men. This is why female body fat categories are set 8–10 percentage points higher than male categories across all fitness levels.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is the most accurate way to measure body fat? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">DEXA (Dual-Energy X-ray Absorptiometry) scan is considered the gold standard, with accuracy to within 1–2%. It also measures bone density and shows regional fat distribution. Hydrostatic weighing (underwater weighing) is similarly accurate. Skinfold calipers done by an expert are within 3–5%. Smart scales using bioelectrical impedance (BIA) are the least accurate, often off by 5–8%. The Navy method falls between calipers and DEXA in accuracy and accessibility.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Can I lower my body fat percentage without losing weight? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Yes — this is called body recomposition. By maintaining a slight caloric deficit (or at maintenance) while doing resistance training, you can lose fat while building or maintaining muscle. The scale may stay the same or even increase, while body fat percentage drops. Recomposition is slower than dedicated cutting but preserves more muscle. It works best for beginners, people returning after a break, and those who are slightly overweight.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Health Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:0.5rem;">
+        <a href="bmi.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">⚖️ BMI Calculator</a>
+        <a href="calorie.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🍎 Calorie Calculator</a>
+        <a href="pregnancy.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🤱 Pregnancy Due Date</a>
+        <a href="age.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🎂 Age Calculator</a>
+      </div>
+    </div>
+
+  </div><!-- /calc-card -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card">
+    <h3>Related Calculators</h3>
+    <a class="related-link" href="bmi.html">⚖️ BMI Calculator</a>
+    <a class="related-link" href="calorie.html">🍎 Calorie Calculator</a>
+    <a class="related-link" href="pregnancy.html">🤱 Due Date Calculator</a>
+    <a class="related-link" href="age.html">🎂 Age Calculator</a>
+  </div>
+  <div class="rail-card">
+    <h3>📊 Healthy BF% Ranges</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:2;">
+      <strong>Men:</strong><br>
+      Essential: 2–5%<br>
+      Athletic: 6–13%<br>
+      Fitness: 14–17%<br>
+      Average: 18–24%<br>
+      Obese: 25%+<br><br>
+      <strong>Women:</strong><br>
+      Essential: 10–13%<br>
+      Athletic: 14–20%<br>
+      Fitness: 21–24%<br>
+      Average: 25–31%<br>
+      Obese: 32%+
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native / Affiliate Ad</div></div>
+</aside>
+
+</div><!-- /page-wrap -->
+
+<nav class="mobile-bottom-nav" aria-label="Quick access"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('body-fat'); buildScaleAndTable('male'); });</script>
+<script>
+var _sex = 'male';
+var _unit = 'imperial';
+
+var BF_CATS = {
+  male:   [{label:'Essential Fat',color:'#5c6bc0',min:0, max:5 },{label:'Athletic',color:'#26a69a',min:5, max:13},{label:'Fitness',color:'#66bb6a',min:13,max:17},{label:'Average',color:'#ffa726',min:17,max:25},{label:'Obese',color:'#ef5350',min:25,max:100}],
+  female: [{label:'Essential Fat',color:'#5c6bc0',min:0, max:13},{label:'Athletic',color:'#26a69a',min:13,max:20},{label:'Fitness',color:'#66bb6a',min:20,max:24},{label:'Average',color:'#ffa726',min:24,max:32},{label:'Obese',color:'#ef5350',min:32,max:100}]
+};
+
+function setSex(s) {
+  _sex = s;
+  document.getElementById('btn-male').classList.toggle('active', s === 'male');
+  document.getElementById('btn-female').classList.toggle('active', s === 'female');
+  document.getElementById('grp-hip').style.display = s === 'female' ? '' : 'none';
+  document.getElementById('hip-guide').style.display = s === 'female' ? '' : 'none';
+  buildScaleAndTable(s);
+  document.getElementById('result').classList.remove('show');
+}
+
+function setUnit(u) {
+  _unit = u;
+  document.getElementById('btn-imperial').classList.toggle('active', u === 'imperial');
+  document.getElementById('btn-metric').classList.toggle('active', u === 'metric');
+  var imp = u === 'imperial';
+  document.getElementById('grp-height-imp').style.display = imp ? '' : 'none';
+  document.getElementById('grp-height-met').style.display = imp ? 'none' : '';
+  var suffix = imp ? 'in' : 'cm';
+  ['meas-unit','meas-unit2','meas-unit3'].forEach(function(id){ document.getElementById(id).textContent = suffix; });
+  document.getElementById('wt-unit').textContent = imp ? 'lbs' : 'kg';
+  document.getElementById('result').classList.remove('show');
+}
+
+function buildScaleAndTable(sex) {
+  var cats = BF_CATS[sex];
+  // Gradient scale bar
+  var stops = cats.map(function(c,i){
+    var pctStart = (c.min / 50 * 100).toFixed(0);
+    var pctEnd   = (Math.min(c.max,50) / 50 * 100).toFixed(0);
+    return c.color + ' ' + pctStart + '%, ' + c.color + ' ' + pctEnd + '%';
+  });
+  document.getElementById('bf-scale-bar').style.background = 'linear-gradient(to right, ' + stops.join(', ') + ')';
+
+  var labels = cats.map(function(c){ return c.min + '%'; });
+  labels.push('50%+');
+  document.getElementById('bf-scale-labels').innerHTML = labels.map(function(l){ return '<span>' + l + '</span>'; }).join('');
+
+  // Category table
+  document.getElementById('bf-table-body').innerHTML = cats.map(function(c){
+    var mRange = BF_CATS.male.find(function(x){return x.label===c.label;});
+    var fRange = BF_CATS.female.find(function(x){return x.label===c.label;});
+    return '<tr><td><span class="bf-dot" style="background:' + c.color + '"></span>' + c.label + '</td>'
+      + '<td>' + (mRange ? mRange.min + '–' + (mRange.max >= 100 ? '40+' : mRange.max) + '%' : '—') + '</td>'
+      + '<td>' + (fRange ? fRange.min + '–' + (fRange.max >= 100 ? '45+' : fRange.max) + '%' : '—') + '</td>'
+      + '</tr>';
+  }).join('');
+}
+
+function calcBF() {
+  var wt    = +document.getElementById('bf_wt').value    || 0;
+  var waist = +document.getElementById('bf_waist').value || 0;
+  var neck  = +document.getElementById('bf_neck').value  || 0;
+  var hIn, wtLbs;
+
+  if (_unit === 'imperial') {
+    var ft = +document.getElementById('bf_ft').value || 0;
+    var inc = +document.getElementById('bf_in').value || 0;
+    hIn = ft * 12 + inc;
+    wtLbs = wt;
+  } else {
+    hIn   = (+document.getElementById('bf_cm').value || 0) / 2.54;
+    waist = waist / 2.54;
+    neck  = neck  / 2.54;
+    wtLbs = wt * 2.20462;
+  }
+
+  if (!hIn || !waist || !neck) { alert('Please enter height, waist, and neck measurements.'); return; }
+
+  var bf;
+  if (_sex === 'male') {
+    if (waist <= neck) { alert('Waist must be greater than neck measurement.'); return; }
+    bf = 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(hIn) + 36.76;
+  } else {
+    var hipIn = _unit === 'imperial'
+      ? +document.getElementById('bf_hip').value || 0
+      : (+document.getElementById('bf_hip').value || 0) / 2.54;
+    if (!hipIn) { alert('Please enter your hip measurement.'); return; }
+    if ((waist + hipIn) <= neck) { alert('Please check your measurements.'); return; }
+    bf = 163.205 * Math.log10(waist + hipIn - neck) - 97.684 * Math.log10(hIn) - 78.387;
+  }
+
+  bf = Math.max(2, Math.min(60, bf));
+  var cats = BF_CATS[_sex];
+  var cat = cats[cats.length - 1];
+  for (var i = 0; i < cats.length; i++) {
+    if (bf < cats[i].max) { cat = cats[i]; break; }
+  }
+
+  var chipColors = { 'Essential Fat':'chip-purple','Athletic':'chip-green','Fitness':'chip-green','Average':'chip-yellow','Obese':'chip-red' };
+  setText('r-bf',  bf.toFixed(1) + '%');
+  setText('r-cat', cat.label);
+  document.getElementById('r-chips').innerHTML = '<span class="chip ' + (chipColors[cat.label]||'chip-blue') + '">' + cat.label + '</span>';
+
+  // Fat & lean mass
+  if (wtLbs > 0) {
+    var fatLbs  = wtLbs * bf / 100;
+    var leanLbs = wtLbs - fatLbs;
+    var fatDisp  = _unit === 'imperial' ? fatLbs.toFixed(1)  + ' lbs' : (fatLbs  / 2.20462).toFixed(1) + ' kg';
+    var leanDisp = _unit === 'imperial' ? leanLbs.toFixed(1) + ' lbs' : (leanLbs / 2.20462).toFixed(1) + ' kg';
+    setText('r-fat',  fatDisp);
+    setText('r-lean', leanDisp);
+
+    // Composition bars
+    document.getElementById('comp-bars').style.display = '';
+    setText('cb-fat',  fatDisp);
+    setText('cb-lean', leanDisp);
+    document.getElementById('cb-fat-bar').style.width  = bf.toFixed(1) + '%';
+    document.getElementById('cb-lean-bar').style.width = (100 - bf).toFixed(1) + '%';
+  } else {
+    setText('r-fat', '—'); setText('r-lean', '—');
+    document.getElementById('comp-bars').style.display = 'none';
+  }
+
+  // Fat to lose for next category
+  var nextCatIdx = cats.indexOf(cat) - 1;
+  if (nextCatIdx >= 0 && wtLbs > 0) {
+    var targetBF = cats[nextCatIdx].max - 0.1;
+    var fatToLoseLbs = wtLbs * (bf - targetBF) / 100;
+    var ftlDisp = _unit === 'imperial' ? fatToLoseLbs.toFixed(1) + ' lbs' : (fatToLoseLbs / 2.20462).toFixed(1) + ' kg';
+    setText('r-to-next', ftlDisp + ' to reach ' + cats[nextCatIdx].label);
+  } else if (cat === cats[0]) {
+    setText('r-to-next', 'Already at ' + cat.label);
+  } else {
+    setText('r-to-next', '—');
+  }
+
+  // Scale needle (0–50% range)
+  var needlePct = Math.min(100, (bf / 50) * 100);
+  document.getElementById('bf-needle').style.left = needlePct.toFixed(1) + '%';
+
+  // Highlight table row
+  document.querySelectorAll('#bf-table-body tr').forEach(function(tr, i){
+    tr.classList.toggle('highlight', cats[i] === cat);
+    if (cats[i] === cat) tr.style.background = cat.color + '18';
+    else tr.style.background = '';
+  });
+
+  showResult('result');
+}
+
+function resetForm() {
+  ['bf_ft','bf_in','bf_cm','bf_wt','bf_waist','bf_neck','bf_hip'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body>
+</html>

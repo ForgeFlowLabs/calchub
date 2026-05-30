@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Scientific Calculator — Free Online with Trig, Log & Exponents</title>
+<meta name="description" content="Free online scientific calculator with trigonometry, logarithms, exponents, square root, factorial, and keyboard support."/>
+<meta property="og:title" content="Scientific Calculator — Trig, Log, Exponents & More"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/calculators/scientific.html"/>
+<link rel="canonical" href="https://calchub.com/calculators/scientific.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.sci-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; margin-bottom:8px; }
+.sci-grid-basic { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+.sci-label { font-size:0.65rem; color:var(--gray-400); text-align:center; margin-bottom:4px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; }
+.angle-toggle { display:flex; gap:4px; margin-bottom:0.75rem; }
+.angle-btn { padding:5px 14px; border-radius:16px; border:1px solid var(--gray-300); background:var(--white); color:var(--gray-600); font-size:0.78rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.angle-btn.active { background:var(--purple); border-color:var(--purple); color:#fff; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math" class="active">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#math">Math</a><span class="breadcrumb-sep">›</span><span>Scientific Calculator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link active" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#f3e8fd;">🔬</div>
+      <div><h1 class="calc-card-title">Scientific Calculator</h1><p class="calc-card-desc">Trigonometry, logarithms, exponents, factorial, and more. Full keyboard support.</p></div>
+    </div>
+
+    <div class="angle-toggle">
+      <button class="angle-btn active" id="btn-deg" onclick="setAngle('deg')">DEG</button>
+      <button class="angle-btn" id="btn-rad" onclick="setAngle('rad')">RAD</button>
+    </div>
+
+    <div class="std-display">
+      <div class="std-expr" id="sci-expr"></div>
+      <div class="std-result" id="sci-disp">0</div>
+    </div>
+
+    <!-- Scientific functions row 1 -->
+    <div class="sci-label" style="margin-top:0.75rem;">Functions</div>
+    <div class="sci-grid">
+      <button class="std-btn btn-fn" onclick="sciF('sin')">sin</button>
+      <button class="std-btn btn-fn" onclick="sciF('cos')">cos</button>
+      <button class="std-btn btn-fn" onclick="sciF('tan')">tan</button>
+      <button class="std-btn btn-fn" onclick="sciF('log')">log</button>
+      <button class="std-btn btn-fn" onclick="sciF('ln')">ln</button>
+      <button class="std-btn btn-fn" onclick="sciF('sqrt')">√</button>
+      <button class="std-btn btn-fn" onclick="sciF('sq')">x²</button>
+      <button class="std-btn btn-fn" onclick="sciF('cube')">x³</button>
+      <button class="std-btn btn-fn" onclick="sciF('inv')">1/x</button>
+      <button class="std-btn btn-fn" onclick="sciF('abs')" title="Absolute value">|x|</button>
+      <button class="std-btn btn-fn" onclick="sciF('pi')">π</button>
+      <button class="std-btn btn-fn" onclick="sciF('e')">e</button>
+      <button class="std-btn btn-fn" onclick="sciF('fact')">n!</button>
+      <button class="std-btn btn-fn" onclick="sciF('floor')">⌊x⌋</button>
+      <button class="std-btn btn-fn" onclick="sciF('ceil')">⌈x⌉</button>
+    </div>
+
+    <!-- Basic calculator grid -->
+    <div class="sci-label" style="margin-top:0.75rem;">Basic</div>
+    <div class="sci-grid-basic">
+      <button class="std-btn btn-clr"  onclick="ssd('C')">C</button>
+      <button class="std-btn btn-op"   onclick="ssd('⌫')">⌫</button>
+      <button class="std-btn btn-op"   onclick="ssd('%')">%</button>
+      <button class="std-btn btn-op"   onclick="ssd('÷')">÷</button>
+      <button class="std-btn btn-num"  onclick="ssd('7')">7</button>
+      <button class="std-btn btn-num"  onclick="ssd('8')">8</button>
+      <button class="std-btn btn-num"  onclick="ssd('9')">9</button>
+      <button class="std-btn btn-op"   onclick="ssd('×')">×</button>
+      <button class="std-btn btn-num"  onclick="ssd('4')">4</button>
+      <button class="std-btn btn-num"  onclick="ssd('5')">5</button>
+      <button class="std-btn btn-num"  onclick="ssd('6')">6</button>
+      <button class="std-btn btn-op"   onclick="ssd('−')">−</button>
+      <button class="std-btn btn-num"  onclick="ssd('1')">1</button>
+      <button class="std-btn btn-num"  onclick="ssd('2')">2</button>
+      <button class="std-btn btn-num"  onclick="ssd('3')">3</button>
+      <button class="std-btn btn-op"   onclick="ssd('+')">+</button>
+      <button class="std-btn btn-op"   onclick="ssd('+/-')">±</button>
+      <button class="std-btn btn-num"  onclick="ssd('0')">0</button>
+      <button class="std-btn btn-num"  onclick="ssd('.')">.</button>
+      <button class="std-btn btn-eq"   onclick="ssd('=')">=</button>
+    </div>
+    <p style="font-size:0.72rem;color:var(--gray-400);margin-top:0.75rem;">Trig functions use <strong>degrees</strong> by default. Toggle to RAD above for radians.</p>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.5rem;">Scientific Calculator</h2>
+      <p>This free scientific calculator supports trigonometric functions (sin, cos, tan), logarithms (log base 10, natural log), exponents (x², x³), square root, factorial, absolute value, floor/ceiling, and the constants π and e. Trig functions use degrees by default — toggle to RAD for radians.</p>
+      <div class="faq" style="margin-top:1rem;">
+        <div class="faq-item">
+          <div class="faq-q">When should I use RAD vs DEG? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Use DEG (degrees) for most everyday calculations and geometry (a full circle = 360°). Use RAD (radians) for calculus, physics, and engineering — most mathematical formulas assume radians. One full circle = 2π radians ≈ 6.283.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What is log vs ln? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">log (or log₁₀) is the logarithm base 10 — used in pH, decibels, and the Richter scale. ln is the natural logarithm (base e ≈ 2.718) — used in calculus, compound interest, and exponential growth. To convert: log(x) = ln(x) / ln(10) ≈ ln(x) / 2.303.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="standard.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🔢 Standard Calculator</a>
+        <a href="percentage.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">% Percentage</a>
+        <a href="unit-converter.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">💱 Unit Converter</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="standard.html">🔢 Standard Calculator</a>
+    <a class="related-link" href="percentage.html">% Percentage Calculator</a>
+    <a class="related-link" href="unit-converter.html">💱 Unit Converter</a>
+  </div>
+  <div class="rail-card"><h3>📐 Quick Reference</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>π</strong> = 3.14159265…<br>
+      <strong>e</strong> = 2.71828182…<br>
+      <strong>√2</strong> = 1.41421356…<br>
+      <strong>sin(90°)</strong> = 1<br>
+      <strong>cos(0°)</strong> = 1
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native / Affiliate Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('scientific'); });</script>
+<script>
+var sciState = makeCalcState();
+var _angleMode = 'deg';
+
+function setAngle(m) {
+  _angleMode = m;
+  document.getElementById('btn-deg').classList.toggle('active', m === 'deg');
+  document.getElementById('btn-rad').classList.toggle('active', m === 'rad');
+}
+
+function ssd(k) {
+  if (k === '⌫') {
+    if (sciState.val.length > 1) sciState.val = sciState.val.slice(0,-1);
+    else sciState.val = '0';
+    document.getElementById('sci-disp').textContent = sciState.val;
+    return;
+  }
+  calcEngine(sciState, k, 'sci-disp', 'sci-expr');
+}
+
+function sciF(fn) {
+  var v = parseFloat(sciState.val);
+  var res, label;
+  var toRad = _angleMode === 'deg' ? Math.PI / 180 : 1;
+  switch(fn) {
+    case 'sin':   res = Math.sin(v * toRad);  label = 'sin(' + v + ')'; break;
+    case 'cos':   res = Math.cos(v * toRad);  label = 'cos(' + v + ')'; break;
+    case 'tan':   res = Math.tan(v * toRad);  label = 'tan(' + v + ')'; break;
+    case 'log':   res = Math.log10(v);        label = 'log(' + v + ')'; break;
+    case 'ln':    res = Math.log(v);          label = 'ln(' + v + ')'; break;
+    case 'sqrt':  res = Math.sqrt(v);         label = '√(' + v + ')'; break;
+    case 'sq':    res = v * v;               label = v + '²'; break;
+    case 'cube':  res = v * v * v;           label = v + '³'; break;
+    case 'inv':   res = 1 / v;               label = '1/' + v; break;
+    case 'abs':   res = Math.abs(v);         label = '|' + v + '|'; break;
+    case 'pi':    res = Math.PI;             label = 'π'; break;
+    case 'e':     res = Math.E;              label = 'e'; break;
+    case 'floor': res = Math.floor(v);       label = '⌊' + v + '⌋'; break;
+    case 'ceil':  res = Math.ceil(v);        label = '⌈' + v + '⌉'; break;
+    case 'fact':
+      if (v < 0 || v > 170 || v !== Math.floor(v)) { res = NaN; label = v + '!'; break; }
+      res = 1; for (var i = 2; i <= v; i++) res *= i; label = v + '!'; break;
+    default: return;
+  }
+  sciState.val = (isNaN(res) || !isFinite(res)) ? 'Error' : String(+parseFloat(res).toFixed(10));
+  sciState.expr = label + ' =';
+  sciState.reset = true;
+  document.getElementById('sci-disp').textContent = sciState.val;
+  document.getElementById('sci-expr').textContent = sciState.expr;
+}
+
+document.addEventListener('keydown', function(e) {
+  if (document.activeElement.tagName === 'INPUT') return;
+  var map = {'0':'0','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7','8':'8','9':'9',
+    '+':'+','-':'−','*':'×','/':'÷','Enter':'=','=':'=','.':'.','Escape':'C','Backspace':'⌫'};
+  if (map[e.key]) { e.preventDefault(); ssd(map[e.key]); }
+});
+</script>
+</body></html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Random Number Generator — Free Online (2025)</title>
+<meta name="description" content="Generate random numbers, random number lists, dice rolls, coin flips, and random from a list. Free, instant."/>
+<link rel="canonical" href="https://calchub.io/calculators/random-number.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.mode-tabs{display:flex;gap:4px;margin-bottom:1.25rem;flex-wrap:wrap;}
+.mode-tab{padding:7px 14px;border-radius:18px;border:1px solid var(--gray-200);background:var(--white);color:var(--gray-600);font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
+.mode-tab.active{background:var(--purple);border-color:var(--purple);color:#fff;}
+.big-number{font-size:4rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--gray-900);text-align:center;padding:2rem 0;line-height:1;}
+.generate-btn{display:block;width:100%;padding:18px;font-size:1.1rem;font-weight:700;background:var(--purple);color:#fff;border:none;border-radius:var(--radius-xl);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;margin-bottom:1rem;}
+.generate-btn:hover{background:#7b2ff7;}
+.generate-btn:active{transform:scale(0.98);}
+.number-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:1rem;justify-content:center;}
+.number-pill{background:var(--purple-light,#f3e8fd);border:1px solid #d0a8f7;border-radius:16px;padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:0.9rem;font-weight:600;color:var(--purple);}
+.dice-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:1.5rem 0;}
+.die{width:70px;height:70px;background:var(--white);border:2px solid var(--gray-200);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--gray-900);box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.coin{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f59e0b);border:3px solid #e67e22;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:1rem auto;}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#math" class="active">Math</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#math">Math</a><span class="breadcrumb-sep">›</span><span>Random Number Generator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+    <a class="sidebar-link active" href="random-number.html"><span class="sidebar-icon">🎲</span>Random Number</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#f3e8fd;">🎲</div>
+      <div><h1 class="calc-card-title">Random Number Generator</h1><p class="calc-card-desc">Generate random numbers, roll dice, flip a coin, or pick random items from a list.</p></div>
+    </div>
+
+    <div class="mode-tabs">
+      <button class="mode-tab active" id="tab-single" onclick="setMode('single',this)">🔢 Single Number</button>
+      <button class="mode-tab" id="tab-list" onclick="setMode('list',this)">📋 Number List</button>
+      <button class="mode-tab" id="tab-dice" onclick="setMode('dice',this)">🎲 Dice Roller</button>
+      <button class="mode-tab" id="tab-coin" onclick="setMode('coin',this)">🪙 Coin Flip</button>
+      <button class="mode-tab" id="tab-pick" onclick="setMode('pick',this)">📝 Pick from List</button>
+    </div>
+
+    <!-- SINGLE -->
+    <div id="inputs-single">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Min</label><input type="number" id="rn_min" value="1"/></div>
+        <div class="form-group"><label class="form-label">Max</label><input type="number" id="rn_max" value="100"/></div>
+      </div>
+      <button class="generate-btn" onclick="genSingle()">🎲 Generate Random Number</button>
+      <div class="big-number" id="rn-result" style="display:none;"></div>
+      <div style="text-align:center;margin-top:0.5rem;" id="rn-history"></div>
+    </div>
+
+    <!-- LIST -->
+    <div id="inputs-list" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Min</label><input type="number" id="rl_min" value="1"/></div>
+        <div class="form-group"><label class="form-label">Max</label><input type="number" id="rl_max" value="100"/></div>
+        <div class="form-group"><label class="form-label">How Many Numbers</label><div class="input-wrap"><input type="number" id="rl_count" class="has-suffix" value="10" min="1" max="100"/><span class="input-suffix">nums</span></div></div>
+        <div class="form-group"><label class="form-label">Unique Numbers Only</label><select id="rl_unique"><option value="no">Allow repeats</option><option value="yes" selected>No repeats</option></select></div>
+      </div>
+      <button class="generate-btn" onclick="genList()">🎲 Generate List</button>
+      <div class="number-list" id="rl-result"></div>
+    </div>
+
+    <!-- DICE -->
+    <div id="inputs-dice" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Number of Dice</label><div class="input-wrap"><input type="number" id="rd_count" class="has-suffix" value="2" min="1" max="10"/><span class="input-suffix">dice</span></div></div>
+        <div class="form-group"><label class="form-label">Dice Type</label>
+          <select id="rd_type">
+            <option value="6">D6 — Standard (1–6)</option>
+            <option value="4">D4 — Tetrahedron (1–4)</option>
+            <option value="8">D8 — Octahedron (1–8)</option>
+            <option value="10">D10 — (1–10)</option>
+            <option value="12">D12 — Dodecahedron (1–12)</option>
+            <option value="20">D20 — Icosahedron (1–20)</option>
+            <option value="100">D100 — Percentile (1–100)</option>
+          </select>
+        </div>
+      </div>
+      <button class="generate-btn" onclick="rollDice()">🎲 Roll Dice</button>
+      <div class="dice-row" id="dice-result"></div>
+      <div style="text-align:center;font-size:0.9rem;color:var(--gray-600);" id="dice-total"></div>
+    </div>
+
+    <!-- COIN -->
+    <div id="inputs-coin" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Number of Flips</label><div class="input-wrap"><input type="number" id="cf_count" class="has-suffix" value="1" min="1" max="100"/><span class="input-suffix">flips</span></div></div>
+      </div>
+      <button class="generate-btn" onclick="flipCoin()">🪙 Flip Coin</button>
+      <div style="text-align:center;" id="coin-result"></div>
+      <div style="text-align:center;font-size:0.85rem;color:var(--gray-600);margin-top:0.5rem;" id="coin-stats"></div>
+    </div>
+
+    <!-- PICK FROM LIST -->
+    <div id="inputs-pick" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">Items (one per line)</label>
+        <textarea id="pl_items" style="width:100%;min-height:100px;padding:10px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-family:'Inter',sans-serif;font-size:0.875rem;box-sizing:border-box;resize:vertical;" placeholder="Pizza&#10;Sushi&#10;Tacos&#10;Burgers&#10;Thai food"></textarea>
+      </div>
+      <div class="form-group"><label class="form-label">Pick how many?</label><div class="input-wrap"><input type="number" id="pl_count" class="has-suffix" value="1" min="1"/><span class="input-suffix">items</span></div></div>
+      <button class="generate-btn" onclick="pickFromList()">🎲 Pick Random</button>
+      <div id="pick-result" style="margin-top:1rem;"></div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="standard.html">🔢 Standard Calculator</a>
+    <a class="related-link" href="scientific.html">🔬 Scientific Calculator</a>
+    <a class="related-link" href="percentage.html">% Percentage</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('random-number'); });</script>
+<script>
+var _mode='single', _history=[];
+function setMode(m,btn){ _mode=m; document.querySelectorAll('.mode-tab').forEach(function(b){b.classList.remove('active');}); btn.classList.add('active'); ['single','list','dice','coin','pick'].forEach(function(k){ document.getElementById('inputs-'+k).style.display=k===m?'':'none'; }); }
+function rnd(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function genSingle(){
+  var min=+document.getElementById('rn_min').value||1, max=+document.getElementById('rn_max').value||100;
+  if(min>max){var t=min;min=max;max=t;}
+  var n=rnd(min,max);
+  var el=document.getElementById('rn-result'); el.style.display='block'; el.textContent=n;
+  _history.unshift(n); if(_history.length>10) _history.pop();
+  document.getElementById('rn-history').innerHTML='<span style="font-size:0.75rem;color:var(--gray-400);">Recent: '+_history.join(', ')+'</span>';
+}
+function genList(){
+  var min=+document.getElementById('rl_min').value||1, max=+document.getElementById('rl_max').value||100;
+  var count=Math.min(+document.getElementById('rl_count').value||10,100);
+  var unique=document.getElementById('rl_unique').value==='yes';
+  var nums=[]; var attempts=0;
+  while(nums.length<count && attempts<10000){
+    attempts++;
+    var n=rnd(min,max);
+    if(!unique||nums.indexOf(n)===-1) nums.push(n);
+  }
+  document.getElementById('rl-result').innerHTML=nums.map(function(n){ return '<div class="number-pill">'+n+'</div>'; }).join('');
+}
+function rollDice(){
+  var count=Math.min(+document.getElementById('rd_count').value||2,10);
+  var sides=+document.getElementById('rd_type').value||6;
+  var rolls=[]; for(var i=0;i<count;i++) rolls.push(rnd(1,sides));
+  var FACES=['⚀','⚁','⚂','⚃','⚄','⚅'];
+  document.getElementById('dice-result').innerHTML=rolls.map(function(r){ return '<div class="die">'+(sides===6?FACES[r-1]:r)+'</div>'; }).join('');
+  var total=rolls.reduce(function(a,b){return a+b;},0);
+  document.getElementById('dice-total').textContent='Total: '+total+' ('+rolls.join(' + ')+')';
+}
+function flipCoin(){
+  var count=Math.min(+document.getElementById('cf_count').value||1,100);
+  var results=[]; for(var i=0;i<count;i++) results.push(Math.random()<0.5?'Heads':'Tails');
+  var heads=results.filter(function(r){return r==='Heads';}).length;
+  if(count===1){
+    document.getElementById('coin-result').innerHTML='<div class="coin">'+( results[0]==='Heads'?'🌕':'🌑')+'</div><div style="font-size:1.5rem;font-weight:700;">'+results[0]+'</div>';
+    document.getElementById('coin-stats').textContent='';
+  } else {
+    document.getElementById('coin-result').innerHTML='<div class="number-list">'+results.map(function(r){ return '<div class="number-pill">'+(r==='Heads'?'🌕 H':'🌑 T')+'</div>'; }).join('')+'</div>';
+    document.getElementById('coin-stats').textContent='Heads: '+heads+' ('+Math.round(heads/count*100)+'%) · Tails: '+(count-heads)+' ('+Math.round((count-heads)/count*100)+'%)';
+  }
+}
+function pickFromList(){
+  var items=document.getElementById('pl_items').value.split('\n').map(function(s){return s.trim();}).filter(Boolean);
+  var count=Math.min(+document.getElementById('pl_count').value||1,items.length);
+  if(!items.length){alert('Enter at least one item.');return;}
+  var shuffled=[].concat(items).sort(function(){return Math.random()-0.5;});
+  var picked=shuffled.slice(0,count);
+  document.getElementById('pick-result').innerHTML='<div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin-bottom:0.5rem;">Selected:</div><div class="number-list">'+picked.map(function(p){return '<div class="number-pill">'+p+'</div>';}).join('')+'</div>';
+}
+</script>
+</body></html>

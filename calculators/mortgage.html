@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mortgage Calculator — Free Monthly Payment Estimator (2025)</title>
+<meta name="description" content="Calculate your monthly mortgage payment, total interest, amortization schedule and full cost of a home loan. Free, accurate, updated for 2025 rates."/>
+<meta property="og:title" content="Mortgage Calculator — Free Monthly Payment Estimator"/>
+<meta property="og:description" content="Calculate monthly mortgage payments, see your full amortization schedule, and compare 15 vs 30-year terms. Free, no sign-up."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/calculators/mortgage.html"/>
+<link rel="canonical" href="https://calchub.com/calculators/mortgage.html"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Mortgage Calculator","description":"Calculate monthly mortgage payments, total interest, and full amortization schedule","url":"https://calchub.com/calculators/mortgage.html","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Monthly payment calculation","Amortization schedule","15 vs 30-year comparison","PMI estimation","Property tax and insurance"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"How is a mortgage payment calculated?","acceptedAnswer":{"@type":"Answer","text":"The mortgage payment formula is M = P × [r(1+r)ⁿ] / [(1+r)ⁿ − 1], where P is the loan principal, r is the monthly interest rate (annual rate ÷ 12), and n is the total number of payments (years × 12)."}},
+  {"@type":"Question","name":"What is included in a mortgage payment?","acceptedAnswer":{"@type":"Answer","text":"A full mortgage payment (PITI) includes Principal, Interest, property Taxes, and home Insurance. If your down payment is less than 20%, PMI (Private Mortgage Insurance) is also typically included."}},
+  {"@type":"Question","name":"Is a 15-year or 30-year mortgage better?","acceptedAnswer":{"@type":"Answer","text":"A 15-year mortgage has higher monthly payments but saves significantly on total interest — often $100,000 or more on a $400,000 loan. A 30-year mortgage has lower monthly payments and more cash flow flexibility. The right choice depends on your income stability and financial goals."}},
+  {"@type":"Question","name":"How much down payment do I need?","acceptedAnswer":{"@type":"Answer","text":"Conventional loans typically require 3–20% down. Putting 20% down avoids PMI and reduces your monthly payment and total interest. FHA loans allow as little as 3.5% down with a credit score of 580 or higher."}}
+]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"How to Calculate a Mortgage Payment","step":[
+  {"@type":"HowToStep","name":"Enter your home price","text":"Enter the total purchase price of the home you're buying."},
+  {"@type":"HowToStep","name":"Enter your down payment","text":"Enter the amount you'll pay upfront. 20% avoids PMI."},
+  {"@type":"HowToStep","name":"Enter your interest rate","text":"Enter the annual interest rate from your lender quote. The average 30-year fixed rate in 2025 is around 6.5–7%."},
+  {"@type":"HowToStep","name":"Select your loan term","text":"Choose between 10, 15, 20, or 30 years. Shorter terms mean higher payments but less total interest."},
+  {"@type":"HowToStep","name":"Click Calculate","text":"Your monthly payment, total interest, and full amortization schedule will appear instantly."}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+/* ── Amortization Table ── */
+.amort-wrap { margin-top: 1.5rem; }
+.amort-tabs { display: flex; gap: 4px; margin-bottom: 1rem; }
+.amort-tab {
+  padding: 6px 16px; border-radius: 20px; font-size: 0.82rem;
+  font-weight: 600; cursor: pointer; border: 1px solid var(--gray-300);
+  background: var(--white); color: var(--gray-600); transition: all 0.15s;
+}
+.amort-tab.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.amort-table-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--gray-200); }
+.amort-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.amort-table th {
+  background: var(--gray-900); color: #fff; padding: 10px 14px;
+  text-align: right; font-weight: 600; font-size: 0.75rem;
+  letter-spacing: 0.04em; white-space: nowrap;
+}
+.amort-table th:first-child { text-align: left; }
+.amort-table td {
+  padding: 9px 14px; text-align: right;
+  border-bottom: 1px solid var(--gray-100);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+  color: var(--gray-700);
+}
+.amort-table td:first-child { text-align: left; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--gray-800); }
+.amort-table tr:hover td { background: var(--gray-50); }
+.amort-table tr:last-child td { border-bottom: none; font-weight: 700; background: var(--gray-50); color: var(--gray-900); }
+.amort-table .col-interest { color: var(--red); }
+.amort-table .col-principal { color: var(--blue); }
+
+/* ── Comparison Table ── */
+.compare-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 1rem; }
+.compare-table th {
+  padding: 10px 16px; background: var(--gray-900); color: #fff;
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em;
+}
+.compare-table th:first-child { text-align: left; background: var(--gray-800); }
+.compare-table td { padding: 10px 16px; border-bottom: 1px solid var(--gray-100); text-align: center; font-family: 'JetBrains Mono', monospace; }
+.compare-table td:first-child { text-align: left; font-family: 'Inter', sans-serif; color: var(--gray-700); font-size: 0.82rem; font-family:'Inter',sans-serif; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table .winner { color: var(--green); font-weight: 700; }
+.compare-table .loser  { color: var(--red); }
+
+/* ── Progress ring ── */
+.payment-breakdown {
+  display: flex; gap: 1.5rem; align-items: center;
+  margin: 1.25rem 0; flex-wrap: wrap;
+}
+.donut-wrap { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
+.donut-wrap svg { transform: rotate(-90deg); }
+.donut-center {
+  position: absolute; inset: 0; display: flex;
+  flex-direction: column; align-items: center; justify-content: center;
+}
+.donut-center span { font-size: 0.65rem; color: var(--gray-500); font-weight: 600; text-transform: uppercase; }
+.donut-center strong { font-size: 1rem; font-weight: 700; color: var(--gray-900); font-family: 'JetBrains Mono', monospace; }
+.breakdown-legend { flex: 1; min-width: 160px; }
+.legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 0.82rem; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.legend-label { color: var(--gray-600); flex: 1; }
+.legend-value { font-weight: 600; color: var(--gray-800); font-family: 'JetBrains Mono', monospace; }
+
+/* ── Share strip ── */
+.share-strip {
+  display: flex; align-items: center; gap: 10px; margin-top: 1rem;
+  padding: 10px 14px; background: var(--gray-50); border-radius: var(--radius);
+  border: 1px solid var(--gray-200); flex-wrap: wrap;
+}
+.share-strip span { font-size: 0.78rem; color: var(--gray-500); flex: 1; min-width: 100px; }
+.share-strip input {
+  flex: 2; min-width: 180px; font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 6px 10px; border-radius: var(--radius);
+  border: 1px solid var(--gray-300); background: var(--white); color: var(--gray-700);
+}
+.btn-copy {
+  padding: 6px 14px; background: var(--blue); color: #fff;
+  border: none; border-radius: 16px; font-size: 0.78rem;
+  font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: background 0.15s; white-space: nowrap;
+}
+.btn-copy:hover { background: var(--blue-dark); }
+
+/* ── Rate context box ── */
+.rate-context {
+  background: var(--blue-light); border: 1px solid #c5d8fb;
+  border-radius: var(--radius); padding: 10px 14px;
+  font-size: 0.8rem; color: var(--gray-700); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance" class="active">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+
+<!-- BREADCRUMB -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span class="breadcrumb-sep">›</span>
+  <a href="../index.html#finance">Finance</a><span class="breadcrumb-sep">›</span>
+  <span>Mortgage Calculator</span>
+</nav>
+
+<div class="page-wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" aria-label="Finance calculators">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link active" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 Leaderboard — Google AdSense</div></div>
+
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e8f0fe;">🏠</div>
+      <div>
+        <h1 class="calc-card-title">Mortgage Calculator</h1>
+        <p class="calc-card-desc">Calculate your monthly payment, total interest, and see a full year-by-year amortization schedule.</p>
+      </div>
+    </div>
+
+    <div class="rate-context">
+      📊 <span>Average 30-year fixed rate in 2025: <strong>~6.7%</strong> — adjust the field below to match your lender quote.</span>
+    </div>
+
+    <!-- INPUTS -->
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="m_price">Home Price</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="m_price" class="has-prefix" value="400000" min="0" step="1000"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="m_down">Down Payment <span id="m_down_pct" style="font-weight:400;color:var(--gray-500);"></span></label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="m_down" class="has-prefix" value="80000" min="0" oninput="updateDownPct()"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="m_rate">Annual Interest Rate</label>
+        <div class="input-wrap"><input type="number" id="m_rate" class="has-suffix" value="6.75" step="0.05" min="0" max="30"/><span class="input-suffix">%</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="m_term">Loan Term</label>
+        <select id="m_term">
+          <option value="30" selected>30 years</option>
+          <option value="20">20 years</option>
+          <option value="15">15 years</option>
+          <option value="10">10 years</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="m_tax">Annual Property Tax</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="m_tax" class="has-prefix" value="5000" min="0"/></div>
+        <span class="form-hint">~1.1% of home value is typical</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="m_ins">Annual Home Insurance</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="m_ins" class="has-prefix" value="1500" min="0"/></div>
+        <span class="form-hint">~0.5–1% of home value/year</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="m_pmi">PMI Rate <span style="font-weight:400;color:var(--gray-400);font-size:0.72rem;">(if down payment &lt; 20%)</span></label>
+        <div class="input-wrap"><input type="number" id="m_pmi" class="has-suffix" value="0.5" step="0.05" min="0" max="3"/><span class="input-suffix">%</span></div>
+        <span class="form-hint">Typically 0.5–1.5% of loan/year</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="m_hoa">Monthly HOA Fee</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="m_hoa" class="has-prefix" value="0" min="0"/></div>
+        <span class="form-hint">Enter 0 if not applicable</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcMortgage()">Calculate Payment ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="result-box" id="result">
+
+      <!-- PRIMARY -->
+      <div class="result-primary">
+        <span class="result-primary-label">Total Monthly Payment</span>
+        <span class="result-primary-value" id="r-total">—</span>
+      </div>
+
+      <!-- BREAKDOWN ROWS -->
+      <div class="result-row"><span class="result-row-label">Principal & Interest</span><span class="result-row-value color-blue" id="r-monthly">—</span></div>
+      <div class="result-row"><span class="result-row-label">Property Tax (monthly)</span><span class="result-row-value" id="r-tax">—</span></div>
+      <div class="result-row"><span class="result-row-label">Home Insurance (monthly)</span><span class="result-row-value" id="r-ins">—</span></div>
+      <div class="result-row" id="pmi-row" style="display:none;"><span class="result-row-label">PMI (monthly) <span style="font-size:0.72rem;color:var(--gray-400);">removed at 20% equity</span></span><span class="result-row-value color-red" id="r-pmi">—</span></div>
+      <div class="result-row" id="hoa-row" style="display:none;"><span class="result-row-label">HOA Fee (monthly)</span><span class="result-row-value" id="r-hoa">—</span></div>
+      <div class="result-row" style="margin-top:0.5rem;padding-top:0.75rem;border-top:1px solid var(--gray-200);"><span class="result-row-label">Loan Amount (Principal)</span><span class="result-row-value" id="r-principal">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total Interest Paid</span><span class="result-row-value color-red" id="r-interest">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total Cost of Home</span><span class="result-row-value" id="r-cost">—</span></div>
+
+      <!-- DONUT CHART -->
+      <div class="payment-breakdown">
+        <div class="donut-wrap">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle id="d-bg" cx="60" cy="60" r="48" fill="none" stroke="var(--gray-100)" stroke-width="18"/>
+            <circle id="d-pi"  cx="60" cy="60" r="48" fill="none" stroke="#1a73e8" stroke-width="18" stroke-dasharray="0 302"/>
+            <circle id="d-tax" cx="60" cy="60" r="48" fill="none" stroke="#34a853" stroke-width="18" stroke-dasharray="0 302"/>
+            <circle id="d-ins" cx="60" cy="60" r="48" fill="none" stroke="#fbbc04" stroke-width="18" stroke-dasharray="0 302"/>
+            <circle id="d-pmi2" cx="60" cy="60" r="48" fill="none" stroke="#ea4335" stroke-width="18" stroke-dasharray="0 302"/>
+            <circle id="d-hoa2" cx="60" cy="60" r="48" fill="none" stroke="#9334e6" stroke-width="18" stroke-dasharray="0 302"/>
+          </svg>
+          <div class="donut-center"><span>Monthly</span><strong id="donut-total">—</strong></div>
+        </div>
+        <div class="breakdown-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#1a73e8"></div><span class="legend-label">Principal & Interest</span><span class="legend-value" id="l-pi">—</span></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#34a853"></div><span class="legend-label">Property Tax</span><span class="legend-value" id="l-tax">—</span></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#fbbc04"></div><span class="legend-label">Home Insurance</span><span class="legend-value" id="l-ins">—</span></div>
+          <div class="legend-item" id="l-pmi-row" style="display:none;"><div class="legend-dot" style="background:#ea4335"></div><span class="legend-label">PMI</span><span class="legend-value" id="l-pmi">—</span></div>
+          <div class="legend-item" id="l-hoa-row" style="display:none;"><div class="legend-dot" style="background:#9334e6"></div><span class="legend-label">HOA</span><span class="legend-value" id="l-hoa">—</span></div>
+        </div>
+      </div>
+
+      <!-- TERM COMPARISON -->
+      <div style="margin-top:1.25rem;">
+        <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin-bottom:0.5rem;">📊 Term Comparison</div>
+        <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--gray-200);">
+          <table class="compare-table">
+            <thead><tr><th>Metric</th><th>15-Year</th><th>30-Year</th></tr></thead>
+            <tbody id="compare-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SHARE -->
+      <div class="share-strip">
+        <span>🔗 Share this result:</span>
+        <input type="text" id="share-url" readonly onclick="this.select()"/>
+        <button class="btn-copy" onclick="copyShareUrl()">Copy Link</button>
+      </div>
+
+      <!-- AMORTIZATION -->
+      <div class="amort-wrap">
+        <div style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Amortization Schedule</div>
+        <div class="amort-tabs">
+          <button class="amort-tab active" onclick="showAmort('annual', this)">Annual</button>
+          <button class="amort-tab" onclick="showAmort('monthly', this)">Monthly</button>
+        </div>
+        <div class="amort-table-wrap">
+          <table class="amort-table">
+            <thead>
+              <tr>
+                <th style="text-align:left;">Year</th>
+                <th>Principal</th>
+                <th>Interest</th>
+                <th>Total Payment</th>
+                <th>Ending Balance</th>
+              </tr>
+            </thead>
+            <tbody id="amort-body"></tbody>
+          </table>
+        </div>
+        <p style="font-size:0.72rem;color:var(--gray-400);margin-top:8px;">Figures show principal & interest only, excluding tax, insurance and PMI.</p>
+      </div>
+
+    </div><!-- /result-box -->
+
+    <div class="disclaimer">⚠️ Estimates only. Actual payments vary based on credit score, lender fees, and PMI terms. Consult a licensed mortgage professional before making financial decisions.</div>
+
+    <!-- SEO CONTENT -->
+    <div id="ai-problem-section" style="margin-top:1.5rem;"></div>
+    <div class="info-block">
+      <h2 style="font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.75rem;">How to Use This Mortgage Calculator</h2>
+      <p>Enter your <strong>home price</strong>, <strong>down payment</strong>, <strong>interest rate</strong>, and <strong>loan term</strong> to get your estimated monthly payment. Optionally add property tax, home insurance, PMI, and HOA fees to see your full monthly cost. The amortization schedule shows exactly how much goes to principal vs. interest each year — and your ending balance.</p>
+
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin:1.25rem 0 0.5rem;">The Mortgage Payment Formula</h3>
+      <p>Every mortgage payment is calculated using the standard amortization formula:</p>
+      <div class="formula">M = P × [r(1+r)ⁿ] / [(1+r)ⁿ − 1]</div>
+      <p style="margin-top:0.5rem;">Where <strong>P</strong> = loan principal (home price minus down payment), <strong>r</strong> = monthly interest rate (annual rate ÷ 12), and <strong>n</strong> = total number of monthly payments (loan term in years × 12). For a $320,000 loan at 6.75% over 30 years: r = 0.5625%, n = 360 payments, M ≈ $2,076/month.</p>
+
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin:1.25rem 0 0.5rem;">What Is an Amortization Schedule?</h3>
+      <p>An amortization schedule shows each payment broken down into principal and interest. In the early years of a mortgage, the majority of your payment goes toward interest. Over time, the balance shifts — more goes to principal. By the final years of a 30-year mortgage, nearly all of your payment is reducing the loan balance. This is why paying extra toward principal early in the loan has an outsized impact on total interest paid.</p>
+
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin:1.25rem 0 0.5rem;">What Does PMI Mean?</h3>
+      <p>Private Mortgage Insurance (PMI) is required by most lenders when your down payment is less than 20% of the home's value. PMI typically costs 0.5%–1.5% of the loan amount per year. On a $300,000 loan, that's $1,500–$4,500/year or $125–$375/month. Once you reach 20% equity in your home, you can request PMI removal — which is why many buyers target a 20% down payment.</p>
+
+      <div class="faq" style="margin-top:1.5rem;">
+        <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Frequently Asked Questions</h3>
+
+        <div class="faq-item">
+          <div class="faq-q">What is a good interest rate for a mortgage? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">In 2025, the average 30-year fixed mortgage rate is approximately 6.5–7%. A "good" rate depends on your credit score, down payment, loan type, and lender. Borrowers with credit scores above 760 and 20% down typically qualify for the best rates. Even a 0.5% difference in rate can save $30,000+ over 30 years on a $400,000 loan.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How much house can I afford? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">The standard rule is that your total housing costs (mortgage, tax, insurance) should not exceed 28% of your gross monthly income. Your total debt payments (housing + car + student loans) should stay below 36–43%. On a $100,000 annual income (~$8,333/month), your max housing payment would be ~$2,333/month under the 28% rule.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Is a 15-year or 30-year mortgage better? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">A 15-year mortgage has higher monthly payments but saves enormously on total interest — typically $100,000+ on a $400,000 loan. 15-year rates are also usually 0.5–0.75% lower than 30-year rates. A 30-year mortgage has lower monthly payments, giving more cash flow flexibility. The right choice depends on your income stability, other financial goals, and risk tolerance.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Should I make extra principal payments? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Making extra principal payments reduces your loan balance faster and dramatically cuts total interest. Adding just $200/month to a $300,000 loan at 6.75% can shorten the term by 5–6 years and save over $80,000 in interest. Always confirm with your lender that extra payments are applied to principal with no prepayment penalty.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What's the difference between pre-qualification and pre-approval? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Pre-qualification is an informal estimate of how much you might borrow, based on self-reported information. Pre-approval is a formal process where the lender verifies your income, credit, and assets — and issues a conditional loan commitment. Pre-approval is much stronger when making an offer on a home.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What closing costs should I expect? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Closing costs typically run 2–5% of the loan amount. On a $320,000 loan, expect $6,400–$16,000 in closing costs. These include origination fees, appraisal, title insurance, escrow fees, and prepaid items like property tax and homeowner's insurance. Some lenders offer "no closing cost" loans that roll fees into the rate.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How does credit score affect my mortgage rate? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Credit scores have a significant impact on mortgage rates. A score of 760+ typically gets the best rates. Dropping from 760 to 680 can add 0.5–1% to your rate — on a $300,000 loan, that's an extra $100–$200/month and $40,000–$80,000 over 30 years. Improving your credit score before applying can be one of the highest-ROI financial moves you can make.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is an escrow account? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">An escrow account is held by your lender to collect and pay your property taxes and homeowner's insurance on your behalf. Each month, a portion of your mortgage payment goes into escrow. Your lender then pays the annual tax and insurance bills directly. Most lenders require escrow accounts, especially for loans with less than 20% down.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELATED CONTENT -->
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Calculators</h3>
+      <p>Planning to buy a home involves more than just the mortgage payment. Use these calculators to get the full financial picture:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:0.75rem;">
+        <a href="loan.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">💳 Loan Calculator</a>
+        <a href="compound-interest.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">📈 Compound Interest</a>
+        <a href="retirement.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏦 Retirement Calculator</a>
+        <a href="savings.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🐷 Savings Goal</a>
+        <a href="tax.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🧾 Tax Calculator</a>
+      </div>
+    </div>
+
+  </div><!-- /calc-card -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+
+<!-- RIGHT RAIL -->
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card">
+    <h3>Related Calculators</h3>
+    <a class="related-link" href="loan.html">💳 Loan Calculator</a>
+    <a class="related-link" href="compound-interest.html">📈 Compound Interest</a>
+    <a class="related-link" href="retirement.html">🏦 Retirement</a>
+    <a class="related-link" href="savings.html">🐷 Savings Goal</a>
+    <a class="related-link" href="tax.html">🧾 Tax Calculator</a>
+    <a class="related-link" href="roi.html">💰 ROI Calculator</a>
+  </div>
+  <div class="rail-card">
+    <h3>💡 Rate Rule of Thumb</h3>
+    <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.65;">A 1% rate drop on a $400k loan saves ~$230/month — that's <strong>$82,000 over 30 years</strong>. Even small rate differences matter enormously over the life of a loan.</p>
+  </div>
+  <div class="rail-card">
+    <h3>🏠 Affordability Rule</h3>
+    <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.65;">Keep total housing costs below <strong>28% of gross monthly income</strong>. On $90k/year (~$7,500/mo), that means a max payment of ~$2,100/month.</p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native / Affiliate Ad</div></div>
+</aside>
+
+</div><!-- /page-wrap -->
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" aria-label="Quick access"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item active" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+
+<!-- FOOTER -->
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('mortgage'); loadFromUrl(); updateDownPct(); });</script>
+<script>
+// ── State ────────────────────────────────────────────────────
+var _amortData = { annual: [], monthly: [] };
+
+// ── Down payment % display ───────────────────────────────────
+function updateDownPct() {
+  var price = +document.getElementById('m_price').value || 0;
+  var down  = +document.getElementById('m_down').value  || 0;
+  var pct   = price > 0 ? (down / price * 100).toFixed(1) : '0';
+  document.getElementById('m_down_pct').textContent = '(' + pct + '%)';
+}
+
+// ── Main calculation ─────────────────────────────────────────
+function calcMortgage() {
+  var price = +document.getElementById('m_price').value || 0;
+  var down  = +document.getElementById('m_down').value  || 0;
+  var rate  = +document.getElementById('m_rate').value  || 0;
+  var years = +document.getElementById('m_term').value;
+  var tax   = +document.getElementById('m_tax').value   || 0;
+  var ins   = +document.getElementById('m_ins').value   || 0;
+  var pmiRate = +document.getElementById('m_pmi').value || 0;
+  var hoa   = +document.getElementById('m_hoa').value   || 0;
+
+  if (price <= 0) { alert('Please enter a valid home price.'); return; }
+  if (down >= price) { alert('Down payment cannot exceed home price.'); return; }
+
+  var P = price - down;
+  var r = rate / 100 / 12;
+  var n = years * 12;
+  var M = r === 0 ? P / n : P * (r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
+
+  var taxMo  = tax / 12;
+  var insMo  = ins / 12;
+  var downPct = down / price;
+  var pmiMo  = downPct < 0.20 ? (P * pmiRate / 100 / 12) : 0;
+  var total  = M + taxMo + insMo + pmiMo + hoa;
+  var totalInterest = M * n - P;
+
+  // Main results
+  setText('r-monthly',   fmtUSD(M));
+  setText('r-tax',       fmtUSD(taxMo));
+  setText('r-ins',       fmtUSD(insMo));
+  setText('r-total',     fmtUSD(total));
+  setText('r-principal', fmtUSD(P));
+  setText('r-interest',  fmtUSD(totalInterest));
+  setText('r-cost',      fmtUSD(M * n + down));
+  setText('donut-total', fmtUSD(total));
+
+  // PMI row
+  var showPMI = pmiMo > 0;
+  document.getElementById('pmi-row').style.display   = showPMI ? '' : 'none';
+  document.getElementById('l-pmi-row').style.display = showPMI ? '' : 'none';
+  if (showPMI) { setText('r-pmi', fmtUSD(pmiMo)); setText('l-pmi', fmtUSD(pmiMo)); }
+
+  // HOA row
+  var showHOA = hoa > 0;
+  document.getElementById('hoa-row').style.display   = showHOA ? '' : 'none';
+  document.getElementById('l-hoa-row').style.display = showHOA ? '' : 'none';
+  if (showHOA) { setText('r-hoa', fmtUSD(hoa)); setText('l-hoa', fmtUSD(hoa)); }
+
+  // Legend
+  setText('l-pi',  fmtUSD(M));
+  setText('l-tax', fmtUSD(taxMo));
+  setText('l-ins', fmtUSD(insMo));
+
+  // Donut chart
+  drawDonut(M, taxMo, insMo, pmiMo, hoa, total);
+
+  // Term comparison
+  renderComparison(P, rate, tax, ins, pmiMo, hoa);
+
+  // Amortization schedule
+  buildAmortization(P, r, n, M);
+  showAmort('annual', document.querySelector('.amort-tab.active'));
+
+  // Share URL
+  buildShareUrl(price, down, rate, years, tax, ins, pmiRate, hoa);
+
+  showResult('result');
+}
+
+// ── Donut chart ──────────────────────────────────────────────
+function drawDonut(pi, tax, ins, pmi, hoa, total) {
+  var circ = 2 * Math.PI * 48;
+  var segments = [
+    { id:'d-pi',   val: pi,  color:'#1a73e8' },
+    { id:'d-tax',  val: tax, color:'#34a853' },
+    { id:'d-ins',  val: ins, color:'#fbbc04' },
+    { id:'d-pmi2', val: pmi, color:'#ea4335' },
+    { id:'d-hoa2', val: hoa, color:'#9334e6' },
+  ];
+  var offset = 0;
+  segments.forEach(function(seg) {
+    var el = document.getElementById(seg.id);
+    if (!el) return;
+    var len = (seg.val / total) * circ;
+    el.setAttribute('stroke-dasharray', len.toFixed(2) + ' ' + (circ - len).toFixed(2));
+    el.setAttribute('stroke-dashoffset', (-offset).toFixed(2));
+    el.setAttribute('stroke', seg.color);
+    offset += len;
+  });
+}
+
+// ── Term comparison ──────────────────────────────────────────
+function renderComparison(P, rate, tax, ins, pmiMo, hoa) {
+  var r = rate / 100 / 12;
+  function monthly(yrs) {
+    var n = yrs * 12;
+    return r === 0 ? P / n : P * (r * Math.pow(1+r,n)) / (Math.pow(1+r,n)-1);
+  }
+  var m15 = monthly(15), m30 = monthly(30);
+  var int15 = m15*180-P, int30 = m30*360-P;
+  var rows = [
+    ['Monthly P&I',     fmtUSD(m15),        fmtUSD(m30),       m15 < m30 ? 'loser':'winner', m30 > m15 ? 'winner':'loser'],
+    ['Total Interest',  fmtUSD(int15),       fmtUSD(int30),     'winner',    'loser'    ],
+    ['Total Payments',  fmtUSD(m15*180),     fmtUSD(m30*360),   'winner',    'loser'    ],
+    ['Interest Saved',  fmtUSD(int30-int15)+' less', '—',       'winner',    ''         ],
+  ];
+  document.getElementById('compare-body').innerHTML = rows.map(function(r) {
+    return '<tr><td>' + r[0] + '</td><td class="' + r[3] + '">' + r[1] + '</td><td class="' + r[4] + '">' + r[2] + '</td></tr>';
+  }).join('');
+}
+
+// ── Amortization schedule ────────────────────────────────────
+function buildAmortization(P, r, n, M) {
+  var balance = P;
+  var annual  = [];
+  var monthly = [];
+  var yrPrincipal = 0, yrInterest = 0, yrPayment = 0;
+  var moNum = 0;
+
+  for (var i = 1; i <= n; i++) {
+    var intPmt  = balance * r;
+    var prinPmt = M - intPmt;
+    balance -= prinPmt;
+    if (balance < 0) balance = 0;
+    yrInterest  += intPmt;
+    yrPrincipal += prinPmt;
+    yrPayment   += M;
+    moNum++;
+    monthly.push({ label: 'Mo ' + i, principal: prinPmt, interest: intPmt, payment: M, balance: balance });
+    if (i % 12 === 0 || i === n) {
+      annual.push({ label: 'Year ' + Math.ceil(i/12), principal: yrPrincipal, interest: yrInterest, payment: yrPayment, balance: balance });
+      yrPrincipal = 0; yrInterest = 0; yrPayment = 0;
+    }
+  }
+  _amortData.annual  = annual;
+  _amortData.monthly = monthly;
+}
+
+function showAmort(type, btn) {
+  if (btn) { document.querySelectorAll('.amort-tab').forEach(function(b){b.classList.remove('active');}); btn.classList.add('active'); }
+  var data = _amortData[type];
+  if (!data || !data.length) return;
+  var totalP = 0, totalI = 0, totalPmt = 0;
+  data.forEach(function(r){ totalP += r.principal; totalI += r.interest; totalPmt += r.payment; });
+  document.getElementById('amort-body').innerHTML =
+    data.map(function(r) {
+      return '<tr><td>' + r.label + '</td>'
+        + '<td class="col-principal">' + fmtUSD(r.principal) + '</td>'
+        + '<td class="col-interest">'  + fmtUSD(r.interest)  + '</td>'
+        + '<td>' + fmtUSD(r.payment)   + '</td>'
+        + '<td>' + fmtUSD(r.balance)   + '</td></tr>';
+    }).join('')
+    + '<tr><td>Total</td><td class="col-principal">' + fmtUSD(totalP)
+    + '</td><td class="col-interest">' + fmtUSD(totalI)
+    + '</td><td>' + fmtUSD(totalPmt) + '</td><td>$0.00</td></tr>';
+}
+
+// ── Share URL ─────────────────────────────────────────────────
+function buildShareUrl(price, down, rate, years, tax, ins, pmiRate, hoa) {
+  var url = window.location.origin + window.location.pathname
+    + '?price=' + price + '&down=' + down + '&rate=' + rate
+    + '&term=' + years + '&tax=' + tax + '&ins=' + ins
+    + '&pmi=' + pmiRate + '&hoa=' + hoa;
+  document.getElementById('share-url').value = url;
+}
+
+function copyShareUrl() {
+  var input = document.getElementById('share-url');
+  input.select();
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(input.value).then(function(){ showToast('✓ Link copied!'); });
+  } else {
+    document.execCommand('copy');
+    showToast('✓ Link copied!');
+  }
+}
+
+function loadFromUrl() {
+  var p = new URLSearchParams(window.location.search);
+  if (!p.get('price')) return;
+  if (p.get('price')) document.getElementById('m_price').value = p.get('price');
+  if (p.get('down'))  document.getElementById('m_down').value  = p.get('down');
+  if (p.get('rate'))  document.getElementById('m_rate').value  = p.get('rate');
+  if (p.get('term'))  document.getElementById('m_term').value  = p.get('term');
+  if (p.get('tax'))   document.getElementById('m_tax').value   = p.get('tax');
+  if (p.get('ins'))   document.getElementById('m_ins').value   = p.get('ins');
+  if (p.get('pmi'))   document.getElementById('m_pmi').value   = p.get('pmi');
+  if (p.get('hoa'))   document.getElementById('m_hoa').value   = p.get('hoa');
+  updateDownPct();
+  calcMortgage();
+}
+
+function resetForm() {
+  document.getElementById('m_price').value = 400000;
+  document.getElementById('m_down').value  = 80000;
+  document.getElementById('m_rate').value  = 6.75;
+  document.getElementById('m_term').value  = 30;
+  document.getElementById('m_tax').value   = 5000;
+  document.getElementById('m_ins').value   = 1500;
+  document.getElementById('m_pmi').value   = 0.5;
+  document.getElementById('m_hoa').value   = 0;
+  updateDownPct();
+  document.getElementById('result').classList.remove('show');
+  window.history.replaceState({}, '', window.location.pathname);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Calorie Calculator — Daily Needs, TDEE & Macros (2025)</title>
+<meta name="description" content="Calculate your daily calorie needs, TDEE, BMR, and macronutrient targets for weight loss, maintenance, or muscle gain. Uses Mifflin-St Jeor equation. Free."/>
+<meta property="og:title" content="Calorie Calculator — TDEE, BMR & Macros"/>
+<meta property="og:description" content="Find your daily calorie needs and macro targets for any goal — weight loss, maintenance, or muscle gain. Free, science-based."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/calculators/calorie.html"/>
+<link rel="canonical" href="https://calchub.com/calculators/calorie.html"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Calorie Calculator","description":"Calculate daily calorie needs, TDEE, BMR and macronutrient targets","url":"https://calchub.com/calculators/calorie.html","applicationCategory":"HealthApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"How many calories should I eat per day?","acceptedAnswer":{"@type":"Answer","text":"Daily calorie needs depend on your age, sex, weight, height, and activity level. The average adult needs 1,600–3,000 calories per day. Use this calculator to find your specific TDEE (Total Daily Energy Expenditure)."}},
+  {"@type":"Question","name":"What is TDEE?","acceptedAnswer":{"@type":"Answer","text":"TDEE stands for Total Daily Energy Expenditure — the total calories your body burns in a day, including exercise and daily activity. Eating at your TDEE maintains your weight. Eating below it creates a deficit for fat loss."}},
+  {"@type":"Question","name":"What is BMR?","acceptedAnswer":{"@type":"Answer","text":"BMR (Basal Metabolic Rate) is the number of calories your body needs at complete rest — just to keep organs functioning. It typically makes up 60–75% of your total daily calorie burn."}}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.unit-toggle { display:flex; gap:0; margin-bottom:1.25rem; border-radius:22px; overflow:hidden; border:1px solid var(--gray-300); width:fit-content; }
+.unit-btn { padding:8px 22px; font-size:0.85rem; font-weight:600; cursor:pointer; border:none; background:var(--white); color:var(--gray-600); font-family:'Inter',sans-serif; transition:all 0.15s; }
+.unit-btn.active { background:var(--blue); color:#fff; }
+
+.goal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:1.25rem; }
+@media(max-width:600px){ .goal-grid { grid-template-columns:1fr 1fr; } }
+.goal-btn { padding:10px 8px; border-radius:var(--radius-lg); border:1px solid var(--gray-200); background:var(--white); cursor:pointer; text-align:center; transition:all 0.15s; font-family:'Inter',sans-serif; }
+.goal-btn:hover { border-color:var(--blue); background:var(--blue-light); }
+.goal-btn.active { border-color:var(--blue); background:var(--blue-light); }
+.goal-btn .goal-icon { font-size:1.4rem; display:block; margin-bottom:4px; }
+.goal-btn .goal-label { font-size:0.78rem; font-weight:600; color:var(--gray-800); display:block; }
+.goal-btn .goal-sub { font-size:0.68rem; color:var(--gray-500); display:block; margin-top:2px; }
+.goal-btn.active .goal-label { color:var(--blue); }
+
+.macro-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:1.25rem; }
+.macro-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:1rem; text-align:center; }
+.macro-card .macro-val { font-size:1.6rem; font-weight:700; font-family:'JetBrains Mono',monospace; }
+.macro-card .macro-cal { font-size:0.72rem; color:var(--gray-500); margin-top:2px; }
+.macro-card .macro-label { font-size:0.78rem; font-weight:600; color:var(--gray-600); margin-top:6px; }
+.macro-card .macro-pct { font-size:0.7rem; color:var(--gray-400); }
+
+.calorie-levels { margin-top:1.25rem; }
+.cal-level-row { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--gray-100); }
+.cal-level-row:last-child { border-bottom:none; }
+.cal-level-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.cal-level-label { font-size:0.82rem; color:var(--gray-600); flex:1; }
+.cal-level-val { font-size:0.88rem; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--gray-800); }
+.cal-level-row.highlight { background:var(--blue-light); margin:0 -1.5rem; padding:8px 1.5rem; border-radius:var(--radius); border-bottom:none; }
+.cal-level-row.highlight .cal-level-label { color:var(--blue); font-weight:600; }
+.cal-level-row.highlight .cal-level-val { color:var(--blue); }
+</style>
+</head>
+<body>
+
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance">Finance</a><a href="../index.html#health" class="active">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span class="breadcrumb-sep">›</span>
+  <a href="../index.html#health">Health</a><span class="breadcrumb-sep">›</span>
+  <span>Calorie Calculator</span>
+</nav>
+
+<div class="page-wrap">
+<aside class="sidebar" aria-label="Health calculators">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link active" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 Leaderboard — Google AdSense</div></div>
+
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#fce8e6;">🍎</div>
+      <div>
+        <h1 class="calc-card-title">Calorie Calculator</h1>
+        <p class="calc-card-desc">Find your daily calorie needs, TDEE, BMR, and macro targets for any goal — using the Mifflin-St Jeor equation.</p>
+      </div>
+    </div>
+
+    <!-- UNIT TOGGLE -->
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="btn-imperial" onclick="setUnit('imperial')">🇺🇸 Imperial</button>
+      <button class="unit-btn" id="btn-metric" onclick="setUnit('metric')">🌍 Metric</button>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="cal_age">Age</label>
+        <div class="input-wrap"><input type="number" id="cal_age" class="has-suffix" value="30" min="15" max="100"/><span class="input-suffix">yrs</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="cal_sex">Sex</label>
+        <select id="cal_sex">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+
+      <!-- Imperial -->
+      <div class="form-group" id="grp-lbs">
+        <label class="form-label" for="cal_lbs">Weight</label>
+        <div class="input-wrap"><input type="number" id="cal_lbs" class="has-suffix" value="165" min="50"/><span class="input-suffix">lbs</span></div>
+      </div>
+      <div class="form-group" id="grp-ft">
+        <label class="form-label">Height</label>
+        <div style="display:flex;gap:8px;">
+          <div class="input-wrap" style="flex:1;"><input type="number" id="cal_ft" class="has-suffix" value="5" min="1" max="8"/><span class="input-suffix">ft</span></div>
+          <div class="input-wrap" style="flex:1;"><input type="number" id="cal_in" class="has-suffix" value="10" min="0" max="11"/><span class="input-suffix">in</span></div>
+        </div>
+      </div>
+
+      <!-- Metric (hidden by default) -->
+      <div class="form-group" id="grp-kg" style="display:none;">
+        <label class="form-label" for="cal_kg">Weight</label>
+        <div class="input-wrap"><input type="number" id="cal_kg" class="has-suffix" value="75" min="20"/><span class="input-suffix">kg</span></div>
+      </div>
+      <div class="form-group" id="grp-cm" style="display:none;">
+        <label class="form-label" for="cal_cm">Height</label>
+        <div class="input-wrap"><input type="number" id="cal_cm" class="has-suffix" value="178" min="50"/><span class="input-suffix">cm</span></div>
+      </div>
+
+      <div class="form-group full">
+        <label class="form-label" for="cal_act">Activity Level</label>
+        <select id="cal_act">
+          <option value="1.2">Sedentary — desk job, little or no exercise</option>
+          <option value="1.375">Lightly active — light exercise 1–3 days/week</option>
+          <option value="1.55" selected>Moderately active — moderate exercise 3–5 days/week</option>
+          <option value="1.725">Very active — hard exercise 6–7 days/week</option>
+          <option value="1.9">Extra active — physical job + hard training daily</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- GOAL SELECTOR -->
+    <div style="font-size:0.8rem;font-weight:600;color:var(--gray-700);margin-bottom:0.6rem;">Goal</div>
+    <div class="goal-grid" id="goal-grid">
+      <button class="goal-btn" data-goal="-500" onclick="setGoal(this)">
+        <span class="goal-icon">🔥</span>
+        <span class="goal-label">Lose Fast</span>
+        <span class="goal-sub">−500 cal/day (~1 lb/wk)</span>
+      </button>
+      <button class="goal-btn" data-goal="-250" onclick="setGoal(this)">
+        <span class="goal-icon">📉</span>
+        <span class="goal-label">Lose Slowly</span>
+        <span class="goal-sub">−250 cal/day (~½ lb/wk)</span>
+      </button>
+      <button class="goal-btn active" data-goal="0" onclick="setGoal(this)">
+        <span class="goal-icon">⚖️</span>
+        <span class="goal-label">Maintain</span>
+        <span class="goal-sub">Eat at TDEE</span>
+      </button>
+      <button class="goal-btn" data-goal="250" onclick="setGoal(this)">
+        <span class="goal-icon">💪</span>
+        <span class="goal-label">Lean Bulk</span>
+        <span class="goal-sub">+250 cal/day</span>
+      </button>
+      <button class="goal-btn" data-goal="500" onclick="setGoal(this)">
+        <span class="goal-icon">🏋️</span>
+        <span class="goal-label">Bulk</span>
+        <span class="goal-sub">+500 cal/day (~1 lb/wk)</span>
+      </button>
+      <button class="goal-btn" data-goal="-750" onclick="setGoal(this)">
+        <span class="goal-icon">⚡</span>
+        <span class="goal-label">Aggressive Cut</span>
+        <span class="goal-sub">−750 cal/day (max safe)</span>
+      </button>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcCalorie()">Calculate Calories ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="result-box" id="result">
+
+      <div class="result-primary">
+        <span class="result-primary-label">Daily Calories for Your Goal</span>
+        <span class="result-primary-value" id="r-target">—</span>
+      </div>
+
+      <div class="result-row"><span class="result-row-label">BMR (calories at complete rest)</span><span class="result-row-value" id="r-bmr">—</span></div>
+      <div class="result-row"><span class="result-row-label">TDEE (maintenance calories)</span><span class="result-row-value color-blue" id="r-tdee">—</span></div>
+      <div class="result-row"><span class="result-row-label">Goal adjustment</span><span class="result-row-value" id="r-adj">—</span></div>
+      <div class="result-row"><span class="result-row-label">Estimated weekly change</span><span class="result-row-value" id="r-weekly">—</span></div>
+
+      <!-- MACRO CARDS -->
+      <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin:1.25rem 0 0.5rem;">Daily Macro Targets</div>
+      <div class="macro-grid">
+        <div class="macro-card">
+          <div class="macro-val" style="color:#1a73e8;" id="r-protein">—</div>
+          <div class="macro-cal" id="r-protein-cal">—</div>
+          <div class="macro-label">Protein</div>
+          <div class="macro-pct" id="r-protein-pct">—% of calories</div>
+        </div>
+        <div class="macro-card">
+          <div class="macro-val" style="color:#34a853;" id="r-carbs">—</div>
+          <div class="macro-cal" id="r-carbs-cal">—</div>
+          <div class="macro-label">Carbohydrates</div>
+          <div class="macro-pct" id="r-carbs-pct">—% of calories</div>
+        </div>
+        <div class="macro-card">
+          <div class="macro-val" style="color:#fbbc04;" id="r-fat">—</div>
+          <div class="macro-cal" id="r-fat-cal">—</div>
+          <div class="macro-label">Fat</div>
+          <div class="macro-pct" id="r-fat-pct">—% of calories</div>
+        </div>
+      </div>
+
+      <!-- ALL CALORIE LEVELS -->
+      <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin:1.5rem 0 0.5rem;">All Calorie Levels</div>
+      <div class="calorie-levels" id="cal-levels"></div>
+
+      <!-- BAR CHART -->
+      <div class="bar-chart" id="r-chart" style="margin-top:1.25rem;"></div>
+
+    </div><!-- /result-box -->
+
+    <div class="disclaimer">⚠️ Results are estimates based on the Mifflin-St Jeor equation. Individual needs vary based on genetics, health conditions, and precise activity levels. Consult a registered dietitian for personalized nutrition advice.</div>
+
+    <!-- SEO CONTENT -->
+    <div id="ai-problem-section" style="margin-top:1.5rem;"></div>
+    <div class="info-block">
+      <h2 style="font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.75rem;">How Many Calories Do I Need Per Day?</h2>
+      <p>Your daily calorie needs depend on your age, sex, body weight, height, and how active you are. This calculator uses the <strong>Mifflin-St Jeor equation</strong> — the most widely validated formula for estimating Basal Metabolic Rate (BMR) — then multiplies by your activity level to get your Total Daily Energy Expenditure (TDEE). Your goal adjustment is applied on top to give your daily calorie target.</p>
+
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin:1.25rem 0 0.5rem;">The Mifflin-St Jeor Formula</h3>
+      <div class="formula">Men:   BMR = (10 × kg) + (6.25 × cm) − (5 × age) + 5</div>
+      <div class="formula" style="margin-top:8px;">Women: BMR = (10 × kg) + (6.25 × cm) − (5 × age) − 161</div>
+      <p style="margin-top:0.75rem;">Your TDEE is then calculated as: <strong>TDEE = BMR × Activity Multiplier</strong>, where the multiplier ranges from 1.2 (sedentary) to 1.9 (extremely active).</p>
+
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin:1.25rem 0 0.5rem;">Understanding Macros</h3>
+      <p>Macronutrients — protein, carbohydrates, and fat — are the three sources of dietary calories. Protein and carbs each provide 4 calories per gram; fat provides 9 calories per gram. This calculator uses a balanced default split of 30% protein / 40% carbs / 30% fat, which works well for most goals. Higher-protein splits (35–40%) are often recommended for fat loss to preserve muscle mass.</p>
+
+      <div class="faq" style="margin-top:1.5rem;">
+        <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Frequently Asked Questions</h3>
+
+        <div class="faq-item">
+          <div class="faq-q">What is the difference between BMR and TDEE? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">BMR (Basal Metabolic Rate) is the number of calories your body needs at complete rest — just to keep your heart beating, lungs breathing, and organs functioning. It accounts for roughly 60–75% of total daily calorie burn. TDEE (Total Daily Energy Expenditure) adds the calories burned through daily activity and exercise on top of BMR. TDEE is the number you use for nutrition planning — it's your true maintenance calorie level.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How fast should I lose weight? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">A deficit of 500 calories/day creates roughly 1 lb of fat loss per week (since 1 lb of fat ≈ 3,500 calories). This is widely considered a safe, sustainable rate. Deficits larger than 750–1,000 calories/day increase the risk of muscle loss, nutrient deficiencies, fatigue, and rebound weight gain. The most important factor for long-term success is choosing a deficit small enough to maintain without feeling deprived.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Why is my calorie estimate different from other calculators? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Different calculators use different equations. The three most common are Mifflin-St Jeor, Harris-Benedict (revised), and Katch-McArdle (which requires body fat %). Research consistently shows Mifflin-St Jeor is the most accurate for the general population. However, all equations are estimates — metabolic rate can vary by 10–15% between individuals with the same stats due to genetics, hormones, and muscle mass.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How much protein should I eat per day? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">General guidelines suggest 0.8g of protein per kg of body weight for sedentary adults. For active individuals and those trying to lose fat while preserving muscle, 1.6–2.2g per kg (0.7–1g per lb) is more optimal. Higher protein intake increases satiety, preserves lean mass during a caloric deficit, and has a higher thermic effect (your body burns more calories digesting protein than carbs or fat).</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Does calorie counting actually work? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Yes — at the fundamental level, weight change is driven by the calorie balance equation (calories in vs. calories out). However, calorie labels on food can be off by up to 20%, portion estimation is difficult, and appetite hormones can make rigid counting unsustainable for many people. Most nutrition researchers recommend using calorie awareness rather than obsessive tracking — understanding roughly what maintenance looks like and adjusting based on weekly weight trends.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Why do calories matter less as you lose weight? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">As your body weight decreases, your BMR decreases — you need fewer calories to maintain your new smaller body. This is why weight loss typically slows over time even with the same diet. It's not a "broken metabolism" — it's a natural adaptation. Recalculate your TDEE every 10–15 lbs of weight change to keep your targets accurate. Increasing activity level is often more sustainable than further reducing calories.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Health Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:0.5rem;">
+        <a href="bmi.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">⚖️ BMI Calculator</a>
+        <a href="body-fat.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">📊 Body Fat Calculator</a>
+        <a href="pregnancy.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🤱 Pregnancy Due Date</a>
+      </div>
+    </div>
+
+  </div><!-- /calc-card -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card">
+    <h3>Related Calculators</h3>
+    <a class="related-link" href="bmi.html">⚖️ BMI Calculator</a>
+    <a class="related-link" href="body-fat.html">📊 Body Fat Calculator</a>
+    <a class="related-link" href="pregnancy.html">🤱 Due Date Calculator</a>
+    <a class="related-link" href="age.html">🎂 Age Calculator</a>
+  </div>
+  <div class="rail-card">
+    <h3>📐 Calorie Rules of Thumb</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>3,500 cal</strong> ≈ 1 lb of fat<br>
+      <strong>−500 cal/day</strong> ≈ 1 lb/week loss<br>
+      <strong>Protein:</strong> 4 cal per gram<br>
+      <strong>Carbs:</strong> 4 cal per gram<br>
+      <strong>Fat:</strong> 9 cal per gram
+    </p>
+  </div>
+  <div class="rail-card">
+    <h3>💡 Activity Level Tip</h3>
+    <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.65;">Most people overestimate their activity level. If you exercise 3–4x per week but sit at a desk all day, choose <strong>Lightly Active</strong>, not Moderately Active.</p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native / Affiliate Ad</div></div>
+</aside>
+
+</div><!-- /page-wrap -->
+
+<nav class="mobile-bottom-nav" aria-label="Quick access"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('calorie'); });</script>
+<script>
+var _unit = 'imperial';
+var _goal = 0;
+
+function setUnit(u) {
+  _unit = u;
+  document.getElementById('btn-imperial').classList.toggle('active', u === 'imperial');
+  document.getElementById('btn-metric').classList.toggle('active', u === 'metric');
+  document.getElementById('grp-lbs').style.display = u === 'imperial' ? '' : 'none';
+  document.getElementById('grp-ft').style.display  = u === 'imperial' ? '' : 'none';
+  document.getElementById('grp-kg').style.display  = u === 'metric'   ? '' : 'none';
+  document.getElementById('grp-cm').style.display  = u === 'metric'   ? '' : 'none';
+  document.getElementById('result').classList.remove('show');
+}
+
+function setGoal(btn) {
+  document.querySelectorAll('.goal-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  _goal = +btn.dataset.goal;
+}
+
+function calcCalorie() {
+  var age = +document.getElementById('cal_age').value || 0;
+  var sex = document.getElementById('cal_sex').value;
+  var act = +document.getElementById('cal_act').value;
+  var wKg, hCm;
+
+  if (_unit === 'imperial') {
+    var lbs = +document.getElementById('cal_lbs').value || 0;
+    var ft  = +document.getElementById('cal_ft').value  || 0;
+    var inc = +document.getElementById('cal_in').value  || 0;
+    if (!lbs || !age) { alert('Please fill in all fields.'); return; }
+    wKg = lbs * 0.453592;
+    hCm = (ft * 12 + inc) * 2.54;
+  } else {
+    wKg = +document.getElementById('cal_kg').value || 0;
+    hCm = +document.getElementById('cal_cm').value || 0;
+    if (!wKg || !hCm || !age) { alert('Please fill in all fields.'); return; }
+  }
+
+  var bmr = sex === 'male'
+    ? 10 * wKg + 6.25 * hCm - 5 * age + 5
+    : 10 * wKg + 6.25 * hCm - 5 * age - 161;
+
+  var tdee   = bmr * act;
+  var target = tdee + _goal;
+
+  // Macros: 30P / 40C / 30F
+  var proteinG = Math.round(target * 0.30 / 4);
+  var carbsG   = Math.round(target * 0.40 / 4);
+  var fatG     = Math.round(target * 0.30 / 9);
+
+  setText('r-target', Math.round(target) + ' cal/day');
+  setText('r-bmr',    Math.round(bmr) + ' cal/day');
+  setText('r-tdee',   Math.round(tdee) + ' cal/day');
+
+  var adjText = _goal === 0 ? 'None (maintenance)' : (_goal > 0 ? '+' : '') + _goal + ' cal/day';
+  setText('r-adj', adjText);
+
+  var lbsPerWeek = (_goal / 3500 * 7).toFixed(2);
+  var weeklyText = _goal === 0 ? 'No change expected'
+    : (_goal < 0 ? '−' : '+') + Math.abs(lbsPerWeek) + ' lbs/week (est.)';
+  setText('r-weekly', weeklyText);
+
+  // Macro cards
+  setText('r-protein',     proteinG + 'g');
+  setText('r-protein-cal', (proteinG * 4) + ' calories');
+  setText('r-protein-pct', '30% of calories');
+  setText('r-carbs',       carbsG + 'g');
+  setText('r-carbs-cal',   (carbsG * 4) + ' calories');
+  setText('r-carbs-pct',   '40% of calories');
+  setText('r-fat',         fatG + 'g');
+  setText('r-fat-cal',     (fatG * 9) + ' calories');
+  setText('r-fat-pct',     '30% of calories');
+
+  // All calorie levels
+  var levels = [
+    { label: 'BMR (complete rest)',          cal: Math.round(bmr),        color: '#9aa0a6', goal: null  },
+    { label: 'Aggressive cut (−750)',        cal: Math.round(tdee - 750), color: '#ea4335', goal: -750  },
+    { label: 'Lose fast (−500 cal/day)',     cal: Math.round(tdee - 500), color: '#f4511e', goal: -500  },
+    { label: 'Lose slowly (−250 cal/day)',   cal: Math.round(tdee - 250), color: '#fb8c00', goal: -250  },
+    { label: 'Maintain weight (TDEE)',       cal: Math.round(tdee),       color: '#1a73e8', goal: 0     },
+    { label: 'Lean bulk (+250 cal/day)',     cal: Math.round(tdee + 250), color: '#34a853', goal: 250   },
+    { label: 'Bulk (+500 cal/day)',          cal: Math.round(tdee + 500), color: '#0d9d58', goal: 500   },
+  ];
+
+  document.getElementById('cal-levels').innerHTML = levels.map(function(l) {
+    var isCurrent = l.goal === _goal;
+    return '<div class="cal-level-row' + (isCurrent ? ' highlight' : '') + '">'
+      + '<div class="cal-level-dot" style="background:' + l.color + '"></div>'
+      + '<div class="cal-level-label">' + l.label + (isCurrent ? ' ◀ your goal' : '') + '</div>'
+      + '<div class="cal-level-val">' + l.cal.toLocaleString() + ' cal</div>'
+      + '</div>';
+  }).join('');
+
+  // Bar chart
+  renderBarChart('r-chart', [
+    { label: 'Protein',  value: proteinG * 4, color: '#1a73e8', display: proteinG + 'g (' + (proteinG*4) + ' cal)' },
+    { label: 'Carbs',    value: carbsG * 4,   color: '#34a853', display: carbsG + 'g (' + (carbsG*4) + ' cal)' },
+    { label: 'Fat',      value: fatG * 9,     color: '#fbbc04', display: fatG + 'g (' + (fatG*9) + ' cal)' },
+  ]);
+
+  showResult('result');
+}
+
+function resetForm() {
+  document.getElementById('cal_age').value = 30;
+  document.getElementById('cal_sex').value = 'male';
+  document.getElementById('cal_lbs').value = 165;
+  document.getElementById('cal_ft').value  = 5;
+  document.getElementById('cal_in').value  = 10;
+  document.getElementById('cal_kg').value  = 75;
+  document.getElementById('cal_cm').value  = 178;
+  document.getElementById('cal_act').value = '1.55';
+  setGoal(document.querySelector('[data-goal="0"]'));
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body>
+</html>

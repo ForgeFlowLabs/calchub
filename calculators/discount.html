@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Discount Calculator — Sale Price, Savings & Reverse Discount (2025)</title>
+<meta name="description" content="Calculate sale price after a discount. Enter % off or fixed amount. Find the original price before a discount. Free, instant."/>
+<meta property="og:title" content="Discount Calculator — Sale Price & Savings"/>
+<meta property="og:type" content="website"/>
+<link rel="canonical" href="https://calchub.com/calculators/discount.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.disc-tools { display:flex; gap:4px; margin-bottom:1.25rem; }
+.disc-tab { padding:8px 16px; border-radius:20px; border:1px solid var(--gray-300); background:var(--white); color:var(--gray-600); font-size:0.82rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.disc-tab.active { background:var(--blue); border-color:var(--blue); color:#fff; }
+
+.pct-presets { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1rem; }
+.pct-preset-btn { padding:6px 14px; border-radius:18px; border:1px solid var(--gray-200); background:var(--white); color:var(--gray-600); font-size:0.8rem; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.pct-preset-btn:hover { background:var(--green-light); color:var(--green); border-color:transparent; }
+
+.disc-result-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:1rem; }
+@media(max-width:500px){ .disc-result-grid { grid-template-columns:1fr 1fr; } }
+.disc-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:1rem; text-align:center; }
+.disc-card.primary-card { border-color:var(--green); background:var(--green-light); }
+.dc-val { font-size:1.4rem; font-weight:700; font-family:'JetBrains Mono',monospace; }
+.dc-label { font-size:0.7rem; font-weight:600; color:var(--gray-500); margin-top:4px; text-transform:uppercase; letter-spacing:0.04em; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday" class="active">Everyday</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#everyday">Everyday</a><span class="breadcrumb-sep">›</span><span>Discount Calculator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link active" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#fef0e0;">🏷️</div>
+      <div><h1 class="calc-card-title">Discount Calculator</h1><p class="calc-card-desc">Find the sale price after a discount, calculate savings, or find the original price before a discount was applied.</p></div>
+    </div>
+
+    <div class="disc-tools">
+      <button class="disc-tab active" id="tab-pct" onclick="setMode('pct',this)">% Off Discount</button>
+      <button class="disc-tab" id="tab-fixed" onclick="setMode('fixed',this)">$ Off Discount</button>
+      <button class="disc-tab" id="tab-reverse" onclick="setMode('reverse',this)">Find Original Price</button>
+    </div>
+
+    <!-- PERCENT OFF MODE -->
+    <div id="inputs-pct">
+      <div style="font-size:0.78rem;color:var(--gray-500);margin-bottom:6px;">Common discounts:</div>
+      <div class="pct-presets">
+        <button class="pct-preset-btn" onclick="setPct(5)">5%</button>
+        <button class="pct-preset-btn" onclick="setPct(10)">10%</button>
+        <button class="pct-preset-btn" onclick="setPct(15)">15%</button>
+        <button class="pct-preset-btn" onclick="setPct(20)">20%</button>
+        <button class="pct-preset-btn" onclick="setPct(25)">25%</button>
+        <button class="pct-preset-btn" onclick="setPct(30)">30%</button>
+        <button class="pct-preset-btn" onclick="setPct(40)">40%</button>
+        <button class="pct-preset-btn" onclick="setPct(50)">50%</button>
+        <button class="pct-preset-btn" onclick="setPct(70)">70%</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="disc_orig">Original Price</label>
+          <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="disc_orig" class="has-prefix" placeholder="100.00" step="0.01" oninput="calcDiscount()"/></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="disc_pct">Discount Percentage</label>
+          <div class="input-wrap"><input type="number" id="disc_pct" class="has-suffix" placeholder="20" min="0" max="100" oninput="calcDiscount()"/><span class="input-suffix">% off</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIXED $ MODE -->
+    <div id="inputs-fixed" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="disc_orig2">Original Price</label>
+          <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="disc_orig2" class="has-prefix" placeholder="100.00" step="0.01" oninput="calcFixed()"/></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="disc_fixed">Discount Amount</label>
+          <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="disc_fixed" class="has-prefix" placeholder="15.00" step="0.01" oninput="calcFixed()"/></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVERSE MODE -->
+    <div id="inputs-reverse" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="disc_sale">Sale Price (what you paid)</label>
+          <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="disc_sale" class="has-prefix" placeholder="80.00" step="0.01" oninput="calcReverse()"/></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="disc_pct2">Discount Applied</label>
+          <div class="input-wrap"><input type="number" id="disc_pct2" class="has-suffix" placeholder="20" min="0" max="99" oninput="calcReverse()"/><span class="input-suffix">% off</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-box" id="result">
+      <div class="disc-result-grid">
+        <div class="disc-card primary-card">
+          <div class="dc-val" id="r-price" style="color:var(--green);">—</div>
+          <div class="dc-label">Sale Price</div>
+        </div>
+        <div class="disc-card">
+          <div class="dc-val color-red" id="r-save">—</div>
+          <div class="dc-label">You Save</div>
+        </div>
+        <div class="disc-card">
+          <div class="dc-val" id="r-pct" style="color:var(--blue);">—</div>
+          <div class="dc-label">% Off</div>
+        </div>
+      </div>
+      <div class="result-row" style="margin-top:1.25rem;"><span class="result-row-label">Original Price</span><span class="result-row-value" id="r-orig">—</span></div>
+      <div class="result-row"><span class="result-row-label">Final Sale Price</span><span class="result-row-value color-green" id="r-final">—</span></div>
+    </div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.5rem;">Discount Calculator</h2>
+      <p>Calculate the sale price after a percentage or fixed dollar discount. Use "Find Original Price" to reverse-engineer the pre-discount price — useful when you see a sale tag and want to know what it originally cost.</p>
+      <div class="faq" style="margin-top:1rem;">
+        <div class="faq-item">
+          <div class="faq-q">How do I calculate 20% off a price? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Multiply the price by 0.20 to find the discount amount, then subtract from the original. Example: 20% off $75 = $75 × 0.20 = $15 discount → sale price = $60. Or: multiply by 0.80 directly to get the sale price ($75 × 0.80 = $60).</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How do I find the original price before a discount? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Divide the sale price by (1 − discount rate). If an item costs $80 after 20% off: $80 / (1 − 0.20) = $80 / 0.80 = $100. Use the "Find Original Price" mode above for instant calculation.</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="tip.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🍽️ Tip Calculator</a>
+        <a href="percentage.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">% Percentage Calculator</a>
+        <a href="tax.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🧾 Tax Calculator</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="tip.html">🍽️ Tip Calculator</a>
+    <a class="related-link" href="percentage.html">% Percentage Calculator</a>
+    <a class="related-link" href="tax.html">🧾 Tax Calculator</a>
+    <a class="related-link" href="standard.html">🔢 Standard Calculator</a>
+  </div>
+  <div class="rail-card"><h3>⚡ Quick Math</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>10% off:</strong> move decimal left<br>
+      <strong>20% off:</strong> × 0.80<br>
+      <strong>25% off:</strong> × 0.75<br>
+      <strong>50% off:</strong> divide by 2<br>
+      <strong>Sale price</strong> = Orig × (1 − %/100)
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('discount'); });</script>
+<script>
+var _mode = 'pct';
+
+function setMode(m, btn) {
+  _mode = m;
+  document.querySelectorAll('.disc-tab').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('inputs-pct').style.display    = m === 'pct'     ? '' : 'none';
+  document.getElementById('inputs-fixed').style.display  = m === 'fixed'   ? '' : 'none';
+  document.getElementById('inputs-reverse').style.display= m === 'reverse' ? '' : 'none';
+  document.getElementById('result').classList.remove('show');
+}
+
+function setPct(p) {
+  document.getElementById('disc_pct').value = p;
+  calcDiscount();
+}
+
+function showDiscResult(price, save, orig, pct) {
+  setText('r-price',  fmtUSD(Math.max(0, price)));
+  setText('r-save',   fmtUSD(Math.max(0, save)));
+  setText('r-pct',    pct.toFixed(1) + '% off');
+  setText('r-orig',   fmtUSD(orig));
+  setText('r-final',  fmtUSD(Math.max(0, price)));
+  showResult('result');
+}
+
+function calcDiscount() {
+  var orig = +document.getElementById('disc_orig').value || 0;
+  var pct  = +document.getElementById('disc_pct').value || 0;
+  var save = orig * pct / 100;
+  showDiscResult(orig - save, save, orig, pct);
+}
+
+function calcFixed() {
+  var orig  = +document.getElementById('disc_orig2').value  || 0;
+  var fixed = +document.getElementById('disc_fixed').value  || 0;
+  var save  = Math.min(fixed, orig);
+  var pct   = orig > 0 ? save / orig * 100 : 0;
+  showDiscResult(orig - save, save, orig, pct);
+}
+
+function calcReverse() {
+  var sale = +document.getElementById('disc_sale').value  || 0;
+  var pct  = +document.getElementById('disc_pct2').value || 0;
+  var orig = pct > 0 && pct < 100 ? sale / (1 - pct / 100) : sale;
+  var save = orig - sale;
+  showDiscResult(sale, save, orig, pct);
+}
+</script>
+</body></html>

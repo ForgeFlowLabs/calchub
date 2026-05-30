@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Tip Calculator — Split the Bill & Calculate Tip Per Person (2025)</title>
+<meta name="description" content="Calculate your tip and split the bill evenly. Choose a tip percentage or enter a custom amount. See tip and total per person instantly."/>
+<meta property="og:title" content="Tip Calculator — Bill Splitter"/>
+<meta property="og:type" content="website"/>
+<link rel="canonical" href="https://calchub.com/calculators/tip.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.tip-btns { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1.25rem; }
+.tip-pct-btn { padding:10px 18px; border-radius:24px; border:2px solid var(--gray-200); background:var(--white); color:var(--gray-700); font-size:0.9rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.tip-pct-btn:hover { border-color:var(--green); background:var(--green-light); color:var(--green); }
+.tip-pct-btn.active { border-color:var(--green); background:var(--green); color:#fff; }
+
+.tip-result-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:1.25rem; }
+@media(max-width:500px){ .tip-result-grid { grid-template-columns:1fr 1fr; } }
+.tip-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:1rem; text-align:center; }
+.tip-card.primary-card { border-color:var(--green); background:var(--green-light); }
+.tc-val { font-size:1.4rem; font-weight:700; font-family:'JetBrains Mono',monospace; }
+.tc-label { font-size:0.72rem; font-weight:600; color:var(--gray-500); margin-top:4px; text-transform:uppercase; letter-spacing:0.05em; }
+
+.people-row { display:flex; align-items:center; gap:10px; }
+.ppl-btn { width:36px; height:36px; border-radius:50%; border:2px solid var(--gray-200); background:var(--white); font-size:1.2rem; cursor:pointer; display:flex; align-items:center; justify-content:center; font-weight:700; transition:all 0.15s; }
+.ppl-btn:hover { border-color:var(--blue); color:var(--blue); }
+.ppl-count { font-size:1.4rem; font-weight:700; color:var(--gray-900); font-family:'JetBrains Mono',monospace; min-width:30px; text-align:center; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday" class="active">Everyday</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#everyday">Everyday</a><span class="breadcrumb-sep">›</span><span>Tip Calculator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link active" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#fce8e6;">🍽️</div>
+      <div><h1 class="calc-card-title">Tip Calculator</h1><p class="calc-card-desc">Calculate your tip and split the bill evenly among your group. Tap a percentage or enter a custom tip.</p></div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group full">
+        <label class="form-label" for="tip_bill">Bill Amount</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="tip_bill" class="has-prefix" placeholder="0.00" step="0.01" min="0" oninput="calcTip()"/></div>
+      </div>
+    </div>
+
+    <div style="font-size:0.8rem;font-weight:600;color:var(--gray-700);margin-bottom:0.6rem;">Tip Percentage</div>
+    <div class="tip-btns">
+      <button class="tip-pct-btn" data-pct="10" onclick="selectPct(this)">10%</button>
+      <button class="tip-pct-btn" data-pct="15" onclick="selectPct(this)">15%</button>
+      <button class="tip-pct-btn active" data-pct="18" onclick="selectPct(this)">18%</button>
+      <button class="tip-pct-btn" data-pct="20" onclick="selectPct(this)">20%</button>
+      <button class="tip-pct-btn" data-pct="25" onclick="selectPct(this)">25%</button>
+      <button class="tip-pct-btn" data-pct="30" onclick="selectPct(this)">30%</button>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="tip_custom">Custom Tip %</label>
+        <div class="input-wrap"><input type="number" id="tip_custom" class="has-suffix" placeholder="Custom" min="0" max="100" oninput="clearPreset();calcTip()"/><span class="input-suffix">%</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Number of People</label>
+        <div class="people-row">
+          <button class="ppl-btn" onclick="changePeople(-1)">−</button>
+          <div class="ppl-count" id="ppl-count">2</div>
+          <button class="ppl-btn" onclick="changePeople(1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcTip()">Calculate ›</button>
+      <button class="btn-secondary" onclick="resetTip()">Reset</button>
+    </div>
+
+    <div class="result-box" id="result">
+      <div class="tip-result-grid">
+        <div class="tip-card">
+          <div class="tc-val color-green" id="r-tip">—</div>
+          <div class="tc-label">Tip Amount</div>
+        </div>
+        <div class="tip-card primary-card">
+          <div class="tc-val" id="r-total" style="color:var(--green);">—</div>
+          <div class="tc-label">Total Bill</div>
+        </div>
+        <div class="tip-card">
+          <div class="tc-val color-blue" id="r-per">—</div>
+          <div class="tc-label">Per Person</div>
+        </div>
+      </div>
+      <div class="result-row" style="margin-top:1.25rem;"><span class="result-row-label">Tip rate used</span><span class="result-row-value" id="r-pct">—</span></div>
+      <div class="result-row"><span class="result-row-label">Tip per person</span><span class="result-row-value" id="r-tip-per">—</span></div>
+      <div class="result-row"><span class="result-row-label">Bill before tip (per person)</span><span class="result-row-value" id="r-bill-per">—</span></div>
+    </div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.5rem;">Tipping Guide for 2025</h2>
+      <p>Standard tipping etiquette in the US for restaurants is <strong>15–20%</strong> for average service, <strong>20–25%</strong> for great service, and <strong>25%+</strong> for exceptional service. Tip on the pre-tax amount, not the total including tax. For takeout, 10–15% is customary. For delivery, $3–5 minimum or 15–20%, especially for longer distances.</p>
+      <div class="faq" style="margin-top:1rem;">
+        <div class="faq-item">
+          <div class="faq-q">How much should you tip at a restaurant? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">The standard in the US is 18–20% for sit-down restaurants. 15% is considered the minimum for adequate service. Tipping 25% or more is a way to reward exceptional service. Always tip on the pre-tax subtotal. If service is poor due to kitchen issues (not the server's fault), maintain your tip — servers are not responsible for kitchen speed or food quality.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Quick tip math without a calculator? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">For 20%: Move the decimal one place left (10%), then double it. On a $45 bill, 10% = $4.50, double = $9. For 15%: Find 10%, then add half of that. On $45: $4.50 + $2.25 = $6.75. For 18%: Find 20% then subtract a small amount — $9 − $0.90 = $8.10.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="discount.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏷️ Discount Calculator</a>
+        <a href="percentage.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">% Percentage Calculator</a>
+        <a href="standard.html" style="padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🔢 Standard Calculator</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="discount.html">🏷️ Discount Calculator</a>
+    <a class="related-link" href="percentage.html">% Percentage Calculator</a>
+    <a class="related-link" href="standard.html">🔢 Standard Calculator</a>
+    <a class="related-link" href="unit-converter.html">💱 Unit Converter</a>
+  </div>
+  <div class="rail-card"><h3>🍽️ Tipping Guide</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>15%</strong> — Adequate service<br>
+      <strong>18%</strong> — Good service<br>
+      <strong>20%</strong> — Great service<br>
+      <strong>25%+</strong> — Exceptional<br>
+      <strong>Takeout:</strong> 10–15%<br>
+      <strong>Delivery:</strong> $3–5 min
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item mbn-active" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('tip'); });</script>
+<script>
+var _pct = 18, _people = 2;
+
+function selectPct(btn) {
+  document.querySelectorAll('.tip-pct-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  _pct = +btn.dataset.pct;
+  document.getElementById('tip_custom').value = '';
+  calcTip();
+}
+
+function clearPreset() {
+  document.querySelectorAll('.tip-pct-btn').forEach(function(b){ b.classList.remove('active'); });
+  _pct = +document.getElementById('tip_custom').value || 0;
+}
+
+function changePeople(delta) {
+  _people = Math.max(1, _people + delta);
+  document.getElementById('ppl-count').textContent = _people;
+  calcTip();
+}
+
+function calcTip() {
+  var bill = +document.getElementById('tip_bill').value || 0;
+  var custom = +document.getElementById('tip_custom').value;
+  var pct = custom > 0 ? custom : _pct;
+  var tip = bill * pct / 100;
+  var total = bill + tip;
+  var perPerson = total / _people;
+  var tipPerPerson = tip / _people;
+  var billPerPerson = bill / _people;
+
+  setText('r-tip',      fmtUSD(tip));
+  setText('r-total',    fmtUSD(total));
+  setText('r-per',      fmtUSD(perPerson));
+  setText('r-pct',      pct + '%');
+  setText('r-tip-per',  fmtUSD(tipPerPerson));
+  setText('r-bill-per', fmtUSD(billPerPerson));
+  showResult('result');
+}
+
+function resetTip() {
+  document.getElementById('tip_bill').value   = '';
+  document.getElementById('tip_custom').value = '';
+  _people = 2; _pct = 18;
+  document.getElementById('ppl-count').textContent = '2';
+  document.querySelectorAll('.tip-pct-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.pct === '18'); });
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body></html>

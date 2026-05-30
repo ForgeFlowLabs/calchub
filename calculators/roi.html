@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ROI Calculator — Return on Investment & CAGR (2025)</title>
+<meta name="description" content="Calculate ROI, net profit, CAGR, and payback period for any investment or business project. Compare multiple investments side by side. Free."/>
+<meta property="og:title" content="ROI Calculator — Return on Investment, CAGR & Payback Period"/>
+<meta property="og:description" content="Calculate total ROI, annualized return (CAGR), net profit, and payback period. Compare investments side by side. Free."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/calculators/roi.html"/>
+<link rel="canonical" href="https://calchub.com/calculators/roi.html"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"ROI Calculator","description":"Calculate return on investment, CAGR, net profit and payback period","url":"https://calchub.com/calculators/roi.html","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.roi-type-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.25rem; }
+.roi-type-btn { padding:7px 16px; border-radius:20px; border:1px solid var(--gray-300); background:var(--white); color:var(--gray-600); font-size:0.82rem; font-weight:500; cursor:pointer; transition:all 0.15s; font-family:'Inter',sans-serif; }
+.roi-type-btn.active { background:var(--green); border-color:var(--green); color:#fff; }
+.roi-type-btn:hover:not(.active) { background:var(--gray-100); }
+
+.rating-badge { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:20px; font-size:0.82rem; font-weight:600; margin-top:0.75rem; }
+.rating-excellent { background:var(--green-light); color:var(--green); }
+.rating-good      { background:var(--blue-light);  color:var(--blue);  }
+.rating-fair      { background:var(--yellow-light); color:var(--orange); }
+.rating-poor      { background:var(--red-light);    color:var(--red);   }
+
+.compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:1.25rem; }
+@media(max-width:500px){ .compare-grid { grid-template-columns:1fr; } }
+.compare-card { background:var(--white); border:2px solid var(--gray-200); border-radius:var(--radius-lg); padding:1rem; }
+.compare-card.winner { border-color:var(--green); background:var(--green-light); }
+.compare-card h4 { font-size:0.82rem; font-weight:700; color:var(--gray-700); margin-bottom:0.5rem; }
+.compare-card .c-roi { font-size:1.4rem; font-weight:700; font-family:'JetBrains Mono',monospace; }
+.compare-card .c-detail { font-size:0.72rem; color:var(--gray-500); margin-top:4px; line-height:1.6; }
+</style>
+</head>
+<body>
+
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance" class="active">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span class="breadcrumb-sep">›</span>
+  <a href="../index.html#finance">Finance</a><span class="breadcrumb-sep">›</span>
+  <span>ROI Calculator</span>
+</nav>
+
+<div class="page-wrap">
+<aside class="sidebar" aria-label="Finance calculators">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link active" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 Leaderboard — Google AdSense</div></div>
+
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e6f4ea;">💰</div>
+      <div>
+        <h1 class="calc-card-title">ROI Calculator</h1>
+        <p class="calc-card-desc">Calculate total ROI, net profit, annualized return (CAGR), and payback period for any investment or business project.</p>
+      </div>
+    </div>
+
+    <!-- INVESTMENT TYPE -->
+    <div class="roi-type-row">
+      <button class="roi-type-btn active" onclick="setType('investment',this)">📈 Investment</button>
+      <button class="roi-type-btn" onclick="setType('business',this)">💼 Business Project</button>
+      <button class="roi-type-btn" onclick="setType('realestate',this)">🏠 Real Estate</button>
+      <button class="roi-type-btn" onclick="setType('marketing',this)">📣 Marketing</button>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="roi_init" id="lbl-init">Initial Investment</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="roi_init" class="has-prefix" value="10000" min="0"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="roi_final" id="lbl-final">Final Value / Return</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="roi_final" class="has-prefix" value="14500" min="0"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="roi_years">Investment Duration</label>
+        <div class="input-wrap"><input type="number" id="roi_years" class="has-suffix" value="3" step="0.5" min="0.1"/><span class="input-suffix">years</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="roi_fees">Fees / Costs <span style="font-weight:400;color:var(--gray-400);font-size:0.72rem;">(optional)</span></label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="roi_fees" class="has-prefix" value="0" min="0"/></div>
+        <span class="form-hint">Commissions, taxes, transaction costs</span>
+      </div>
+      <!-- Compare B -->
+      <div class="form-group">
+        <label class="form-label" for="roi_init2">Compare: Initial B <span style="font-weight:400;color:var(--gray-400);font-size:0.72rem;">(optional)</span></label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="roi_init2" class="has-prefix" placeholder="0" min="0"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="roi_final2">Compare: Final Value B</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="roi_final2" class="has-prefix" placeholder="0" min="0"/></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcROI()">Calculate ROI ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="result-box" id="result">
+
+      <div class="result-primary">
+        <span class="result-primary-label">Total ROI</span>
+        <span class="result-primary-value" id="r-roi">—</span>
+      </div>
+
+      <div id="r-rating"></div>
+
+      <div class="result-row" style="margin-top:0.75rem;"><span class="result-row-label">Net Profit / Loss</span><span class="result-row-value" id="r-net">—</span></div>
+      <div class="result-row"><span class="result-row-label">Annualized Return (CAGR)</span><span class="result-row-value" id="r-cagr">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total Fees / Costs</span><span class="result-row-value color-red" id="r-fees">—</span></div>
+      <div class="result-row"><span class="result-row-label">Net ROI (after fees)</span><span class="result-row-value" id="r-net-roi">—</span></div>
+      <div class="result-row"><span class="result-row-label">Payback Period</span><span class="result-row-value" id="r-payback">—</span></div>
+      <div class="result-row"><span class="result-row-label">Money Multiplier</span><span class="result-row-value color-blue" id="r-multiplier">—</span></div>
+
+      <div class="bar-chart" id="r-chart" style="margin-top:1.25rem;"></div>
+
+      <!-- COMPARISON -->
+      <div id="compare-section" style="display:none;">
+        <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin:1.25rem 0 0.5rem;">📊 Side-by-Side Comparison</div>
+        <div class="compare-grid" id="compare-grid"></div>
+      </div>
+
+    </div><!-- /result-box -->
+
+    <div class="disclaimer">⚠️ ROI calculations are based on inputs provided. Past investment returns do not guarantee future results. Consult a financial advisor before making investment decisions.</div>
+
+    <div class="info-block">
+      <h2 style="font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.75rem;">What Is ROI?</h2>
+      <p>Return on Investment (ROI) measures the efficiency of an investment — how much you earned relative to how much you put in. It's expressed as a percentage and works for any type of investment: stocks, real estate, business projects, marketing campaigns, or education.</p>
+
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin:1.25rem 0 0.5rem;">ROI vs CAGR — Which Should You Use?</h3>
+      <div class="formula">ROI = (Final Value − Initial Cost) / Initial Cost × 100%</div>
+      <div class="formula" style="margin-top:8px;">CAGR = (Final / Initial)^(1 / years) − 1</div>
+      <p style="margin-top:0.75rem;"><strong>ROI</strong> tells you the total return over the entire period. <strong>CAGR</strong> (Compound Annual Growth Rate) annualizes that return, making it useful for comparing investments held for different periods. A 50% ROI over 10 years is actually a mediocre 4.1% CAGR — CAGR reveals this where simple ROI does not.</p>
+
+      <div class="faq" style="margin-top:1.5rem;">
+        <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Frequently Asked Questions</h3>
+
+        <div class="faq-item">
+          <div class="faq-q">What is a good ROI? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">It depends on the investment type and timeframe. For stocks, a 7–10% annual return (CAGR) is historically average. For real estate, 8–12% total return (including appreciation and rental income) is typical. For business projects, many companies use a hurdle rate of 15–25% ROI to approve spending. Marketing ROI above 5:1 ($5 return per $1 spent) is generally considered good.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is the difference between ROI and CAGR? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">ROI is the total return over the holding period with no time adjustment. CAGR is the annualized rate — the constant yearly growth rate that would produce the same total return. CAGR is better for comparing investments over different time periods. Example: Investment A returns 100% in 3 years (CAGR: 26%). Investment B returns 100% in 10 years (CAGR: 7.2%). Same ROI, very different annual performance.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is payback period? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Payback period is the time needed to recoup your initial investment. If you invest $10,000 and earn $3,333/year, the payback period is 3 years. It's a simple risk measure — shorter payback means lower exposure. However, it ignores time value of money and returns beyond the payback point, which is why it should be used alongside ROI and CAGR, not instead of them.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How do fees affect ROI? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Fees have an outsized impact on long-term ROI because they compound against you. A 1% annual fee on a $100,000 portfolio over 30 years at 7% growth costs over $180,000 in lost growth — more than the original investment. This is why low-cost index funds have systematically outperformed actively managed funds after fees over long periods. Always calculate net-of-fees ROI for any investment.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Finance Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:0.5rem;">
+        <a href="compound-interest.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">📈 Compound Interest</a>
+        <a href="retirement.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏦 Retirement</a>
+        <a href="savings.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🐷 Savings Goal</a>
+        <a href="percentage.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">% Percentage</a>
+      </div>
+    </div>
+
+  </div><!-- /calc-card -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card">
+    <h3>Related Calculators</h3>
+    <a class="related-link" href="compound-interest.html">📈 Compound Interest</a>
+    <a class="related-link" href="retirement.html">🏦 Retirement</a>
+    <a class="related-link" href="savings.html">🐷 Savings Goal</a>
+    <a class="related-link" href="percentage.html">% Percentage</a>
+  </div>
+  <div class="rail-card">
+    <h3>📐 ROI Benchmarks</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>S&P 500:</strong> ~10%/yr CAGR<br>
+      <strong>Real estate:</strong> ~8–12%/yr<br>
+      <strong>Savings account:</strong> ~4–5%/yr<br>
+      <strong>Good marketing:</strong> 5:1 return<br>
+      <strong>Business hurdle:</strong> 15–25%
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native / Affiliate Ad</div></div>
+</aside>
+
+</div><!-- /page-wrap -->
+
+<nav class="mobile-bottom-nav" aria-label="Quick access"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('roi'); });</script>
+<script>
+var TYPE_LABELS = {
+  investment:  { init: 'Initial Investment',    final: 'Final Value' },
+  business:    { init: 'Total Project Cost',    final: 'Total Revenue / Benefit' },
+  realestate:  { init: 'Purchase Price + Costs',final: 'Sale Price + Rental Income' },
+  marketing:   { init: 'Marketing Spend',       final: 'Revenue Generated' },
+};
+
+function setType(type, btn) {
+  document.querySelectorAll('.roi-type-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  var labels = TYPE_LABELS[type];
+  document.getElementById('lbl-init').textContent  = labels.init;
+  document.getElementById('lbl-final').textContent = labels.final;
+}
+
+function calcROI() {
+  var init  = +document.getElementById('roi_init').value  || 0;
+  var fin   = +document.getElementById('roi_final').value || 0;
+  var years = +document.getElementById('roi_years').value || 1;
+  var fees  = +document.getElementById('roi_fees').value  || 0;
+  var init2 = +document.getElementById('roi_init2').value || 0;
+  var fin2  = +document.getElementById('roi_final2').value|| 0;
+
+  if (init <= 0) { alert('Please enter a valid initial investment.'); return; }
+
+  var net    = fin - init;
+  var roi    = (fin - init) / init * 100;
+  var cagr   = fin > 0 ? (Math.pow(fin / init, 1 / years) - 1) * 100 : -100;
+  var netRoi = fees > 0 ? (fin - init - fees) / init * 100 : null;
+  var payback = net > 0 ? (init / (net / years)).toFixed(1) : null;
+  var multiplier = fin / init;
+
+  setText('r-roi',        (roi >= 0 ? '+' : '') + roi.toFixed(2) + '%');
+  setText('r-net',        (net >= 0 ? '+' : '') + fmtUSD(net));
+  document.getElementById('r-net').className = 'result-row-value ' + (net >= 0 ? 'color-green' : 'color-red');
+  setText('r-cagr',       (cagr >= 0 ? '+' : '') + cagr.toFixed(2) + '%/yr');
+  setText('r-fees',       fees > 0 ? fmtUSD(fees) : '$0.00');
+  setText('r-net-roi',    netRoi !== null ? (netRoi >= 0 ? '+' : '') + netRoi.toFixed(2) + '%' : 'N/A');
+  setText('r-payback',    payback ? payback + ' years' : 'N/A (loss)');
+  setText('r-multiplier', multiplier.toFixed(2) + 'x');
+
+  // Rating
+  var ratingEl = document.getElementById('r-rating');
+  var annROI = cagr;
+  var rClass, rText;
+  if (annROI >= 15)     { rClass='rating-excellent'; rText='🚀 Excellent return'; }
+  else if (annROI >= 8) { rClass='rating-good';      rText='✅ Good return'; }
+  else if (annROI >= 3) { rClass='rating-fair';      rText='⚠️ Fair return'; }
+  else                  { rClass='rating-poor';       rText='❌ Poor return'; }
+  ratingEl.innerHTML = '<div class="rating-badge ' + rClass + '">' + rText + ' · ' + cagr.toFixed(1) + '% CAGR</div>';
+
+  // Bar chart
+  renderBarChart('r-chart', [
+    { label: 'Initial Investment', value: init, color: '#1a73e8', display: fmtUSD(init) },
+    { label: 'Net Return',         value: Math.max(0, net), color: '#34a853', display: fmtUSD(net) },
+    { label: 'Fees',               value: fees, color: '#ea4335', display: fmtUSD(fees) },
+  ].filter(function(i){ return i.value > 0; }));
+
+  // Comparison
+  if (init2 > 0 && fin2 > 0) {
+    var roi2  = (fin2 - init2) / init2 * 100;
+    var cagr2 = (Math.pow(fin2 / init2, 1 / years) - 1) * 100;
+    var net2  = fin2 - init2;
+    var aWins = cagr >= cagr2;
+    document.getElementById('compare-section').style.display = '';
+    document.getElementById('compare-grid').innerHTML =
+      '<div class="compare-card' + (aWins ? ' winner' : '') + '">'
+      + '<h4>Investment A ' + (aWins ? '🏆 Winner' : '') + '</h4>'
+      + '<div class="c-roi" style="color:' + (roi >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (roi >= 0 ? '+' : '') + roi.toFixed(1) + '%</div>'
+      + '<div class="c-detail">CAGR: ' + cagr.toFixed(2) + '%/yr<br>Net: ' + fmtUSD(net) + '<br>Multiplier: ' + multiplier.toFixed(2) + 'x</div>'
+      + '</div>'
+      + '<div class="compare-card' + (!aWins ? ' winner' : '') + '">'
+      + '<h4>Investment B ' + (!aWins ? '🏆 Winner' : '') + '</h4>'
+      + '<div class="c-roi" style="color:' + (roi2 >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (roi2 >= 0 ? '+' : '') + roi2.toFixed(1) + '%</div>'
+      + '<div class="c-detail">CAGR: ' + cagr2.toFixed(2) + '%/yr<br>Net: ' + fmtUSD(net2) + '<br>Multiplier: ' + (fin2/init2).toFixed(2) + 'x</div>'
+      + '</div>';
+  } else {
+    document.getElementById('compare-section').style.display = 'none';
+  }
+
+  showResult('result');
+}
+
+function resetForm() {
+  document.getElementById('roi_init').value  = 10000;
+  document.getElementById('roi_final').value = 14500;
+  document.getElementById('roi_years').value = 3;
+  document.getElementById('roi_fees').value  = 0;
+  document.getElementById('roi_init2').value = '';
+  document.getElementById('roi_final2').value= '';
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body>
+</html>

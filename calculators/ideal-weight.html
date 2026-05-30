@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Ideal Weight Calculator — Healthy Weight Range by Height (2025)</title>
+<meta name="description" content="Calculate your ideal body weight using 5 formulas (Robinson, Miller, Devine, Hamwi, BMI range). Free, accurate."/>
+<link rel="canonical" href="https://calchub.io/calculators/ideal-weight.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.unit-toggle { display:flex; gap:0; margin-bottom:1.25rem; border-radius:22px; overflow:hidden; border:1px solid var(--gray-300); width:fit-content; }
+.unit-btn { padding:8px 22px; font-size:0.85rem; font-weight:600; cursor:pointer; border:none; background:var(--white); color:var(--gray-600); font-family:'Inter',sans-serif; transition:all 0.15s; }
+.unit-btn.active { background:var(--green); color:#fff; }
+.sex-toggle { display:flex; gap:8px; margin-bottom:1.25rem; }
+.sex-btn { padding:8px 24px; border-radius:22px; border:1px solid var(--gray-300); background:var(--white); color:var(--gray-600); font-size:0.85rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.sex-btn.active { background:var(--purple); border-color:var(--purple); color:#fff; }
+.formula-table { width:100%; border-collapse:collapse; font-size:0.82rem; margin-top:1rem; }
+.formula-table th { background:var(--gray-900); color:#fff; padding:8px 12px; text-align:left; font-size:0.75rem; font-weight:600; }
+.formula-table td { padding:8px 12px; border-bottom:1px solid var(--gray-100); }
+.formula-table td:last-child { font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--blue); }
+.weight-bar { height:24px; background:var(--gray-100); border-radius:12px; position:relative; margin:1rem 0 0.5rem; overflow:visible; }
+.weight-range { position:absolute; height:100%; background:linear-gradient(to right,#34a853,#1a73e8); border-radius:12px; transition:all 0.5s ease; }
+.weight-needle { position:absolute; top:-4px; width:4px; height:32px; background:var(--gray-900); border-radius:2px; transform:translateX(-50%); transition:left 0.5s ease; }
+.weight-labels { display:flex; justify-content:space-between; font-size:0.7rem; color:var(--gray-400); font-family:'JetBrains Mono',monospace; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#health" class="active">Health</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#health">Health</a><span class="breadcrumb-sep">›</span><span>Ideal Weight Calculator</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="bmr.html"><span class="sidebar-icon">🔥</span>BMR</a>
+    <a class="sidebar-link active" href="ideal-weight.html"><span class="sidebar-icon">⚖️</span>Ideal Weight</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e6f4ea;">⚖️</div>
+      <div><h1 class="calc-card-title">Ideal Weight Calculator</h1><p class="calc-card-desc">Find your ideal body weight range using 5 medical formulas plus the healthy BMI weight range.</p></div>
+    </div>
+
+    <div class="sex-toggle">
+      <button class="sex-btn active" id="btn-male" onclick="setSex('male')">♂ Male</button>
+      <button class="sex-btn" id="btn-female" onclick="setSex('female')">♀ Female</button>
+    </div>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="btn-imp" onclick="setUnit('imperial')">🇺🇸 Imperial</button>
+      <button class="unit-btn" id="btn-met" onclick="setUnit('metric')">🌍 Metric</button>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group" id="grp-ft">
+        <label class="form-label">Height</label>
+        <div style="display:flex;gap:8px;">
+          <div class="input-wrap" style="flex:1;"><input type="number" id="iw_ft" class="has-suffix" value="5"/><span class="input-suffix">ft</span></div>
+          <div class="input-wrap" style="flex:1;"><input type="number" id="iw_in" class="has-suffix" value="10"/><span class="input-suffix">in</span></div>
+        </div>
+      </div>
+      <div class="form-group" id="grp-cm" style="display:none;">
+        <label class="form-label">Height</label>
+        <div class="input-wrap"><input type="number" id="iw_cm" class="has-suffix" value="178"/><span class="input-suffix">cm</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="iw_current">Current Weight <span style="font-weight:400;color:var(--gray-400);font-size:0.72rem;">(optional)</span></label>
+        <div class="input-wrap"><input type="number" id="iw_current" class="has-suffix" placeholder="165"/><span class="input-suffix" id="wt-unit">lbs</span></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcIdealWeight()">Calculate ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <div class="result-box" id="result">
+      <div class="result-primary">
+        <span class="result-primary-label">Healthy Weight Range</span>
+        <span class="result-primary-value" id="r-range">—</span>
+      </div>
+
+      <div class="result-row"><span class="result-row-label">Average ideal weight (all formulas)</span><span class="result-row-value color-green" id="r-avg">—</span></div>
+      <div class="result-row" id="r-diff-row" style="display:none;"><span class="result-row-label">Weight to lose/gain</span><span class="result-row-value" id="r-diff">—</span></div>
+
+      <!-- WEIGHT BAR -->
+      <div class="weight-bar" id="weight-bar" style="display:none;">
+        <div class="weight-range" id="weight-range"></div>
+        <div class="weight-needle" id="weight-needle"></div>
+      </div>
+      <div class="weight-labels" id="weight-labels" style="display:none;"></div>
+
+      <!-- FORMULA TABLE -->
+      <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin:1.25rem 0 0.5rem;">By Formula</div>
+      <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--gray-200);">
+        <table class="formula-table">
+          <thead><tr><th>Formula</th><th>Ideal Weight</th></tr></thead>
+          <tbody id="formula-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="disclaimer">⚠️ Ideal weight formulas are population averages and may not apply to athletes, elderly, pregnant women, or people with high muscle mass. Consult a healthcare provider for personalized advice.</div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Ideal Weight Calculator</h2>
+      <p style="color:var(--gray-700);line-height:1.8;">There is no single "ideal" weight — different formulas give different answers. This calculator uses five established medical formulas plus the WHO-recommended healthy BMI range (18.5–24.9). The average across formulas gives a reasonable target range, but body composition (muscle vs fat) matters more than scale weight.</p>
+      <div class="faq" style="margin-top:1rem;">
+        <div class="faq-item">
+          <div class="faq-q">Which ideal weight formula is most accurate? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">No single formula is definitively "best" — they were developed for different populations and purposes. The BMI-based range (18.5–24.9) is the most widely accepted by health organizations. The Devine formula is commonly used in clinical settings for medication dosing. Using the average of multiple formulas gives a more reliable target than any single one.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Is ideal weight the same as healthy weight? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Not necessarily. "Ideal weight" is a mathematical estimate based on height. "Healthy weight" for an individual depends on body composition, age, fitness level, and metabolic health. An athlete may weigh more than the "ideal" but have very low body fat and excellent health markers. Use this as a reference point, not a rigid target.</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="bmi.html" style="padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">⚖️ BMI Calculator</a>
+        <a href="calorie.html" style="padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🍎 Calorie Calculator</a>
+        <a href="bmr.html" style="padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🔥 BMR Calculator</a>
+        <a href="body-fat.html" style="padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">📊 Body Fat</a>
+      </div>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="bmi.html">⚖️ BMI Calculator</a>
+    <a class="related-link" href="calorie.html">🍎 Calorie</a>
+    <a class="related-link" href="bmr.html">🔥 BMR Calculator</a>
+    <a class="related-link" href="body-fat.html">📊 Body Fat</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('ideal-weight'); });</script>
+<script>
+var _sex='male', _unit='imperial';
+function setSex(s){ _sex=s; document.getElementById('btn-male').classList.toggle('active',s==='male'); document.getElementById('btn-female').classList.toggle('active',s==='female'); document.getElementById('result').classList.remove('show'); }
+function setUnit(u){ _unit=u; document.getElementById('btn-imp').classList.toggle('active',u==='imperial'); document.getElementById('btn-met').classList.toggle('active',u==='metric'); document.getElementById('grp-ft').style.display=u==='imperial'?'':'none'; document.getElementById('grp-cm').style.display=u==='metric'?'':'none'; document.getElementById('wt-unit').textContent=u==='imperial'?'lbs':'kg'; document.getElementById('result').classList.remove('show'); }
+function calcIdealWeight(){
+  var hCm, currentLbs;
+  if(_unit==='imperial'){ hCm=((+document.getElementById('iw_ft').value||0)*12+(+document.getElementById('iw_in').value||0))*2.54; currentLbs=+document.getElementById('iw_current').value||0; }
+  else { hCm=+document.getElementById('iw_cm').value||0; currentLbs=(+document.getElementById('iw_current').value||0)*2.20462; }
+  if(!hCm){ alert('Please enter your height.'); return; }
+  var hIn=hCm/2.54, hM=hCm/100, exIn=hIn-60;
+  // Formulas (all in kg)
+  var robinson = _sex==='male' ? 52 + 1.9*exIn : 49 + 1.7*exIn;
+  var miller   = _sex==='male' ? 56.2 + 1.41*exIn : 53.1 + 1.36*exIn;
+  var devine   = _sex==='male' ? 50 + 2.3*exIn : 45.5 + 2.3*exIn;
+  var hamwi    = _sex==='male' ? 48 + 2.7*exIn : 45.4 + 2.27*exIn;
+  var bmiLow   = 18.5 * hM * hM;
+  var bmiHigh  = 24.9 * hM * hM;
+  var avg = (robinson+miller+devine+hamwi)/4;
+  var toDisp = _unit==='imperial' ? function(kg){ return (kg*2.20462).toFixed(1)+' lbs'; } : function(kg){ return kg.toFixed(1)+' kg'; };
+  var lowLbs  = bmiLow  * 2.20462;
+  var highLbs = bmiHigh * 2.20462;
+  var avgLbs  = avg * 2.20462;
+  setText('r-range', toDisp(bmiLow) + ' – ' + toDisp(bmiHigh));
+  setText('r-avg',   toDisp(avg) + ' (avg of 4 formulas)');
+  var formulas = [
+    {name:'Robinson (1983)',  val:robinson},
+    {name:'Miller (1983)',    val:miller},
+    {name:'Devine (1974)',    val:devine},
+    {name:'Hamwi (1964)',     val:hamwi},
+    {name:'BMI Low (18.5)',   val:bmiLow},
+    {name:'BMI High (24.9)',  val:bmiHigh},
+  ];
+  document.getElementById('formula-body').innerHTML = formulas.map(function(f){
+    return '<tr><td>'+f.name+'</td><td>'+toDisp(f.val)+'</td></tr>';
+  }).join('');
+  if(currentLbs>0){
+    var diffLbs = currentLbs - avgLbs;
+    var diffText = Math.abs(diffLbs).toFixed(1) + (_unit==='imperial'?' lbs':' kg') + (diffLbs>0?' to lose':' to gain') + ' to reach average ideal';
+    document.getElementById('r-diff-row').style.display='';
+    setText('r-diff', diffText);
+    // Bar
+    var minW=lowLbs*0.7, maxW=highLbs*1.3;
+    var rangePctL=((lowLbs-minW)/(maxW-minW)*100).toFixed(1);
+    var rangePctW=((highLbs-lowLbs)/(maxW-minW)*100).toFixed(1);
+    var needlePct=Math.min(100,Math.max(0,((currentLbs-minW)/(maxW-minW)*100))).toFixed(1);
+    document.getElementById('weight-bar').style.display='';
+    document.getElementById('weight-labels').style.display='flex';
+    document.getElementById('weight-range').style.left=rangePctL+'%';
+    document.getElementById('weight-range').style.width=rangePctW+'%';
+    document.getElementById('weight-needle').style.left=needlePct+'%';
+    document.getElementById('weight-labels').innerHTML='<span>'+minW.toFixed(0)+(_unit==='imperial'?' lbs':' kg')+'</span><span>Healthy range</span><span>'+maxW.toFixed(0)+(_unit==='imperial'?' lbs':' kg')+'</span>';
+  } else { document.getElementById('r-diff-row').style.display='none'; document.getElementById('weight-bar').style.display='none'; document.getElementById('weight-labels').style.display='none'; }
+  showResult('result');
+}
+function resetForm(){ document.getElementById('iw_ft').value=5; document.getElementById('iw_in').value=10; document.getElementById('iw_cm').value=178; document.getElementById('iw_current').value=''; document.getElementById('result').classList.remove('show'); }
+</script>
+</body></html>

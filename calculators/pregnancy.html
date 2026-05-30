@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pregnancy Due Date Calculator — Week by Week Timeline (2025)</title>
+<meta name="description" content="Calculate your pregnancy due date, current week, trimester, and key milestones. Supports LMP, conception date, and IVF transfer. Free."/>
+<meta property="og:title" content="Pregnancy Due Date Calculator — Week by Week Timeline"/>
+<meta property="og:description" content="Find your due date, current pregnancy week, trimester, and key milestones. LMP, conception date, or IVF methods supported."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/calculators/pregnancy.html"/>
+<link rel="canonical" href="https://calchub.com/calculators/pregnancy.html"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Pregnancy Due Date Calculator","description":"Calculate estimated due date, pregnancy week, trimester and milestones","url":"https://calchub.com/calculators/pregnancy.html","applicationCategory":"HealthApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"How is the due date calculated?","acceptedAnswer":{"@type":"Answer","text":"The most common method is Naegele's rule: add 280 days (40 weeks) to the first day of the last menstrual period (LMP). This assumes a 28-day cycle with ovulation on day 14."}},
+  {"@type":"Question","name":"How accurate is a due date calculator?","acceptedAnswer":{"@type":"Answer","text":"Due date calculators provide an estimate. Only about 5% of babies are born exactly on their due date. Most births occur within 2 weeks before or after. A first-trimester ultrasound is the most accurate way to confirm gestational age."}},
+  {"@type":"Question","name":"What are the three trimesters of pregnancy?","acceptedAnswer":{"@type":"Answer","text":"The first trimester covers weeks 1–12, the second trimester weeks 13–26, and the third trimester weeks 27–40. Full-term pregnancy is considered 39–40 weeks."}}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.method-tabs { display:flex; gap:4px; margin-bottom:1.25rem; flex-wrap:wrap; }
+.method-tab { padding:8px 16px; border-radius:20px; border:1px solid var(--gray-300); background:var(--white); color:var(--gray-600); font-size:0.82rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.method-tab.active { background:var(--purple); border-color:var(--purple); color:#fff; }
+
+/* Progress timeline */
+.pregnancy-timeline { margin-top:1.25rem; }
+.timeline-bar-wrap { position:relative; height:20px; background:var(--gray-100); border-radius:10px; overflow:hidden; margin-bottom:8px; }
+.timeline-bar-fill { height:100%; border-radius:10px; transition:width 0.6s ease; background:linear-gradient(to right, #ce93d8, #9c27b0); }
+.timeline-progress-text { display:flex; justify-content:space-between; font-size:0.72rem; color:var(--gray-500); margin-bottom:1rem; }
+
+/* Trimester blocks */
+.trimester-row { display:flex; gap:6px; margin-bottom:1rem; }
+.trimester-block { flex:1; padding:10px 8px; border-radius:var(--radius); text-align:center; border:2px solid transparent; transition:all 0.15s; }
+.trimester-block.active { border-color:var(--purple); box-shadow:0 0 0 3px rgba(147,52,230,0.12); }
+.tri-label { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px; }
+.tri-weeks { font-size:0.72rem; color:var(--gray-500); }
+
+/* Milestone cards */
+.milestones { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:1.25rem; }
+@media(max-width:500px){ .milestones { grid-template-columns:1fr; } }
+.milestone-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:12px; }
+.milestone-card.past { opacity:0.5; }
+.milestone-card.current { border-color:var(--purple); background:var(--purple-light); }
+.ms-date { font-size:0.72rem; color:var(--gray-500); margin-bottom:3px; }
+.ms-label { font-size:0.82rem; font-weight:600; color:var(--gray-800); }
+.ms-detail { font-size:0.72rem; color:var(--gray-500); margin-top:3px; }
+
+/* Week badge */
+.week-badge { display:inline-flex; align-items:center; gap:8px; background:var(--purple-light); border:1px solid #d0a8f7; border-radius:var(--radius-lg); padding:10px 16px; margin-bottom:1rem; }
+.week-badge-num { font-size:2rem; font-weight:700; color:var(--purple); font-family:'JetBrains Mono',monospace; line-height:1; }
+.week-badge-text { font-size:0.82rem; color:var(--purple); font-weight:600; }
+</style>
+</head>
+<body>
+
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance">Finance</a><a href="../index.html#health" class="active">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span class="breadcrumb-sep">›</span>
+  <a href="../index.html#health">Health</a><span class="breadcrumb-sep">›</span>
+  <span>Pregnancy Due Date Calculator</span>
+</nav>
+
+<div class="page-wrap">
+<aside class="sidebar" aria-label="Health calculators">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link active" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 Leaderboard — Google AdSense</div></div>
+
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#f3e8fd;">🤱</div>
+      <div>
+        <h1 class="calc-card-title">Pregnancy Due Date Calculator</h1>
+        <p class="calc-card-desc">Calculate your estimated due date, current pregnancy week, trimester, and key milestones.</p>
+      </div>
+    </div>
+
+    <!-- METHOD TABS -->
+    <div class="method-tabs">
+      <button class="method-tab active" id="tab-lmp" onclick="setMethod('lmp')">📅 Last Period (LMP)</button>
+      <button class="method-tab" id="tab-conception" onclick="setMethod('conception')">💛 Conception Date</button>
+      <button class="method-tab" id="tab-ivf" onclick="setMethod('ivf')">🔬 IVF Transfer Date</button>
+    </div>
+
+    <!-- LMP INPUTS -->
+    <div id="inputs-lmp">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="lmp_date">First Day of Last Menstrual Period</label>
+          <input type="date" id="lmp_date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="lmp_cycle">Average Cycle Length</label>
+          <div class="input-wrap"><input type="number" id="lmp_cycle" class="has-suffix" value="28" min="20" max="45"/><span class="input-suffix">days</span></div>
+          <span class="form-hint">Most common: 28 days</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCEPTION INPUTS -->
+    <div id="inputs-conception" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="con_date">Conception / Ovulation Date</label>
+          <input type="date" id="con_date"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- IVF INPUTS -->
+    <div id="inputs-ivf" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="ivf_date">Embryo Transfer Date</label>
+          <input type="date" id="ivf_date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ivf_day">Embryo Day at Transfer</label>
+          <select id="ivf_day">
+            <option value="3">Day 3 embryo</option>
+            <option value="5" selected>Day 5 embryo (blastocyst)</option>
+            <option value="6">Day 6 embryo</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcPregnancy()">Calculate Due Date ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="result-box" id="result">
+
+      <div class="result-primary">
+        <span class="result-primary-label">Estimated Due Date</span>
+        <span class="result-primary-value" id="r-due" style="font-size:1.25rem;">—</span>
+      </div>
+
+      <!-- WEEK BADGE -->
+      <div class="week-badge">
+        <div class="week-badge-num" id="r-week-num">—</div>
+        <div class="week-badge-text" id="r-week-text">weeks pregnant</div>
+      </div>
+
+      <div class="result-row"><span class="result-row-label">Days Until Due Date</span><span class="result-row-value" id="r-days">—</span></div>
+      <div class="result-row"><span class="result-row-label">Estimated Conception</span><span class="result-row-value" id="r-conception">—</span></div>
+      <div class="result-row"><span class="result-row-label">Current Trimester</span><span class="result-row-value" id="r-trimester">—</span></div>
+      <div class="result-row"><span class="result-row-label">Pregnancy Progress</span><span class="result-row-value" id="r-pct">—</span></div>
+
+      <!-- PROGRESS BAR -->
+      <div class="pregnancy-timeline" style="margin-top:1rem;">
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar-fill" id="timeline-fill" style="width:0%;"></div>
+        </div>
+        <div class="timeline-progress-text">
+          <span>Week 1</span><span>Week 13</span><span>Week 27</span><span>Week 40</span>
+        </div>
+      </div>
+
+      <!-- TRIMESTER BLOCKS -->
+      <div class="trimester-row">
+        <div class="trimester-block" id="tri1" style="background:#f3e8fd;">
+          <div class="tri-label" style="color:#9334e6;">1st Trimester</div>
+          <div class="tri-weeks">Weeks 1–12</div>
+        </div>
+        <div class="trimester-block" id="tri2" style="background:#e8f0fe;">
+          <div class="tri-label" style="color:#1a73e8;">2nd Trimester</div>
+          <div class="tri-weeks">Weeks 13–26</div>
+        </div>
+        <div class="trimester-block" id="tri3" style="background:#e6f4ea;">
+          <div class="tri-label" style="color:#34a853;">3rd Trimester</div>
+          <div class="tri-weeks">Weeks 27–40</div>
+        </div>
+      </div>
+
+      <!-- KEY MILESTONES -->
+      <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin-bottom:0.75rem;">Key Dates & Milestones</div>
+      <div class="milestones" id="milestones"></div>
+
+    </div><!-- /result-box -->
+
+    <div class="disclaimer">⚠️ This calculator provides an estimate only. Due dates are naturally variable — only about 5% of babies are born on their exact due date. A first-trimester ultrasound is the most accurate way to confirm gestational age. Always consult your OB or midwife.</div>
+
+    <div class="info-block">
+      <h2 style="font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.75rem;">How Is a Due Date Calculated?</h2>
+      <p>The most widely used method is <strong>Naegele's Rule</strong>: add 280 days (40 weeks) to the first day of the last menstrual period (LMP). This standard was established by German obstetrician Franz Karl Naegele in the 19th century and remains the basis for due date calculation worldwide. It assumes a 28-day cycle with ovulation occurring on day 14.</p>
+
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin:1.25rem 0 0.5rem;">The Three Trimesters</h3>
+      <p>Pregnancy is divided into three trimesters: the <strong>first trimester</strong> (weeks 1–12) covers early development, morning sickness, and the highest risk of miscarriage; the <strong>second trimester</strong> (weeks 13–26) is typically the most comfortable period with reduced nausea and visible growth; the <strong>third trimester</strong> (weeks 27–40) involves rapid fetal growth, preparation for birth, and increasing discomfort as the due date approaches.</p>
+
+      <div class="faq" style="margin-top:1.5rem;">
+        <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Frequently Asked Questions</h3>
+
+        <div class="faq-item">
+          <div class="faq-q">How accurate is a due date calculator? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Due date calculators provide a statistical estimate, not a precise prediction. Only about 5% of babies are born on their exact due date. Roughly 80% of births occur within 2 weeks before or after the estimated date. A first-trimester ultrasound (before 14 weeks) is the most accurate method for confirming gestational age — it can typically date a pregnancy to within ±5–7 days.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What if my cycle isn't 28 days? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">This calculator adjusts for cycle length. If your cycle is longer than 28 days, ovulation (and likely conception) occurs later, shifting your due date forward. If your cycle is shorter, the due date shifts earlier. For example, with a 35-day cycle, ovulation typically occurs on day 21 rather than day 14, adding 7 days to the standard Naegele's Rule calculation.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is a full-term pregnancy? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Full-term pregnancy is now defined as 39–40 weeks of gestation. Early term is 37–38 weeks, late term is 41 weeks, and post-term is 42+ weeks. Babies born before 37 weeks are considered premature (preterm). The ACOG (American College of Obstetricians and Gynecologists) recommends against elective delivery before 39 weeks when possible, as the final weeks are critical for lung and brain development.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How is IVF due date calculated differently? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">For IVF pregnancies, the due date is calculated from the embryo transfer date plus the age of the embryo. For a Day 5 blastocyst transfer, the LMP equivalent is 19 days before the transfer date (transfer date − 5 days for embryo age − 14 days for the LMP-to-ovulation interval). Add 280 days from that LMP equivalent to get the due date. This calculator handles all three common transfer types (Day 3, 5, and 6).</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What are the most important prenatal appointments? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Key appointments include: First prenatal visit (6–8 weeks) for confirmation and blood work; nuchal translucency ultrasound (11–14 weeks) for chromosomal screening; anatomy scan (18–20 weeks) to check fetal development; glucose tolerance test (24–28 weeks) for gestational diabetes screening; Group B strep test (35–37 weeks); and weekly visits from 36 weeks until delivery.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:0.5rem;">
+        <a href="bmi.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">⚖️ BMI Calculator</a>
+        <a href="calorie.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🍎 Calorie Calculator</a>
+        <a href="age.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-light);color:var(--green);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🎂 Age Calculator</a>
+      </div>
+    </div>
+
+  </div><!-- /calc-card -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card">
+    <h3>Related Calculators</h3>
+    <a class="related-link" href="bmi.html">⚖️ BMI Calculator</a>
+    <a class="related-link" href="calorie.html">🍎 Calorie Calculator</a>
+    <a class="related-link" href="body-fat.html">📊 Body Fat Calculator</a>
+    <a class="related-link" href="age.html">🎂 Age Calculator</a>
+  </div>
+  <div class="rail-card">
+    <h3>🗓 Pregnancy at a Glance</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:2;">
+      <strong>Total duration:</strong> 40 weeks<br>
+      <strong>1st trimester:</strong> Weeks 1–12<br>
+      <strong>2nd trimester:</strong> Weeks 13–26<br>
+      <strong>3rd trimester:</strong> Weeks 27–40<br>
+      <strong>Full term:</strong> Weeks 39–40<br>
+      <strong>Preterm:</strong> Before 37 weeks
+    </p>
+  </div>
+  <div class="rail-card">
+    <h3>💡 Due Date Fact</h3>
+    <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.65;">Only about <strong>5% of babies</strong> are born on their exact due date. Most arrive within 2 weeks either side. The "due date" is really the midpoint of a normal delivery window.</p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native / Affiliate Ad</div></div>
+</aside>
+
+</div><!-- /page-wrap -->
+
+<nav class="mobile-bottom-nav" aria-label="Quick access"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('pregnancy'); });</script>
+<script>
+var _method = 'lmp';
+
+function setMethod(m) {
+  _method = m;
+  ['lmp','conception','ivf'].forEach(function(k){
+    document.getElementById('tab-' + k).classList.toggle('active', k === m);
+    document.getElementById('inputs-' + k).style.display = k === m ? '' : 'none';
+  });
+  document.getElementById('result').classList.remove('show');
+}
+
+function fmt(d) {
+  return d.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+}
+function addDays(d, n) { var r = new Date(d); r.setDate(r.getDate() + n); return r; }
+
+function calcPregnancy() {
+  var lmpDate;
+
+  if (_method === 'lmp') {
+    var v = document.getElementById('lmp_date').value;
+    if (!v) { alert('Please select the first day of your last period.'); return; }
+    lmpDate = new Date(v + 'T00:00:00');
+    var cycle = +document.getElementById('lmp_cycle').value || 28;
+    // Adjust for non-28-day cycles
+    lmpDate = addDays(lmpDate, -(cycle - 28));
+  } else if (_method === 'conception') {
+    var v = document.getElementById('con_date').value;
+    if (!v) { alert('Please select your conception date.'); return; }
+    var conDate = new Date(v + 'T00:00:00');
+    lmpDate = addDays(conDate, -14);
+  } else {
+    var v = document.getElementById('ivf_date').value;
+    if (!v) { alert('Please select your embryo transfer date.'); return; }
+    var transferDate = new Date(v + 'T00:00:00');
+    var embryoDay = +document.getElementById('ivf_day').value;
+    lmpDate = addDays(transferDate, -(embryoDay + 14));
+  }
+
+  var due = addDays(lmpDate, 280);
+  var today = new Date(); today.setHours(0,0,0,0);
+  var daysPreg = Math.floor((today - lmpDate) / 86400000);
+  var weeksPreg = Math.floor(daysPreg / 7);
+  var extraDays = daysPreg % 7;
+  var daysUntil = Math.max(0, Math.floor((due - today) / 86400000));
+  var pct = Math.min(100, Math.max(0, (daysPreg / 280 * 100)));
+  var conception = addDays(lmpDate, 14);
+
+  var trimesterNum = weeksPreg < 13 ? 1 : weeksPreg < 27 ? 2 : 3;
+  var trimesterText = trimesterNum === 1 ? '1st Trimester (weeks 1–12)' : trimesterNum === 2 ? '2nd Trimester (weeks 13–26)' : '3rd Trimester (weeks 27–40)';
+
+  setText('r-due', fmt(due));
+  document.getElementById('r-week-num').textContent = Math.max(0, weeksPreg);
+  document.getElementById('r-week-text').textContent = 'weeks + ' + extraDays + ' days pregnant';
+  setText('r-days', daysUntil > 0 ? daysUntil + ' days to go' : 'Past due date');
+  setText('r-conception', fmt(conception) + ' (est.)');
+  setText('r-trimester', trimesterText);
+  setText('r-pct', pct.toFixed(0) + '% complete');
+
+  // Progress bar
+  document.getElementById('timeline-fill').style.width = pct.toFixed(1) + '%';
+
+  // Trimester highlights
+  [1,2,3].forEach(function(n){
+    document.getElementById('tri'+n).classList.toggle('active', n === trimesterNum);
+  });
+
+  // Key milestones
+  var milestones = [
+    { week:6,  label:'First heartbeat detectable', detail:'Transvaginal ultrasound' },
+    { week:10, label:'End of embryonic period',    detail:'Fetus fully formed' },
+    { week:12, label:'End of 1st trimester',       detail:'Miscarriage risk drops significantly' },
+    { week:14, label:'Gender may be visible',      detail:'On ultrasound' },
+    { week:18, label:'Anatomy scan',               detail:'Detailed structural check' },
+    { week:20, label:'Halfway point',              detail:'20 of 40 weeks' },
+    { week:24, label:'Viability milestone',        detail:'Fetus may survive if born now' },
+    { week:28, label:'3rd trimester begins',       detail:'Final stretch' },
+    { week:32, label:'Rapid brain development',   detail:'Eyes open and close' },
+    { week:37, label:'Early term',                 detail:'Lungs nearly mature' },
+    { week:39, label:'Full term',                  detail:'Safe delivery window' },
+    { week:40, label:'Due date week',              detail:fmt(due) },
+  ];
+
+  document.getElementById('milestones').innerHTML = milestones.map(function(m) {
+    var mDate = addDays(lmpDate, m.week * 7);
+    var isPast = today > mDate;
+    var isCurrent = weeksPreg >= m.week && weeksPreg < m.week + 1;
+    return '<div class="milestone-card' + (isPast ? ' past' : '') + (isCurrent ? ' current' : '') + '">'
+      + '<div class="ms-date">Week ' + m.week + ' · ' + fmt(mDate) + '</div>'
+      + '<div class="ms-label">' + (isCurrent ? '▶ ' : isPast ? '✓ ' : '') + m.label + '</div>'
+      + '<div class="ms-detail">' + m.detail + '</div>'
+      + '</div>';
+  }).join('');
+
+  showResult('result');
+}
+
+function resetForm() {
+  ['lmp_date','con_date','ivf_date'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('lmp_cycle').value = 28;
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body>
+</html>

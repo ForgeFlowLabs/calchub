@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Retirement Calculator — Savings Projection & 4% Rule (2025)</title>
+<meta name="description" content="Project your retirement savings, estimated monthly income, and see if you're on track. Includes the 4% rule, year-by-year growth, and savings gap analysis. Free."/>
+<meta property="og:title" content="Retirement Calculator — Are You On Track?"/>
+<meta property="og:description" content="See your projected retirement balance, monthly income, inflation-adjusted value, and exactly how much you need to save. Free."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/calculators/retirement.html"/>
+<link rel="canonical" href="https://calchub.com/calculators/retirement.html"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Retirement Calculator","description":"Project retirement savings with year-by-year growth, 4% rule income, and savings gap analysis","url":"https://calchub.com/calculators/retirement.html","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"How much do I need to retire?","acceptedAnswer":{"@type":"Answer","text":"The most common rule of thumb is to save 25x your expected annual retirement expenses (based on the 4% rule). If you expect to spend $60,000/year in retirement, you need $1.5 million saved."}},
+  {"@type":"Question","name":"What is the 4% rule?","acceptedAnswer":{"@type":"Answer","text":"The 4% rule states that you can withdraw 4% of your portfolio in year one of retirement, then adjust for inflation each year, with a high probability of your money lasting 30+ years. It was derived from the Trinity Study using historical US market data."}},
+  {"@type":"Question","name":"How much should I save for retirement each month?","acceptedAnswer":{"@type":"Answer","text":"A common guideline is to save 15% of your gross income for retirement, including any employer match. Starting earlier allows you to save less — starting at 25 requires roughly half the monthly savings of starting at 35 to reach the same goal."}}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.on-track-banner {
+  display:flex; align-items:center; gap:12px; padding:12px 16px;
+  border-radius:var(--radius-lg); margin-top:1rem; font-size:0.85rem; font-weight:600;
+}
+.on-track-banner.good  { background:var(--green-light); color:var(--green); border:1px solid #b7dfbe; }
+.on-track-banner.warn  { background:var(--yellow-light); color:var(--orange); border:1px solid #f7e194; }
+.on-track-banner.bad   { background:var(--red-light); color:var(--red); border:1px solid #f5b8b3; }
+.on-track-icon { font-size:1.5rem; }
+
+.milestones-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:1rem; }
+@media(max-width:500px){ .milestones-row { grid-template-columns:1fr 1fr; } }
+.milestone-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:10px 12px; text-align:center; }
+.ms-val { font-size:1rem; font-weight:700; color:var(--blue); font-family:'JetBrains Mono',monospace; }
+.ms-label { font-size:0.7rem; color:var(--gray-500); margin-top:3px; }
+
+.growth-table-wrap { overflow-x:auto; border-radius:var(--radius-lg); border:1px solid var(--gray-200); margin-top:1.25rem; max-height:360px; overflow-y:auto; }
+.growth-table { width:100%; border-collapse:collapse; font-size:0.8rem; }
+.growth-table th { background:var(--gray-900); color:#fff; padding:9px 14px; text-align:right; font-weight:600; font-size:0.73rem; letter-spacing:0.04em; white-space:nowrap; position:sticky; top:0; }
+.growth-table th:first-child { text-align:left; }
+.growth-table td { padding:8px 14px; text-align:right; border-bottom:1px solid var(--gray-100); font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--gray-700); }
+.growth-table td:first-child { text-align:left; font-family:'Inter',sans-serif; font-weight:600; color:var(--gray-800); font-size:0.8rem; }
+.growth-table tr:hover td { background:var(--gray-50); }
+.growth-table .col-growth { color:var(--green); }
+.growth-table .col-balance { color:var(--blue); font-weight:700; }
+.growth-table tr.decade-row td { background:var(--blue-light); }
+
+.gap-box { background:var(--red-light); border:1px solid #f5b8b3; border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-top:1rem; }
+.gap-box h4 { font-size:0.85rem; font-weight:700; color:var(--red); margin-bottom:0.5rem; }
+.gap-box p { font-size:0.82rem; color:var(--gray-700); line-height:1.6; }
+
+.share-strip { display:flex; align-items:center; gap:10px; margin-top:1rem; padding:10px 14px; background:var(--gray-50); border-radius:var(--radius); border:1px solid var(--gray-200); flex-wrap:wrap; }
+.share-strip span { font-size:0.78rem; color:var(--gray-500); flex:1; min-width:100px; }
+.share-strip input { flex:2; min-width:180px; font-size:0.75rem; font-family:'JetBrains Mono',monospace; padding:6px 10px; border-radius:var(--radius); border:1px solid var(--gray-300); background:var(--white); color:var(--gray-700); }
+.btn-copy { padding:6px 14px; background:var(--blue); color:#fff; border:none; border-radius:16px; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:background 0.15s; }
+.btn-copy:hover { background:var(--blue-dark); }
+</style>
+</head>
+<body>
+
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance" class="active">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span class="breadcrumb-sep">›</span>
+  <a href="../index.html#finance">Finance</a><span class="breadcrumb-sep">›</span>
+  <span>Retirement Calculator</span>
+</nav>
+
+<div class="page-wrap">
+<aside class="sidebar" aria-label="Finance calculators">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link active" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 Leaderboard — Google AdSense</div></div>
+
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e8f0fe;">🏦</div>
+      <div>
+        <h1 class="calc-card-title">Retirement Calculator</h1>
+        <p class="calc-card-desc">Project your retirement savings, estimated monthly income, and see if you're on track to retire comfortably.</p>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="ret_age">Current Age</label>
+        <div class="input-wrap"><input type="number" id="ret_age" class="has-suffix" value="30" min="18" max="80"/><span class="input-suffix">yrs</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ret_retire">Retirement Age</label>
+        <div class="input-wrap"><input type="number" id="ret_retire" class="has-suffix" value="65" min="40" max="90"/><span class="input-suffix">yrs</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ret_current">Current Savings</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="ret_current" class="has-prefix" value="25000" min="0"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ret_contrib">Monthly Contribution</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="ret_contrib" class="has-prefix" value="800" min="0"/></div>
+        <span class="form-hint">Include 401k, IRA, and employer match</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ret_return">Expected Annual Return</label>
+        <div class="input-wrap"><input type="number" id="ret_return" class="has-suffix" value="7" step="0.5" min="0" max="30"/><span class="input-suffix">%</span></div>
+        <span class="form-hint">Conservative: 6–7% (inflation-adjusted)</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ret_inflation">Inflation Rate</label>
+        <div class="input-wrap"><input type="number" id="ret_inflation" class="has-suffix" value="3" step="0.5" min="0" max="15"/><span class="input-suffix">%</span></div>
+        <span class="form-hint">Historical US avg: ~3%</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ret_goal">Desired Monthly Income in Retirement</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="ret_goal" class="has-prefix" value="5000" min="0"/></div>
+        <span class="form-hint">In today's dollars</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ret_social">Expected Social Security</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="ret_social" class="has-prefix" value="1500" min="0"/></div>
+        <span class="form-hint">Monthly benefit, leave 0 if unknown</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcRetirement()">Project Savings ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="result-box" id="result">
+
+      <div class="result-primary">
+        <span class="result-primary-label">Projected Balance at Retirement</span>
+        <span class="result-primary-value" id="r-total">—</span>
+      </div>
+
+      <!-- ON TRACK BANNER -->
+      <div class="on-track-banner" id="on-track-banner">
+        <div class="on-track-icon" id="on-track-icon">—</div>
+        <div id="on-track-text">—</div>
+      </div>
+
+      <div class="result-row" style="margin-top:1rem;"><span class="result-row-label">Years to Retirement</span><span class="result-row-value" id="r-years">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total Contributions</span><span class="result-row-value" id="r-contrib">—</span></div>
+      <div class="result-row"><span class="result-row-label">Investment Growth</span><span class="result-row-value color-green" id="r-growth">—</span></div>
+      <div class="result-row"><span class="result-row-label">Inflation-Adjusted Balance</span><span class="result-row-value" id="r-adjusted">—</span></div>
+      <div class="result-row"><span class="result-row-label">Estimated Monthly Income (4% rule)</span><span class="result-row-value color-green" id="r-income">—</span></div>
+      <div class="result-row"><span class="result-row-label">Monthly Need from Portfolio</span><span class="result-row-value" id="r-need">—</span></div>
+      <div class="result-row"><span class="result-row-label">Savings Needed for Your Goal</span><span class="result-row-value" id="r-needed">—</span></div>
+
+      <!-- GAP BOX -->
+      <div class="gap-box" id="gap-box" style="display:none;">
+        <h4>⚠️ Savings Gap Detected</h4>
+        <p id="gap-text"></p>
+      </div>
+
+      <!-- MILESTONE CARDS -->
+      <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin:1.25rem 0 0.5rem;">Key Milestones</div>
+      <div class="milestones-row" id="milestones"></div>
+
+      <!-- BAR CHART -->
+      <div class="bar-chart" id="r-chart" style="margin-top:1.25rem;"></div>
+
+      <!-- SHARE -->
+      <div class="share-strip">
+        <span>🔗 Share this result:</span>
+        <input type="text" id="share-url" readonly onclick="this.select()"/>
+        <button class="btn-copy" onclick="copyShareUrl()">Copy Link</button>
+      </div>
+
+      <!-- YEAR-BY-YEAR TABLE -->
+      <div style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin:1.5rem 0 0.75rem;">Year-by-Year Projection</div>
+      <div class="growth-table-wrap">
+        <table class="growth-table">
+          <thead><tr>
+            <th style="text-align:left;">Age</th>
+            <th>Contributions</th>
+            <th>Growth</th>
+            <th>Balance</th>
+            <th>Real Value</th>
+          </tr></thead>
+          <tbody id="growth-body"></tbody>
+        </table>
+      </div>
+      <p style="font-size:0.72rem;color:var(--gray-400);margin-top:8px;">Highlighted rows = decade milestones. Real value = inflation-adjusted in today's dollars.</p>
+
+    </div><!-- /result-box -->
+
+    <div class="disclaimer">⚠️ Projections assume constant rates of return and regular contributions. Actual investment returns vary significantly year to year. This tool is for planning purposes only. Consult a licensed financial advisor for personalized retirement planning.</div>
+
+    <div id="ai-problem-section" style="margin-top:1.5rem;"></div>
+    <div class="info-block">
+      <h2 style="font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.75rem;">How Much Do You Need to Retire?</h2>
+      <p>The most widely used guideline is the <strong>25x rule</strong>: save 25 times your expected annual retirement spending. This is derived from the 4% rule — if you withdraw 4% of your portfolio annually, 25x your spending is exactly what you need. If you want $60,000/year in retirement, you need $1.5 million saved ($60,000 × 25).</p>
+
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin:1.25rem 0 0.5rem;">The 4% Rule Explained</h3>
+      <p>The 4% rule came from the <strong>Trinity Study</strong> (1998), which analyzed historical US market data and found that a 4% annual withdrawal rate had a 95%+ success rate of lasting 30 years across all historical periods. It's a starting point, not a guarantee — lower rates (3–3.5%) are safer for longer retirements or early retirees.</p>
+
+      <div class="faq" style="margin-top:1.5rem;">
+        <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Frequently Asked Questions</h3>
+
+        <div class="faq-item">
+          <div class="faq-q">How much should I save each month for retirement? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">The standard guideline is to save 15% of your gross income, including any employer 401(k) match. If you started late, aim for 20–25%. The earlier you start, the less you need to save monthly — because of compounding, starting at 25 vs. 35 with the same goal can require roughly half the monthly savings. Use this calculator to find your specific target.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is the difference between a 401(k) and an IRA? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">A 401(k) is employer-sponsored — contributions come from your paycheck pre-tax, reducing your taxable income now. Many employers offer matching contributions (free money). The 2025 contribution limit is $23,500 ($31,000 if 50+). An IRA (Individual Retirement Account) is opened independently. Traditional IRA contributions may be tax-deductible. Roth IRA contributions are after-tax but withdrawals in retirement are tax-free. The 2025 IRA limit is $7,000 ($8,000 if 50+).</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Should I use a Traditional or Roth account? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">If you expect to be in a higher tax bracket in retirement than you are now, Roth is better — you pay taxes now at a lower rate and all growth is tax-free. If you're in your peak earning years and expect lower income in retirement, Traditional is often better — you defer taxes to when your rate is lower. Many financial planners recommend having both to provide tax flexibility in retirement.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is a safe withdrawal rate for early retirement? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">For a 30-year retirement, 4% is historically well-supported. For 40+ year retirements (early retirement / FIRE), most research suggests 3–3.5% is safer. The Kitces research shows that flexible spending rules — reducing withdrawals in down markets — significantly improve longevity. Many early retirees target a 3.5% rate and plan to adjust spending based on portfolio performance.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How does Social Security factor into retirement planning? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Social Security reduces how much you need to withdraw from your portfolio each month. Enter your expected monthly benefit in this calculator to see the gap your savings needs to cover. You can check your estimated benefit at ssa.gov. Full retirement age for Social Security is 67 for those born after 1960. Delaying to age 70 increases your benefit by 8% per year — a guaranteed return hard to beat anywhere.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is the FIRE movement? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">FIRE stands for Financial Independence, Retire Early. The core idea is to save aggressively (50–70% of income) to reach financial independence faster — typically by accumulating 25x annual expenses. Different variants include Lean FIRE (minimal spending), Fat FIRE (comfortable spending), and Barista FIRE (semi-retirement with part-time income). The math is the same as traditional retirement planning, just compressed.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Finance Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:0.5rem;">
+        <a href="compound-interest.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">📈 Compound Interest</a>
+        <a href="savings.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🐷 Savings Goal</a>
+        <a href="roi.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">💰 ROI Calculator</a>
+        <a href="tax.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🧾 Tax Calculator</a>
+      </div>
+    </div>
+
+  </div><!-- /calc-card -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card">
+    <h3>Related Calculators</h3>
+    <a class="related-link" href="compound-interest.html">📈 Compound Interest</a>
+    <a class="related-link" href="savings.html">🐷 Savings Goal</a>
+    <a class="related-link" href="roi.html">💰 ROI Calculator</a>
+    <a class="related-link" href="tax.html">🧾 Tax Calculator</a>
+    <a class="related-link" href="mortgage.html">🏠 Mortgage</a>
+  </div>
+  <div class="rail-card">
+    <h3>🎯 The 25x Rule</h3>
+    <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.65;">To retire on <strong>$5,000/month</strong> ($60k/year), you need <strong>$1.5M</strong> saved (25 × $60,000). Social Security reduces how much you need from savings.</p>
+  </div>
+  <div class="rail-card">
+    <h3>📊 2025 Limits</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>401(k):</strong> $23,500/yr<br>
+      <strong>401(k) 50+:</strong> $31,000/yr<br>
+      <strong>IRA:</strong> $7,000/yr<br>
+      <strong>IRA 50+:</strong> $8,000/yr
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native / Affiliate Ad</div></div>
+</aside>
+
+</div><!-- /page-wrap -->
+
+<nav class="mobile-bottom-nav" aria-label="Quick access"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('retirement'); loadFromUrl(); });</script>
+<script>
+function calcRetirement() {
+  var age     = +document.getElementById('ret_age').value     || 0;
+  var retire  = +document.getElementById('ret_retire').value  || 0;
+  var current = +document.getElementById('ret_current').value || 0;
+  var contrib = +document.getElementById('ret_contrib').value || 0;
+  var ret     = +document.getElementById('ret_return').value  / 100 || 0;
+  var inf     = +document.getElementById('ret_inflation').value / 100 || 0;
+  var goalMo  = +document.getElementById('ret_goal').value    || 0;
+  var social  = +document.getElementById('ret_social').value  || 0;
+
+  if (retire <= age) { alert('Retirement age must be greater than current age.'); return; }
+  var years = retire - age;
+  var months = years * 12;
+  var mr = ret / 12;
+
+  // Project balance
+  var balance = current * Math.pow(1 + mr, months);
+  for (var i = 1; i <= months; i++) balance += contrib * Math.pow(1 + mr, months - i);
+
+  var totalContrib = current + contrib * months;
+  var growth = balance - totalContrib;
+  var adjusted = balance / Math.pow(1 + inf, years);
+
+  // Income analysis
+  var monthlyIncome = balance * 0.04 / 12;
+  var goalInflated  = goalMo * Math.pow(1 + inf, years); // goal in future dollars
+  var needFromPortfolio = Math.max(0, goalInflated - social);
+  var neededBalance = needFromPortfolio * 12 / 0.04; // 25x annual need
+  var gap = neededBalance - balance;
+
+  setText('r-total',    fmtUSD(balance));
+  setText('r-years',    years + ' years (' + age + ' → ' + retire + ')');
+  setText('r-contrib',  fmtUSD(totalContrib));
+  setText('r-growth',   fmtUSD(growth));
+  setText('r-adjusted', fmtUSD(adjusted) + ' (today\'s dollars)');
+  setText('r-income',   fmtUSD(monthlyIncome) + '/mo');
+  setText('r-need',     fmtUSD(needFromPortfolio) + '/mo (after Social Security)');
+  setText('r-needed',   fmtUSD(neededBalance));
+
+  // On-track banner
+  var banner = document.getElementById('on-track-banner');
+  var ratio = balance / (neededBalance || 1);
+  if (ratio >= 1) {
+    banner.className = 'on-track-banner good';
+    document.getElementById('on-track-icon').textContent = '✅';
+    document.getElementById('on-track-text').textContent = 'On track! Your projected balance exceeds your retirement goal by ' + fmtUSD(balance - neededBalance) + '.';
+    document.getElementById('gap-box').style.display = 'none';
+  } else if (ratio >= 0.75) {
+    banner.className = 'on-track-banner warn';
+    document.getElementById('on-track-icon').textContent = '⚠️';
+    document.getElementById('on-track-text').textContent = 'Almost there. You\'re ' + Math.round((1 - ratio) * 100) + '% short of your goal. Consider increasing contributions by ' + fmtUSD(calcNeededExtraContrib(current, mr, months, neededBalance - balance)) + '/mo.';
+    document.getElementById('gap-box').style.display = 'none';
+  } else {
+    banner.className = 'on-track-banner bad';
+    document.getElementById('on-track-icon').textContent = '❌';
+    document.getElementById('on-track-text').textContent = 'Savings gap detected. You need ' + fmtUSD(gap) + ' more to meet your goal.';
+    document.getElementById('gap-box').style.display = '';
+    var extraNeeded = calcNeededExtraContrib(current, mr, months, gap);
+    document.getElementById('gap-text').innerHTML =
+      'To close this gap, you would need to save an extra <strong>' + fmtUSD(extraNeeded) + '/month</strong> more than your current contributions. '
+      + 'Alternatively, retiring 5 years later or increasing your expected return by 1% could also close the gap.';
+  }
+
+  // Milestone cards
+  var milestones = [
+    { label: 'Balance at 50', val: projectBalance(current, contrib, mr, (Math.min(50, retire) - age) * 12) },
+    { label: 'Halfway point', val: projectBalance(current, contrib, mr, months / 2) },
+    { label: 'At retirement', val: balance },
+    { label: 'Annual income (4%)', val: balance * 0.04 },
+    { label: 'Monthly income', val: monthlyIncome },
+    { label: 'Real value today', val: adjusted },
+  ];
+  document.getElementById('milestones').innerHTML = milestones.map(function(m) {
+    return '<div class="milestone-card"><div class="ms-val">' + fmtUSD(m.val) + '</div><div class="ms-label">' + m.label + '</div></div>';
+  }).join('');
+
+  // Bar chart
+  renderBarChart('r-chart', [
+    { label: 'Starting Balance', value: current,      color: '#9aa0a6', display: fmtUSD(current) },
+    { label: 'Contributions',   value: contrib*months, color: '#1a73e8', display: fmtUSD(contrib*months) },
+    { label: 'Investment Growth',value: growth,        color: '#34a853', display: fmtUSD(growth) },
+  ]);
+
+  // Year-by-year table
+  var rows = [];
+  for (var yr = 1; yr <= years; yr++) {
+    var m = yr * 12;
+    var bal = projectBalance(current, contrib, mr, m);
+    var prevBal = projectBalance(current, contrib, mr, m - 12);
+    var yearGrowth = bal - prevBal - contrib * 12;
+    var realVal = bal / Math.pow(1 + inf, yr);
+    rows.push({ age: age + yr, bal: bal, growth: yearGrowth, real: realVal, contrib: contrib * 12 });
+  }
+  document.getElementById('growth-body').innerHTML = rows.map(function(row) {
+    var isDecade = row.age % 10 === 0;
+    return '<tr' + (isDecade ? ' class="decade-row"' : '') + '>'
+      + '<td>Age ' + row.age + (isDecade ? ' ⭐' : '') + '</td>'
+      + '<td>' + fmtUSD(row.contrib) + '</td>'
+      + '<td class="col-growth">' + fmtUSD(row.growth) + '</td>'
+      + '<td class="col-balance">' + fmtUSD(row.bal) + '</td>'
+      + '<td>' + fmtUSD(row.real) + '</td>'
+      + '</tr>';
+  }).join('');
+
+  // Share URL
+  var url = window.location.origin + window.location.pathname
+    + '?age=' + age + '&retire=' + retire + '&current=' + current
+    + '&contrib=' + contrib + '&ret=' + (ret*100) + '&inf=' + (inf*100)
+    + '&goal=' + goalMo + '&social=' + social;
+  document.getElementById('share-url').value = url;
+
+  showResult('result');
+}
+
+function projectBalance(P, c, mr, months) {
+  var bal = P * Math.pow(1 + mr, months);
+  for (var i = 1; i <= months; i++) bal += c * Math.pow(1 + mr, months - i);
+  return bal;
+}
+
+function calcNeededExtraContrib(current, mr, months, gap) {
+  // How much extra per month to accumulate `gap` more
+  if (mr === 0) return gap / months;
+  return gap * mr / (Math.pow(1 + mr, months) - 1);
+}
+
+function copyShareUrl() {
+  var input = document.getElementById('share-url');
+  input.select();
+  if (navigator.clipboard) navigator.clipboard.writeText(input.value).then(function(){ showToast('✓ Link copied!'); });
+  else { document.execCommand('copy'); showToast('✓ Link copied!'); }
+}
+
+function loadFromUrl() {
+  var p = new URLSearchParams(window.location.search);
+  if (!p.get('age')) return;
+  var map = {age:'ret_age',retire:'ret_retire',current:'ret_current',contrib:'ret_contrib',ret:'ret_return',inf:'ret_inflation',goal:'ret_goal',social:'ret_social'};
+  Object.keys(map).forEach(function(k){ if(p.get(k)) document.getElementById(map[k]).value = p.get(k); });
+  calcRetirement();
+}
+
+function resetForm() {
+  var defaults = {ret_age:30,ret_retire:65,ret_current:25000,ret_contrib:800,ret_return:7,ret_inflation:3,ret_goal:5000,ret_social:1500};
+  Object.keys(defaults).forEach(function(k){ document.getElementById(k).value = defaults[k]; });
+  document.getElementById('result').classList.remove('show');
+  window.history.replaceState({}, '', window.location.pathname);
+}
+</script>
+</body>
+</html>

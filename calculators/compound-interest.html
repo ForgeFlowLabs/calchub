@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Compound Interest Calculator — Investment Growth & Year-by-Year Schedule (2025)</title>
+<meta name="description" content="Calculate compound interest, see investment growth year by year, compare contribution scenarios, and understand the Rule of 72. Free, accurate."/>
+<meta property="og:title" content="Compound Interest Calculator — Investment Growth Over Time"/>
+<meta property="og:description" content="See exactly how your money grows with compound interest. Year-by-year schedule, contribution comparison, and Rule of 72."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://calchub.com/calculators/compound-interest.html"/>
+<link rel="canonical" href="https://calchub.com/calculators/compound-interest.html"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Compound Interest Calculator","description":"Calculate compound interest growth with year-by-year schedule and contribution scenarios","url":"https://calchub.com/calculators/compound-interest.html","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"What is compound interest?","acceptedAnswer":{"@type":"Answer","text":"Compound interest means earning interest on both your original principal and the interest already accumulated. Over time, this creates exponential growth — your interest earns interest, which is why Albert Einstein reportedly called it the 'eighth wonder of the world'."}},
+  {"@type":"Question","name":"What is the Rule of 72?","acceptedAnswer":{"@type":"Answer","text":"Divide 72 by your annual interest rate to estimate how many years it takes to double your money. At 7% annual return, your money doubles every ~10 years (72 ÷ 7 = 10.3 years)."}},
+  {"@type":"Question","name":"What is a realistic investment return to expect?","acceptedAnswer":{"@type":"Answer","text":"The S&P 500 has averaged ~10% annually before inflation (or ~7% inflation-adjusted) over long periods. For savings accounts in 2025, expect 4–5%. Use 6–7% for long-term stock market planning to be conservative."}}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.growth-table-wrap { overflow-x:auto; border-radius:var(--radius-lg); border:1px solid var(--gray-200); margin-top:1.25rem; }
+.growth-table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+.growth-table th { background:var(--gray-900); color:#fff; padding:9px 14px; text-align:right; font-weight:600; font-size:0.75rem; letter-spacing:0.04em; white-space:nowrap; }
+.growth-table th:first-child { text-align:left; }
+.growth-table td { padding:9px 14px; text-align:right; border-bottom:1px solid var(--gray-100); font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--gray-700); }
+.growth-table td:first-child { text-align:left; font-family:'Inter',sans-serif; font-weight:600; color:var(--gray-800); }
+.growth-table tr:hover td { background:var(--gray-50); }
+.growth-table tr:last-child td { border-bottom:none; font-weight:700; background:var(--gray-50); color:var(--gray-900); }
+.growth-table .col-interest { color:var(--green); }
+.growth-table .col-balance { color:var(--blue); }
+
+.rule72-box { background:var(--yellow-light); border:1px solid #f7e194; border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-top:1.25rem; }
+.rule72-box h4 { font-size:0.85rem; font-weight:700; color:var(--orange); margin-bottom:0.5rem; }
+.rule72-items { display:flex; gap:1rem; flex-wrap:wrap; }
+.rule72-item { text-align:center; }
+.rule72-item .r72-val { font-size:1.3rem; font-weight:700; color:var(--orange); font-family:'JetBrains Mono',monospace; }
+.rule72-item .r72-label { font-size:0.72rem; color:var(--gray-600); }
+
+.share-strip { display:flex; align-items:center; gap:10px; margin-top:1rem; padding:10px 14px; background:var(--gray-50); border-radius:var(--radius); border:1px solid var(--gray-200); flex-wrap:wrap; }
+.share-strip span { font-size:0.78rem; color:var(--gray-500); flex:1; min-width:100px; }
+.share-strip input { flex:2; min-width:180px; font-size:0.75rem; font-family:'JetBrains Mono',monospace; padding:6px 10px; border-radius:var(--radius); border:1px solid var(--gray-300); background:var(--white); color:var(--gray-700); }
+.btn-copy { padding:6px 14px; background:var(--blue); color:#fff; border:none; border-radius:16px; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:background 0.15s; }
+.btn-copy:hover { background:var(--blue-dark); }
+</style>
+</head>
+<body>
+
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#finance" class="active">Finance</a><a href="../index.html#health">Health</a><a href="../index.html#math">Math</a><a href="../index.html#everyday">Everyday</a></nav>
+</div></header>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span class="breadcrumb-sep">›</span>
+  <a href="../index.html#finance">Finance</a><span class="breadcrumb-sep">›</span>
+  <span>Compound Interest Calculator</span>
+</nav>
+
+<div class="page-wrap">
+<aside class="sidebar" aria-label="Finance calculators">
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link active" href="compound-interest.html"><span class="sidebar-icon">📈</span>Compound Interest</a>
+    <a class="sidebar-link" href="loan.html"><span class="sidebar-icon">💳</span>Loan</a>
+    <a class="sidebar-link" href="retirement.html"><span class="sidebar-icon">🏦</span>Retirement</a>
+    <a class="sidebar-link" href="roi.html"><span class="sidebar-icon">💰</span>ROI</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+    <a class="sidebar-link" href="savings.html"><span class="sidebar-icon">🐷</span>Savings Goal</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Health</div>
+    <a class="sidebar-link" href="bmi.html"><span class="sidebar-icon">⚖️</span>BMI</a>
+    <a class="sidebar-link" href="calorie.html"><span class="sidebar-icon">🍎</span>Calorie</a>
+    <a class="sidebar-link" href="body-fat.html"><span class="sidebar-icon">📊</span>Body Fat</a>
+    <a class="sidebar-link" href="pregnancy.html"><span class="sidebar-icon">🤱</span>Pregnancy</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Math</div>
+    <a class="sidebar-link" href="standard.html"><span class="sidebar-icon">🔢</span>Standard</a>
+    <a class="sidebar-link" href="scientific.html"><span class="sidebar-icon">🔬</span>Scientific</a>
+    <a class="sidebar-link" href="percentage.html"><span class="sidebar-icon">%</span>Percentage</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="unit-converter.html"><span class="sidebar-icon">💱</span>Unit Converter</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 Leaderboard — Google AdSense</div></div>
+
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e6f4ea;">📈</div>
+      <div>
+        <h1 class="calc-card-title">Compound Interest Calculator</h1>
+        <p class="calc-card-desc">See how your investments grow over time with compound interest, regular contributions, and a year-by-year growth schedule.</p>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label" for="ci_p">Starting Principal</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="ci_p" class="has-prefix" value="10000" min="0" step="100"/></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ci_r">Annual Interest Rate</label>
+        <div class="input-wrap"><input type="number" id="ci_r" class="has-suffix" value="7" step="0.1" min="0" max="100"/><span class="input-suffix">%</span></div>
+        <span class="form-hint">S&P 500 avg: ~10% (7% inflation-adj.)</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ci_t">Time Period</label>
+        <div class="input-wrap"><input type="number" id="ci_t" class="has-suffix" value="20" min="1" max="100"/><span class="input-suffix">years</span></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ci_n">Compound Frequency</label>
+        <select id="ci_n">
+          <option value="1">Annually</option>
+          <option value="2">Semi-annually</option>
+          <option value="4">Quarterly</option>
+          <option value="12" selected>Monthly</option>
+          <option value="365">Daily</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ci_c">Monthly Contribution</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="ci_c" class="has-prefix" value="500" min="0"/></div>
+        <span class="form-hint">Enter 0 for lump sum only</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ci_inf">Inflation Rate <span style="font-weight:400;color:var(--gray-400);font-size:0.72rem;">(optional)</span></label>
+        <div class="input-wrap"><input type="number" id="ci_inf" class="has-suffix" value="0" step="0.1" min="0" max="20"/><span class="input-suffix">%</span></div>
+        <span class="form-hint">Shows real (inflation-adjusted) value</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="calcCompound()">Calculate Growth ›</button>
+      <button class="btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="result-box" id="result">
+
+      <div class="result-primary">
+        <span class="result-primary-label">Final Balance</span>
+        <span class="result-primary-value" id="r-final">—</span>
+      </div>
+
+      <div class="result-row"><span class="result-row-label">Starting Principal</span><span class="result-row-value" id="r-principal">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total Contributions</span><span class="result-row-value" id="r-contrib">—</span></div>
+      <div class="result-row"><span class="result-row-label">Total Interest Earned</span><span class="result-row-value color-green" id="r-interest">—</span></div>
+      <div class="result-row"><span class="result-row-label">Return on Investment</span><span class="result-row-value color-green" id="r-roi">—</span></div>
+      <div class="result-row" id="r-real-row" style="display:none;"><span class="result-row-label">Inflation-Adjusted Value</span><span class="result-row-value color-blue" id="r-real">—</span></div>
+
+      <!-- BAR CHART -->
+      <div class="bar-chart" id="r-chart" style="margin-top:1.25rem;"></div>
+
+      <!-- RULE OF 72 -->
+      <div class="rule72-box">
+        <h4>⚡ Rule of 72</h4>
+        <div class="rule72-items" id="rule72"></div>
+      </div>
+
+      <!-- SHARE -->
+      <div class="share-strip">
+        <span>🔗 Share this result:</span>
+        <input type="text" id="share-url" readonly onclick="this.select()"/>
+        <button class="btn-copy" onclick="copyShareUrl()">Copy Link</button>
+      </div>
+
+      <!-- YEAR-BY-YEAR TABLE -->
+      <div style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin:1.5rem 0 0.75rem;">Year-by-Year Growth Schedule</div>
+      <div class="growth-table-wrap">
+        <table class="growth-table">
+          <thead><tr>
+            <th style="text-align:left;">Year</th>
+            <th>Contributions</th>
+            <th>Interest Earned</th>
+            <th>Total Interest</th>
+            <th>Balance</th>
+          </tr></thead>
+          <tbody id="growth-body"></tbody>
+        </table>
+      </div>
+
+    </div><!-- /result-box -->
+
+    <div class="disclaimer">⚠️ Calculations assume a constant rate of return and regular contributions. Actual investment returns vary and are not guaranteed. Past performance does not guarantee future results.</div>
+
+    <div class="info-block">
+      <h2 style="font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:0.75rem;">What Is Compound Interest?</h2>
+      <p>Compound interest means earning interest on both your original principal and the interest already accumulated. Unlike simple interest (which only earns on the principal), compound interest creates exponential growth — your interest earns interest. Over decades, this effect is dramatic: $10,000 at 7% for 30 years grows to over $76,000 with no contributions, purely from compounding.</p>
+
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin:1.25rem 0 0.5rem;">The Compound Interest Formula</h3>
+      <div class="formula">A = P(1 + r/n)^(nt)</div>
+      <p style="margin-top:0.5rem;"><strong>A</strong> = final amount, <strong>P</strong> = principal, <strong>r</strong> = annual interest rate (decimal), <strong>n</strong> = compounding periods per year, <strong>t</strong> = time in years. With monthly contributions added, the formula becomes a sum of compounded future values for each contribution.</p>
+
+      <div class="faq" style="margin-top:1.5rem;">
+        <h3 style="font-size:0.95rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Frequently Asked Questions</h3>
+
+        <div class="faq-item">
+          <div class="faq-q">How much does starting age affect compounding? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Dramatically. Starting at 25 vs. 35 with $500/month at 7% means roughly $600,000 more at age 65 ($1.37M vs. $0.73M). The first decade of contributions does most of the heavy lifting because those dollars compound the longest. This is why "start early" is the single most important piece of investment advice — time is a more powerful variable than rate or contribution amount.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Does compounding frequency matter much? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Surprisingly little. On a $10,000 investment at 7% for 20 years: annual compounding yields ~$38,697; monthly compounding yields ~$40,387 — a difference of just $1,690. Daily vs. monthly is even smaller. What matters far more is the rate itself, how long you invest, and how consistently you contribute. Don't obsess over compounding frequency.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is a realistic rate of return to use? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">The S&P 500 has returned ~10% annually before inflation and ~7% after inflation over long periods (30+ years). High-yield savings accounts in 2025 offer 4–5%. Treasury bonds average 3–5%. For long-term retirement planning, financial planners typically use 6–7% as a conservative real-return assumption. Never use past returns as a guarantee of future performance.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is the Rule of 72? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">The Rule of 72 is a mental math shortcut: divide 72 by your annual interest rate to estimate how many years it takes to double your money. At 6%, doubling takes ~12 years (72 ÷ 6). At 10%, it takes ~7.2 years. The rule is accurate within 1–2% for rates between 2% and 15%. It also works in reverse: to double your money in 8 years, you need roughly a 9% return (72 ÷ 8).</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How does inflation affect my investment returns? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Inflation erodes purchasing power. A 7% nominal return with 3% inflation gives a ~4% real return. Enter your expected inflation rate in this calculator to see the inflation-adjusted (real) value of your investment — what that future balance would be worth in today's dollars. For long-term planning, always think in real returns rather than nominal ones.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What's the best account type for compound interest? <span class="faq-chevron">▾</span></div>
+          <div class="faq-a">Tax-advantaged accounts maximize compounding because you're not losing a portion to taxes each year. A 401(k) or Traditional IRA defers taxes until withdrawal. A Roth IRA grows tax-free — all the compounded growth is yours. The difference between taxable and tax-free growth is substantial over decades: on a $100,000 account growing at 7% for 30 years, tax-free growth yields ~$761,000 vs. ~$510,000 at a 25% annual tax drag.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3 style="font-size:0.9rem;font-weight:700;color:var(--gray-800);margin-bottom:0.75rem;">Related Finance Calculators</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:0.5rem;">
+        <a href="retirement.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏦 Retirement Calculator</a>
+        <a href="savings.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🐷 Savings Goal</a>
+        <a href="roi.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">💰 ROI Calculator</a>
+        <a href="mortgage.html" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:20px;text-decoration:none;font-size:0.82rem;font-weight:500;">🏠 Mortgage Calculator</a>
+      </div>
+    </div>
+
+  </div><!-- /calc-card -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card">
+    <h3>Related Calculators</h3>
+    <a class="related-link" href="retirement.html">🏦 Retirement Calculator</a>
+    <a class="related-link" href="savings.html">🐷 Savings Goal</a>
+    <a class="related-link" href="roi.html">💰 ROI Calculator</a>
+    <a class="related-link" href="mortgage.html">🏠 Mortgage</a>
+    <a class="related-link" href="loan.html">💳 Loan Calculator</a>
+  </div>
+  <div class="rail-card">
+    <h3>⚡ Rule of 72</h3>
+    <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.65;">Divide <strong>72</strong> by your rate to find doubling time. At 7% → 10.3 years. At 10% → 7.2 years. At 4% → 18 years.</p>
+  </div>
+  <div class="rail-card">
+    <h3>💡 Time vs. Rate</h3>
+    <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.65;">Starting 10 years earlier often <strong>matters more</strong> than getting a 2% higher return. Time is your most powerful compounding lever.</p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native / Affiliate Ad</div></div>
+</aside>
+
+</div><!-- /page-wrap -->
+
+<nav class="mobile-bottom-nav" aria-label="Quick access"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('compound-interest'); loadFromUrl(); });</script>
+<script>
+function calcCompound() {
+  var P   = +document.getElementById('ci_p').value   || 0;
+  var r   = +document.getElementById('ci_r').value   / 100 || 0;
+  var t   = +document.getElementById('ci_t').value   || 0;
+  var n   = +document.getElementById('ci_n').value;
+  var c   = +document.getElementById('ci_c').value   || 0;
+  var inf = +document.getElementById('ci_inf').value / 100 || 0;
+
+  if (t <= 0) { alert('Please enter a valid time period.'); return; }
+
+  // Build year-by-year
+  var rows = [];
+  var balance = P;
+  var totalContributions = P;
+  var cumulativeInterest = 0;
+
+  for (var yr = 1; yr <= t; yr++) {
+    var startBalance = balance;
+    // Compound the balance for 12 months
+    for (var mo = 0; mo < 12; mo++) {
+      balance = balance * (1 + r / n);
+      if (n === 12 || n === 365) {
+        // For monthly/daily, add contribution monthly
+        balance += c;
+        if (yr <= t) totalContributions += c;
+      }
+    }
+    if (n < 12) {
+      // For annual/semi-annual/quarterly, add contributions annually
+      balance += c * 12;
+      totalContributions += c * 12;
+    }
+    var yearInterest = balance - startBalance - (n < 12 ? c * 12 : 0);
+    cumulativeInterest += yearInterest;
+    rows.push({ year: yr, yearInterest: yearInterest, cumInterest: cumulativeInterest, balance: balance });
+  }
+
+  // Recalculate cleanly for totals
+  var finalBalance = rows[rows.length - 1].balance;
+  var totalContrib = P + c * t * 12;
+  var totalInterest = finalBalance - totalContrib;
+
+  setText('r-final',    fmtUSD(finalBalance));
+  setText('r-principal', fmtUSD(P));
+  setText('r-contrib',  fmtUSD(totalContrib));
+  setText('r-interest', fmtUSD(totalInterest));
+  setText('r-roi',      (totalContrib > 0 ? (totalInterest / totalContrib * 100) : 0).toFixed(1) + '%');
+
+  // Inflation-adjusted
+  if (inf > 0) {
+    var realValue = finalBalance / Math.pow(1 + inf, t);
+    document.getElementById('r-real-row').style.display = '';
+    setText('r-real', fmtUSD(realValue) + ' (today\'s dollars)');
+  } else {
+    document.getElementById('r-real-row').style.display = 'none';
+  }
+
+  // Bar chart
+  renderBarChart('r-chart', [
+    { label: 'Principal',     value: P,             color: '#1a73e8', display: fmtUSD(P) },
+    { label: 'Contributions', value: totalContrib - P, color: '#4285f4', display: fmtUSD(totalContrib - P) },
+    { label: 'Interest',      value: totalInterest, color: '#34a853', display: fmtUSD(totalInterest) },
+  ]);
+
+  // Rule of 72
+  var doublings = Math.floor(t / (72 / (r * 100)));
+  var yearsToDouble = r > 0 ? (72 / (r * 100)).toFixed(1) : '∞';
+  document.getElementById('rule72').innerHTML =
+    '<div class="rule72-item"><div class="r72-val">' + yearsToDouble + ' yrs</div><div class="r72-label">to double at ' + (r*100).toFixed(1) + '%</div></div>'
+    + '<div class="rule72-item"><div class="r72-val">' + doublings + 'x</div><div class="r72-label">doublings in ' + t + ' years</div></div>'
+    + '<div class="rule72-item"><div class="r72-val">' + (r > 0 ? (72 / t).toFixed(1) + '%' : '—') + '</div><div class="r72-label">rate needed to double in ' + t + ' yrs</div></div>';
+
+  // Growth table
+  document.getElementById('growth-body').innerHTML = rows.map(function(row) {
+    return '<tr><td>Year ' + row.year + '</td>'
+      + '<td>' + fmtUSD(c * 12) + '</td>'
+      + '<td class="col-interest">' + fmtUSD(row.yearInterest) + '</td>'
+      + '<td class="col-interest">' + fmtUSD(row.cumInterest) + '</td>'
+      + '<td class="col-balance">' + fmtUSD(row.balance) + '</td>'
+      + '</tr>';
+  }).join('');
+
+  // Share
+  var url = window.location.origin + window.location.pathname
+    + '?p=' + P + '&r=' + (r*100) + '&t=' + t + '&n=' + n + '&c=' + c + '&inf=' + (inf*100);
+  document.getElementById('share-url').value = url;
+
+  showResult('result');
+}
+
+function copyShareUrl() {
+  var input = document.getElementById('share-url');
+  input.select();
+  if (navigator.clipboard) navigator.clipboard.writeText(input.value).then(function(){ showToast('✓ Link copied!'); });
+  else { document.execCommand('copy'); showToast('✓ Link copied!'); }
+}
+
+function loadFromUrl() {
+  var p = new URLSearchParams(window.location.search);
+  if (!p.get('p')) return;
+  if (p.get('p'))   document.getElementById('ci_p').value   = p.get('p');
+  if (p.get('r'))   document.getElementById('ci_r').value   = p.get('r');
+  if (p.get('t'))   document.getElementById('ci_t').value   = p.get('t');
+  if (p.get('n'))   document.getElementById('ci_n').value   = p.get('n');
+  if (p.get('c'))   document.getElementById('ci_c').value   = p.get('c');
+  if (p.get('inf')) document.getElementById('ci_inf').value = p.get('inf');
+  calcCompound();
+}
+
+function resetForm() {
+  document.getElementById('ci_p').value   = 10000;
+  document.getElementById('ci_r').value   = 7;
+  document.getElementById('ci_t').value   = 20;
+  document.getElementById('ci_n').value   = 12;
+  document.getElementById('ci_c').value   = 500;
+  document.getElementById('ci_inf').value = 0;
+  document.getElementById('result').classList.remove('show');
+  window.history.replaceState({}, '', window.location.pathname);
+}
+</script>
+</body>
+</html>

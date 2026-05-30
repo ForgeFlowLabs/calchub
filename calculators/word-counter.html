@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Word Counter — Character, Sentence & Reading Time (2025)</title>
+<meta name="description" content="Count words, characters, sentences, paragraphs, and reading time. Free online word counter tool."/>
+<link rel="canonical" href="https://calchub.io/calculators/word-counter.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.wc-textarea{width:100%;min-height:200px;padding:14px;border:2px solid var(--gray-200);border-radius:var(--radius-lg);font-family:'Inter',sans-serif;font-size:0.925rem;line-height:1.7;box-sizing:border-box;resize:vertical;outline:none;transition:border-color 0.15s;}
+.wc-textarea:focus{border-color:var(--blue);}
+.wc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:1.25rem;}
+@media(max-width:600px){.wc-stats{grid-template-columns:repeat(2,1fr);}}
+.wc-stat{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1rem;text-align:center;}
+.wc-stat.primary{border-color:var(--blue);background:var(--blue-light);}
+.wcs-val{font-size:1.6rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--gray-900);}
+.wcs-label{font-size:0.7rem;color:var(--gray-500);margin-top:4px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;}
+.keyword-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+.keyword-table th{background:var(--gray-900);color:#fff;padding:8px 12px;text-align:left;font-size:0.75rem;font-weight:600;}
+.keyword-table td{padding:7px 12px;border-bottom:1px solid var(--gray-100);}
+.keyword-table td:last-child{text-align:right;font-family:'JetBrains Mono',monospace;}
+.goal-bar{height:8px;background:var(--gray-100);border-radius:4px;margin-top:0.5rem;overflow:hidden;}
+.goal-fill{height:100%;border-radius:4px;background:var(--blue);transition:width 0.4s ease;}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a class="logo" href="../index.html"><div class="logo-mark">&#8721;</div><div class="logo-name">Calc<span>Hub</span></div></a>
+  <div class="header-search"><span class="search-icon">⌕</span><input type="text" id="header-search-input" placeholder="Search calculators…" autocomplete="off"/><div class="search-dropdown" id="header-search-dropdown"></div></div>
+  <nav class="header-nav"><a href="../index.html">All</a><a href="../index.html#everyday" class="active">Everyday</a></nav>
+</div></header>
+<nav class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">›</span><a href="../index.html#everyday">Everyday</a><span class="breadcrumb-sep">›</span><span>Word Counter</span></nav>
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sidebar-section"><div class="sidebar-cat">Everyday</div>
+    <a class="sidebar-link active" href="word-counter.html"><span class="sidebar-icon">📝</span>Word Counter</a>
+    <a class="sidebar-link" href="grade.html"><span class="sidebar-icon">📊</span>Grade</a>
+    <a class="sidebar-link" href="gpa.html"><span class="sidebar-icon">🎓</span>GPA</a>
+    <a class="sidebar-link" href="tip.html"><span class="sidebar-icon">🍽️</span>Tip</a>
+    <a class="sidebar-link" href="discount.html"><span class="sidebar-icon">🏷️</span>Discount</a>
+    <a class="sidebar-link" href="age.html"><span class="sidebar-icon">🎂</span>Age</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-cat">Finance</div>
+    <a class="sidebar-link" href="mortgage.html"><span class="sidebar-icon">🏠</span>Mortgage</a>
+    <a class="sidebar-link" href="tax.html"><span class="sidebar-icon">🧾</span>Tax</a>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-160">160×250</div></div>
+</aside>
+<main class="main-col">
+  <div class="ad-zone" style="margin-bottom:1.25rem;"><div class="ad-label">Advertisement</div><div class="ad-slot ad-728">728×90 — AdSense</div></div>
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <div class="calc-card-icon" style="background:#e8f5e9;">📝</div>
+      <div><h1 class="calc-card-title">Word Counter</h1><p class="calc-card-desc">Count words, characters, sentences, and paragraphs. See reading time, keyword density, and more.</p></div>
+    </div>
+
+    <textarea class="wc-textarea" id="wc-text" placeholder="Paste or type your text here…" oninput="countWords()"></textarea>
+
+    <div class="wc-stats">
+      <div class="wc-stat primary"><div class="wcs-val" id="wc-words">0</div><div class="wcs-label">Words</div></div>
+      <div class="wc-stat"><div class="wcs-val" id="wc-chars">0</div><div class="wcs-label">Characters</div></div>
+      <div class="wc-stat"><div class="wcs-val" id="wc-chars-no">0</div><div class="wcs-label">Chars (no spaces)</div></div>
+      <div class="wc-stat"><div class="wcs-val" id="wc-sentences">0</div><div class="wcs-label">Sentences</div></div>
+      <div class="wc-stat"><div class="wcs-val" id="wc-paragraphs">0</div><div class="wcs-label">Paragraphs</div></div>
+      <div class="wc-stat"><div class="wcs-val" id="wc-read">0 min</div><div class="wcs-label">Reading Time</div></div>
+      <div class="wc-stat"><div class="wcs-val" id="wc-speak">0 min</div><div class="wcs-label">Speaking Time</div></div>
+      <div class="wc-stat"><div class="wcs-val" id="wc-lines">0</div><div class="wcs-label">Lines</div></div>
+    </div>
+
+    <!-- WORD GOAL -->
+    <div style="margin-top:1.5rem;">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <span style="font-size:0.82rem;font-weight:600;color:var(--gray-700);">Word Goal:</span>
+        <input type="number" id="wc-goal" placeholder="500" style="padding:6px 10px;border:1px solid var(--gray-200);border-radius:var(--radius);font-family:'Inter',sans-serif;font-size:0.875rem;width:90px;" oninput="updateGoal()"/>
+        <div style="flex:1;min-width:100px;">
+          <div class="goal-bar"><div class="goal-fill" id="goal-fill" style="width:0%;"></div></div>
+          <div style="font-size:0.72rem;color:var(--gray-500);margin-top:4px;" id="goal-label"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK LIMITS REFERENCE -->
+    <div style="margin-top:1.5rem;font-size:0.82rem;font-weight:700;color:var(--gray-700);margin-bottom:0.5rem;">Common Word Count Limits</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <span class="chip chip-blue" style="cursor:pointer;" onclick="setGoal(280)">🐦 Tweet: 280 chars</span>
+      <span class="chip chip-blue" style="cursor:pointer;" onclick="setGoal(500)">📧 Email: ~500 words</span>
+      <span class="chip chip-blue" style="cursor:pointer;" onclick="setGoal(750)">📰 Blog post: 750</span>
+      <span class="chip chip-blue" style="cursor:pointer;" onclick="setGoal(1500)">✍️ Article: 1,500</span>
+      <span class="chip chip-blue" style="cursor:pointer;" onclick="setGoal(3000)">📖 Long-form: 3,000</span>
+      <span class="chip chip-blue" style="cursor:pointer;" onclick="setGoal(50000)">📚 Novel: 50,000</span>
+    </div>
+
+    <!-- TOP WORDS -->
+    <div style="margin-top:1.5rem;">
+      <div style="font-size:0.82rem;font-weight:700;color:var(--gray-700);margin-bottom:0.75rem;">Top Keywords (by frequency)</div>
+      <div style="overflow:hidden;border-radius:var(--radius-lg);border:1px solid var(--gray-200);">
+        <table class="keyword-table">
+          <thead><tr><th>Word</th><th>Count</th><th>Density</th></tr></thead>
+          <tbody id="keyword-body"><tr><td colspan="3" style="text-align:center;color:var(--gray-400);padding:12px;">Type or paste text above</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn-secondary" onclick="document.getElementById('wc-text').value='';countWords()">Clear Text</button>
+      <button class="btn-secondary" onclick="copyStats()">Copy Stats</button>
+    </div>
+
+    <div class="info-block">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:0.5rem;">Word Counter Tool</h2>
+      <p style="color:var(--gray-700);line-height:1.8;">This word counter instantly counts words, characters (with and without spaces), sentences, paragraphs, and lines. Reading time assumes 238 words per minute (average adult reader). Speaking time assumes 130 words per minute (average speaker). Updates live as you type.</p>
+    </div>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-336">336×280 — AdSense</div></div>
+</main>
+<aside class="right-rail">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div><div class="ad-slot ad-300">300×250 — AdSense</div></div>
+  <div class="rail-card"><h3>Related Calculators</h3>
+    <a class="related-link" href="grade.html">📝 Grade Calculator</a>
+    <a class="related-link" href="gpa.html">🎓 GPA Calculator</a>
+    <a class="related-link" href="percentage.html">% Percentage</a>
+  </div>
+  <div class="rail-card"><h3>📏 Reading Speeds</h3>
+    <p style="font-size:0.78rem;color:var(--gray-600);line-height:1.9;">
+      <strong>Slow reader:</strong> 150 wpm<br>
+      <strong>Average:</strong> 238 wpm<br>
+      <strong>Fast reader:</strong> 350 wpm<br>
+      <strong>Speed reader:</strong> 700+ wpm<br>
+      <strong>Speaking rate:</strong> 130 wpm
+    </p>
+  </div>
+  <div class="ad-zone"><div class="ad-label">Sponsored</div><div class="ad-slot ad-native">Native Ad</div></div>
+</aside>
+</div>
+<nav class="mobile-bottom-nav"><div class="mobile-bottom-nav-inner">
+  <a class="mbn-item" href="mortgage.html"><span class="mbn-icon">🏠</span>Mortgage</a>
+  <a class="mbn-item" href="bmi.html"><span class="mbn-icon">⚖️</span>BMI</a>
+  <a class="mbn-item" href="../index.html"><span class="mbn-icon">⌂</span>Home</a>
+  <a class="mbn-item" href="tip.html"><span class="mbn-icon">🍽️</span>Tip</a>
+  <a class="mbn-item" href="loan.html"><span class="mbn-icon">💳</span>Loan</a>
+</div></nav>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:0.75rem;">
+        <div class="logo-mark">&#8721;</div>
+        <div class="logo-name">Calc<span>Hub</span></div>
+      </div>
+      <div class="footer-brand-desc">Free, accurate calculators for finance, health, math and everyday decisions. Updated for 2026.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Finance</h4>
+      <a class="footer-link" href="../calculators/mortgage.html">Mortgage</a>
+      <a class="footer-link" href="../calculators/auto-loan.html">Auto Loan</a>
+      <a class="footer-link" href="../calculators/tax.html">Tax (2026)</a>
+      <a class="footer-link" href="../calculators/salary.html">Salary</a>
+      <a class="footer-link" href="../calculators/retirement.html">Retirement</a>
+      <a class="footer-link" href="../calculators/compound-interest.html">Compound Interest</a>
+      <a class="footer-link" href="../calculators/inflation.html">Inflation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Health</h4>
+      <a class="footer-link" href="../calculators/bmi.html">BMI</a>
+      <a class="footer-link" href="../calculators/calorie.html">Calorie</a>
+      <a class="footer-link" href="../calculators/bmr.html">BMR</a>
+      <a class="footer-link" href="../calculators/sleep.html">Sleep</a>
+      <a class="footer-link" href="../calculators/ideal-weight.html">Ideal Weight</a>
+      <a class="footer-link" href="../calculators/pregnancy.html">Pregnancy</a>
+      <a class="footer-link" href="../calculators/ovulation.html">Ovulation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Everyday</h4>
+      <a class="footer-link" href="../calculators/tip.html">Tip</a>
+      <a class="footer-link" href="../calculators/age.html">Age</a>
+      <a class="footer-link" href="../calculators/date-difference.html">Date Difference</a>
+      <a class="footer-link" href="../calculators/time-zone.html">Time Zone</a>
+      <a class="footer-link" href="../calculators/word-counter.html">Word Counter</a>
+      <a class="footer-link" href="../calculators/password-generator.html">Password Generator</a>
+      <h4 style="margin-top:1.25rem;">Company</h4>
+      <a class="footer-link" href="../about.html">About</a>
+      <a class="footer-link" href="../privacy.html">Privacy Policy</a>
+      <a class="footer-link" href="../contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 CalcHub · Free to use · No account required</span>
+    <span>33 calculators · Updated for 2026</span>
+  </div>
+</div></footer>
+<script src="../js/main.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('word-counter'); });</script>
+<script>
+var STOP_WORDS = new Set('the a an and or but in on at to for of with is was are were be been being have has had do does did will would could should may might shall can i you he she it we they me him her us them my your his its our their this that these those'.split(' '));
+
+function countWords(){
+  var text = document.getElementById('wc-text').value;
+  var words     = text.trim() ? text.trim().split(/\s+/).filter(Boolean) : [];
+  var chars     = text.length;
+  var charsNo   = text.replace(/\s/g,'').length;
+  var sentences = text.split(/[.!?]+/).filter(function(s){return s.trim().length>0;}).length;
+  var paragraphs= text.split(/\n\s*\n/).filter(function(p){return p.trim().length>0;}).length;
+  var lines     = text.split('\n').length;
+  var readMin   = (words.length/238).toFixed(1);
+  var speakMin  = (words.length/130).toFixed(1);
+
+  document.getElementById('wc-words').textContent     = words.length.toLocaleString();
+  document.getElementById('wc-chars').textContent     = chars.toLocaleString();
+  document.getElementById('wc-chars-no').textContent  = charsNo.toLocaleString();
+  document.getElementById('wc-sentences').textContent = sentences.toLocaleString();
+  document.getElementById('wc-paragraphs').textContent= paragraphs.toLocaleString();
+  document.getElementById('wc-lines').textContent     = lines.toLocaleString();
+  document.getElementById('wc-read').textContent      = (readMin < 1 ? '< 1' : readMin) + ' min';
+  document.getElementById('wc-speak').textContent     = (speakMin < 1 ? '< 1' : speakMin) + ' min';
+
+  // Keywords
+  var freq = {};
+  words.forEach(function(w){
+    var clean = w.toLowerCase().replace(/[^a-z0-9]/g,'');
+    if(clean.length > 2 && !STOP_WORDS.has(clean)) freq[clean] = (freq[clean]||0)+1;
+  });
+  var sorted = Object.keys(freq).sort(function(a,b){return freq[b]-freq[a];}).slice(0,10);
+  if(sorted.length){
+    document.getElementById('keyword-body').innerHTML = sorted.map(function(w){
+      var density = (freq[w]/Math.max(words.length,1)*100).toFixed(1);
+      return '<tr><td>'+w+'</td><td>'+freq[w]+'</td><td>'+density+'%</td></tr>';
+    }).join('');
+  } else {
+    document.getElementById('keyword-body').innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--gray-400);padding:12px;">Type or paste text above</td></tr>';
+  }
+  updateGoal();
+}
+
+function updateGoal(){
+  var goal = +document.getElementById('wc-goal').value || 0;
+  var words = document.getElementById('wc-text').value.trim().split(/\s+/).filter(Boolean).length;
+  if(!goal){ document.getElementById('goal-label').textContent=''; document.getElementById('goal-fill').style.width='0%'; return; }
+  var pct = Math.min(100, Math.round(words/goal*100));
+  document.getElementById('goal-fill').style.width = pct+'%';
+  document.getElementById('goal-fill').style.background = pct>=100?'var(--green)':'var(--blue)';
+  document.getElementById('goal-label').textContent = words+' / '+goal+' words ('+pct+'%)';
+}
+
+function setGoal(n){
+  document.getElementById('wc-goal').value = n;
+  updateGoal();
+}
+
+function copyStats(){
+  var words = document.getElementById('wc-words').textContent;
+  var chars = document.getElementById('wc-chars').textContent;
+  var read  = document.getElementById('wc-read').textContent;
+  var text  = 'Words: '+words+' | Characters: '+chars+' | Reading time: '+read;
+  if(navigator.clipboard) navigator.clipboard.writeText(text).then(function(){ showToast('✓ Stats copied!'); });
+}
+</script>
+</body></html>
