@@ -495,8 +495,18 @@
 <script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('mortgage');
   injectExplainButton('result', {
     calc: 'Mortgage Calculator',
-    inputs: {'Home Price': document.getElementById('home-price')?.value, 'Rate': document.getElementById('interest-rate')?.value, 'Term': document.getElementById('loan-term')?.value},
-    outputs: {'Monthly Payment': document.getElementById('r-payment')?.textContent, 'Total Interest': document.getElementById('r-interest')?.textContent}
+    inputs: {
+      'Home Price': document.getElementById('home-price')?.value,
+      'Interest Rate': document.getElementById('interest-rate')?.value + '%',
+      'Loan Term': document.getElementById('loan-term')?.value
+    },
+    outputs: {
+      'Total Monthly Payment': document.getElementById('r-total')?.textContent,
+      'Principal & Interest': document.getElementById('r-monthly')?.textContent,
+      'Total Interest Paid': document.getElementById('r-interest')?.textContent,
+      'Total Cost of Home': document.getElementById('r-cost')?.textContent,
+      'Loan Amount': document.getElementById('r-principal')?.textContent
+    }
   });
   injectProblemBox('ai-problem-section', 'Mortgage Calculator', ['What mortgage can I afford on $80k salary?', 'Is a 30-year better than 15-year mortgage?', 'What does PMI mean and when can I drop it?', 'How much does 1% rate difference cost?']); loadFromUrl(); updateDownPct(); });</script>
 <script>
