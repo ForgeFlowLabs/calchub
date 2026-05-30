@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Calorie Calculator — Daily Needs, TDEE & Macros (2025)</title>
+<title>Calorie Calculator — Daily Needs, TDEE & Macros (2026)</title>
 <meta name="description" content="Calculate your daily calorie needs, TDEE, BMR, and macronutrient targets for weight loss, maintenance, or muscle gain. Uses Mifflin-St Jeor equation. Free."/>
 <meta property="og:title" content="Calorie Calculator — TDEE, BMR & Macros"/>
 <meta property="og:description" content="Find your daily calorie needs and macro targets for any goal — weight loss, maintenance, or muscle gain. Free, science-based."/>
@@ -402,7 +402,13 @@
 </div></footer>
 
 <script src="../js/main.js"></script>
-<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('calorie'); });</script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('calorie');
+  injectExplainButton('result', {
+    calc: 'Calorie Calculator',
+    inputs: {},
+    outputs: {'Daily Calories': document.getElementById('r-calories')?.textContent}
+  });
+  injectProblemBox('ai-problem-section', 'Calorie Calculator', ['How do I lose 1 pound per week?', 'Why am I not losing weight at a deficit?', 'How many calories to build muscle?', 'What macros should I eat?']); });</script>
 <script>
 var _unit = 'imperial';
 var _goal = 0;

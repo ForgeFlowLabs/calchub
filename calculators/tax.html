@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Income Tax Calculator — 2025 Federal Tax Brackets & Rates</title>
-<meta name="description" content="Estimate your 2025 US federal income tax, effective rate, marginal bracket, FICA taxes, and after-tax income. Free, accurate, updated for 2025 IRS brackets."/>
-<meta property="og:title" content="Income Tax Calculator — 2025 Federal Tax Brackets"/>
+<title>Income Tax Calculator — 2026 (2025 Tax Year Brackets)</title>
+<meta name="description" content="Estimate your 2025 US federal income tax, effective rate, marginal bracket, FICA taxes, and after-tax income. Free, accurate, updated for 2026 IRS brackets."/>
+<meta property="og:title" content="Income Tax Calculator — 2026"/>
 <meta property="og:description" content="Calculate your 2025 federal income tax, effective rate, and take-home pay. Includes FICA, standard deduction, and bracket breakdown."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://calchub.com/calculators/tax.html"/>
@@ -102,7 +102,7 @@
     </div>
 
     <div style="background:var(--green-light);border:1px solid #b7dfbe;border-radius:var(--radius);padding:8px 14px;font-size:0.78rem;color:var(--green);font-weight:600;margin-bottom:1.25rem;">
-      ✓ Updated for 2025 IRS tax brackets and standard deductions
+      ✓ Updated for 2026 IRS tax brackets and standard deductions
     </div>
 
     <div class="form-grid">
@@ -328,7 +328,13 @@
 </div></footer>
 
 <script src="../js/main.js"></script>
-<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('tax'); updateStdDeduct(); });</script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('tax');
+  injectExplainButton('result', {
+    calc: 'Tax Calculator',
+    inputs: {},
+    outputs: {'Federal Tax': document.getElementById('r-federal')?.textContent, 'Effective Rate': document.getElementById('r-effective')?.textContent}
+  });
+  injectProblemBox('ai-problem-section', 'Tax Calculator', ['How can I legally pay less tax?', 'What is effective vs marginal rate?', 'Traditional vs Roth 401k?', 'What deductions am I missing?']); updateStdDeduct(); });</script>
 <script>
 // 2025 IRS brackets
 var BRACKETS = {

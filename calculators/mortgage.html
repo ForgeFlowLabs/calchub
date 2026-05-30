@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Mortgage Calculator — Free Monthly Payment Estimator (2025)</title>
-<meta name="description" content="Calculate your monthly mortgage payment, total interest, amortization schedule and full cost of a home loan. Free, accurate, updated for 2025 rates."/>
+<title>Mortgage Calculator — Free Monthly Payment Estimator (2026)</title>
+<meta name="description" content="Calculate your monthly mortgage payment, total interest, amortization schedule and full cost of a home loan. Free, accurate, updated for 2026 rates."/>
 <meta property="og:title" content="Mortgage Calculator — Free Monthly Payment Estimator"/>
 <meta property="og:description" content="Calculate monthly mortgage payments, see your full amortization schedule, and compare 15 vs 30-year terms. Free, no sign-up."/>
 <meta property="og:type" content="website"/>
@@ -24,7 +24,7 @@
 {"@context":"https://schema.org","@type":"HowTo","name":"How to Calculate a Mortgage Payment","step":[
   {"@type":"HowToStep","name":"Enter your home price","text":"Enter the total purchase price of the home you're buying."},
   {"@type":"HowToStep","name":"Enter your down payment","text":"Enter the amount you'll pay upfront. 20% avoids PMI."},
-  {"@type":"HowToStep","name":"Enter your interest rate","text":"Enter the annual interest rate from your lender quote. The average 30-year fixed rate in 2025 is around 6.5–7%."},
+  {"@type":"HowToStep","name":"Enter your interest rate","text":"Enter the annual interest rate from your lender quote. The average 30-year fixed rate in 2026 is around 6.5–7%."},
   {"@type":"HowToStep","name":"Select your loan term","text":"Choose between 10, 15, 20, or 30 years. Shorter terms mean higher payments but less total interest."},
   {"@type":"HowToStep","name":"Click Calculate","text":"Your monthly payment, total interest, and full amortization schedule will appear instantly."}
 ]}
@@ -188,7 +188,7 @@
     </div>
 
     <div class="rate-context">
-      📊 <span>Average 30-year fixed rate in 2025: <strong>~6.7%</strong> — adjust the field below to match your lender quote.</span>
+      📊 <span>Average 30-year fixed rate in 2026: <strong>~6.7%</strong> — adjust the field below to match your lender quote.</span>
     </div>
 
     <!-- INPUTS -->
@@ -350,7 +350,7 @@
 
         <div class="faq-item">
           <div class="faq-q">What is a good interest rate for a mortgage? <span class="faq-chevron">▾</span></div>
-          <div class="faq-a">In 2025, the average 30-year fixed mortgage rate is approximately 6.5–7%. A "good" rate depends on your credit score, down payment, loan type, and lender. Borrowers with credit scores above 760 and 20% down typically qualify for the best rates. Even a 0.5% difference in rate can save $30,000+ over 30 years on a $400,000 loan.</div>
+          <div class="faq-a">In 2026, the average 30-year fixed mortgage rate is approximately 6.5–7%. A "good" rate depends on your credit score, down payment, loan type, and lender. Borrowers with credit scores above 760 and 20% down typically qualify for the best rates. Even a 0.5% difference in rate can save $30,000+ over 30 years on a $400,000 loan.</div>
         </div>
 
         <div class="faq-item">
@@ -492,7 +492,13 @@
 </div></footer>
 
 <script src="../js/main.js"></script>
-<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('mortgage'); loadFromUrl(); updateDownPct(); });</script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('mortgage');
+  injectExplainButton('result', {
+    calc: 'Mortgage Calculator',
+    inputs: {'Home Price': document.getElementById('home-price')?.value, 'Rate': document.getElementById('interest-rate')?.value, 'Term': document.getElementById('loan-term')?.value},
+    outputs: {'Monthly Payment': document.getElementById('r-payment')?.textContent, 'Total Interest': document.getElementById('r-interest')?.textContent}
+  });
+  injectProblemBox('ai-problem-section', 'Mortgage Calculator', ['What mortgage can I afford on $80k salary?', 'Is a 30-year better than 15-year mortgage?', 'What does PMI mean and when can I drop it?', 'How much does 1% rate difference cost?']); loadFromUrl(); updateDownPct(); });</script>
 <script>
 // ── State ────────────────────────────────────────────────────
 var _amortData = { annual: [], monthly: [] };

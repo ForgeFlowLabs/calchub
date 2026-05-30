@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>BMI Calculator — Body Mass Index Chart & Healthy Weight Range (2025)</title>
+<title>BMI Calculator — Body Mass Index Chart & Healthy Weight Range (2026)</title>
 <meta name="description" content="Calculate your BMI instantly. See your weight category, healthy weight range, and BMI chart. Supports imperial and metric. Free, no sign-up."/>
 <meta property="og:title" content="BMI Calculator — Body Mass Index & Healthy Weight Range"/>
 <meta property="og:description" content="Find your BMI, weight category, and healthy weight range in seconds. Imperial and metric supported."/>
@@ -378,7 +378,13 @@
 </div></footer>
 
 <script src="../js/main.js"></script>
-<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('bmi'); });</script>
+<script>document.addEventListener('DOMContentLoaded',function(){ trackCalcView('bmi');
+  injectExplainButton('result', {
+    calc: 'BMI Calculator',
+    inputs: {},
+    outputs: {'BMI': document.getElementById('r-bmi')?.textContent, 'Category': document.getElementById('r-category')?.textContent}
+  });
+  injectProblemBox('ai-problem-section', 'BMI Calculator', ['What does my BMI mean?', 'Is BMI accurate?', 'How do I reach a healthy BMI?', 'I exercise but BMI says overweight — why?']); });</script>
 <script>
 var _unit = 'imperial';
 
